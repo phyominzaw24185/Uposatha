@@ -50,6 +50,7 @@
   --moon-dark:#2a1a14;
   --shadow:0 8px 24px -14px rgba(0,0,0,.8);
 }
+[hidden]{display:none!important}
 *{box-sizing:border-box}
 body{background:var(--ground);color:var(--ink);font-family:var(--ui);padding-inline:16px;padding-block:18px 48px;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit}
@@ -134,7 +135,7 @@ button{font:inherit;color:inherit}
 .sw.sab{background:linear-gradient(145deg,var(--gold-hi),var(--gold))}
 .sw.eve{box-shadow:inset 0 0 0 1.5px var(--gold);background:var(--paper-2)}
 .sw.today{box-shadow:inset 0 0 0 2.5px var(--lacquer)}
-.toggle{margin-left:auto;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--ink)}
+.toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--ink)}
 .toggle input{appearance:none;width:38px;height:22px;border-radius:999px;background:var(--faint);position:relative;cursor:pointer;transition:background .15s;margin:0}
 .toggle input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s}
 .toggle input:checked{background:var(--jade)}
@@ -145,12 +146,12 @@ button{font:inherit;color:inherit}
 .list{background:var(--paper);border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden}
 .list h2{margin:0;padding:16px 18px 12px;font:700 17px/1.7 var(--mm-d)}
 .list ol{list-style:none;margin:0;padding:0 8px 8px;display:grid;gap:4px}
-.list li button{width:100%;display:grid;grid-template-columns:30px 54px 1fr auto;gap:12px;align-items:center;padding:10px 10px;border:0;border-radius:12px;background:transparent;cursor:pointer;text-align:left}
+.list li button{width:100%;display:grid;grid-template-columns:30px 66px 1fr auto;gap:12px;align-items:center;padding:10px 10px;border:0;border-radius:12px;background:transparent;cursor:pointer;text-align:left}
 .list li button:hover{background:var(--paper-2)}
 .list li button:focus-visible{outline:2px solid var(--jade)}
 .list .lm{width:28px;height:28px}
 .list .dd{font:400 26px/1 var(--num);font-variant-numeric:tabular-nums}
-.list .dd small{display:block;font:700 10px var(--ui);letter-spacing:.14em;color:var(--muted);margin-top:4px}
+.list .dd small{display:block;white-space:nowrap;font:700 10px var(--ui);letter-spacing:.14em;color:var(--muted);margin-top:4px}
 .list .tx{font:15px/1.65 var(--mm);min-width:0}
 .list .tx small{display:block;color:var(--muted);font-size:13px}
 .list .ty{font:700 12px/1 var(--mm);padding:7px 10px 6px;border-radius:999px;background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink);white-space:nowrap}
@@ -161,6 +162,74 @@ button{font:inherit;color:inherit}
   .grid.swap{animation:fade .22s ease}
   @keyframes fade{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
 }
+/* special / world day: jade corner ribbon */
+.cell.obs::before{content:"";position:absolute;left:0;top:0;width:0;height:0;border-style:solid;border-width:16px 16px 0 0;border-color:var(--jade) transparent transparent transparent;border-top-left-radius:12px}
+.sw.obs{background:linear-gradient(135deg,var(--jade) 50%,var(--paper-2) 50%)}
+.hmark.omark{background:linear-gradient(135deg,var(--jade) 50%,var(--paper-2) 50%)}
+.badge.obs{background:rgba(255,255,255,.12);color:var(--on-lacquer);box-shadow:inset 0 0 0 1.5px #7fcaa9}
+.list .ty.obs{background:transparent;color:var(--jade);box-shadow:inset 0 0 0 1.5px var(--jade)}
+/* public holiday: lacquer corner ribbon */
+.cell.hol::before{content:"";position:absolute;left:0;top:0;width:0;height:0;border-style:solid;border-width:16px 16px 0 0;border-color:var(--lacquer) transparent transparent transparent;border-top-left-radius:12px}
+.cell.hol .g{color:var(--lacquer)}
+.cell.sab.hol .g{color:var(--lacquer-2)}
+.cell.sab.hol::before{border-top-color:var(--lacquer-2)}
+.sw.hol{background:linear-gradient(135deg,var(--lacquer) 50%,var(--paper-2) 50%)}
+.badge.hol{background:var(--on-lacquer);color:var(--lacquer-2)}
+.hmark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--lacquer) 50%,var(--paper-2) 50%);box-shadow:inset 0 0 0 1px var(--line)}
+.list .ty.hol{background:var(--lacquer);color:var(--on-lacquer)}
+.list .ty.hol.wk{background:transparent;color:var(--lacquer);box-shadow:inset 0 0 0 1.5px var(--lacquer)}
+:root[data-theme="dark"] .list .ty.hol.wk{color:var(--weekend);box-shadow:inset 0 0 0 1.5px var(--weekend)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .list .ty.hol.wk{color:var(--weekend);box-shadow:inset 0 0 0 1.5px var(--weekend)}}
+.list li.mh{font:700 11px var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:12px 12px 2px}
+.list li.empty{padding:14px 12px;color:var(--muted);font:14px var(--mm)}
+.tabs{display:flex;gap:4px;margin:14px 14px 0;padding:4px;border-radius:14px;background:var(--paper-2);border:1px solid var(--line)}
+.tabs button{flex:1;border:0;background:transparent;border-radius:10px;padding:9px 6px 8px;font:700 clamp(12.5px,3.3vw,14px)/1.4 var(--mm);color:var(--muted);cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--lacquer);color:var(--on-lacquer);box-shadow:0 4px 12px -6px rgba(92,17,10,.6)}
+.tabs button:focus-visible{outline:2px solid var(--jade);outline-offset:1px}
+.list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px 8px}
+.list-head h2{padding:0!important}
+.ynav{display:flex;align-items:center;gap:4px;flex:none}
+.ynav button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--paper-2);cursor:pointer;font:600 16px var(--ui)}
+.ynav button:hover{border-color:var(--gold);background:var(--gold-soft)}
+.ynav span{font:400 20px var(--num);min-width:52px;text-align:center}
+
+/* today: solid lacquer tile, gold ring, gentle glow */
+.cell.today{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-2))!important;box-shadow:0 0 0 2.5px var(--gold-hi),0 8px 20px -6px rgba(138,28,18,.7)!important;z-index:1}
+.cell.today::after{inset:-6px;border:2px solid var(--gold);border-radius:16px;opacity:.55}
+.cell.today .g,.cell.today.we .g,.cell.today.hol .g{color:#fff!important;font-size:clamp(22px,5.8vw,32px)}
+.cell.today .m,.cell.today .m.lbl{color:var(--gold-hi)!important;opacity:1}
+.cell.today .g::after{color:var(--gold-hi)!important;font-size:10px}
+.cell.today.sab{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-2))!important}
+.cell.today.sab .g::after{content:"ယနေ့ · ဥပုသ်"}
+.sw.today{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-2));box-shadow:0 0 0 1.5px var(--gold-hi)}
+@media (prefers-reduced-motion:no-preference){
+  .cell.today::after{animation:todayPulse 2.4s ease-in-out infinite}
+  @keyframes todayPulse{0%,100%{opacity:.15;transform:scale(.97)}50%{opacity:.7;transform:scale(1)}}
+}
+/* notable day banner at top of the moon panel */
+.mp-special{display:grid;gap:8px;margin:-6px -6px 2px;padding:12px 14px;border-radius:14px;background:linear-gradient(135deg,rgba(240,207,130,.22),rgba(240,207,130,.06));box-shadow:inset 0 0 0 1px rgba(240,207,130,.45)}
+.sp-head{font:700 11px var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-hi)}
+.sp-head{font-family:var(--mm);letter-spacing:.02em;font-size:13px}
+.sp{display:grid;gap:1px}
+.sp b{font:700 clamp(19px,5vw,22px)/1.6 var(--mm-d);color:#fff}
+.sp small{font:600 13px var(--ui);color:var(--on-lacquer);opacity:.8}
+.sp-k{justify-self:start;font:700 11.5px/1 var(--mm);padding:5px 9px 4px;border-radius:999px;margin-bottom:2px}
+.sp-hol .sp-k{background:var(--on-lacquer);color:var(--lacquer-2)}
+.sp-obs .sp-k{background:transparent;color:#9fe0c3;box-shadow:inset 0 0 0 1.3px #7fcaa9}
+.sp-fest .sp-k{background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink)}
+.next.up{background:rgba(0,0,0,.12)}
+.next.up b{font-size:24px}
+/* ရက်ရာဇာ / ပြဿဒါး markers */
+.ast{position:absolute;right:4px;bottom:4px;font:700 9.5px/1 var(--mm);padding:3px 4px 2px;border-radius:5px;letter-spacing:0}
+.ast-y{background:var(--jade);color:#fff}
+.ast-p{background:#3b3f55;color:#e9e6f5}
+.ast-mix{background:linear-gradient(90deg,var(--jade) 50%,#3b3f55 50%);color:#fff}
+.cell.today .ast{box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+@media (max-width:420px){.ast{right:2px;bottom:2px;font-size:8.5px;padding:2px 3px 1px}}
+.sw.yat{background:var(--jade)} .sw.pya{background:#3b3f55}
+.badge.yat{background:#2c6b55;color:#fff}
+.badge.pya{background:#2a2d3e;color:#e9e6f5}
+.badge.nag{background:rgba(255,255,255,.1);color:var(--on-lacquer);display:inline-flex;align-items:center;gap:5px}
 </style>
 
 <style>
@@ -203,17 +272,31 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
       <div class="legend">
         <span><i class="sw sab"></i>ဥပုသ်နေ့</span>
         <span><i class="sw eve"></i>အဖိတ်နေ့</span>
+        <span><i class="sw hol"></i>ရုံးပိတ်ရက်</span>
+        <span><i class="sw obs"></i>ပွဲနေ့/ကမ္ဘာ့နေ့</span>
         <span><i class="sw today"></i>ယနေ့</span>
-        <label class="toggle"><input type="checkbox" id="showEve" checked> အဖိတ်နေ့ ပြမည်</label>
+        <span><i class="sw yat"></i>ရက်ရာဇာ</span>
+        <span><i class="sw pya"></i>ပြဿဒါး</span>
+        <label class="toggle"><input type="checkbox" id="showAstro" checked> ရာဇာ/ပြဿဒါး</label>
+        <label class="toggle t2"><input type="checkbox" id="showEve" checked> အဖိတ်နေ့</label>
       </div>
     </section>
 
     <section class="list">
-      <h2 id="listTitle">ဥပုသ်နေ့များ</h2>
+      <div class="tabs" role="tablist" aria-label="စာရင်းများ">
+        <button role="tab" type="button" data-tab="month" aria-selected="true">ဥပုသ်</button>
+        <button role="tab" type="button" data-tab="fullmoon" aria-selected="false">လပြည့်</button>
+        <button role="tab" type="button" data-tab="holiday" aria-selected="false">ရုံးပိတ်</button>
+        <button role="tab" type="button" data-tab="special" aria-selected="false">ပွဲနေ့များ</button>
+      </div>
+      <div class="list-head">
+        <h2 id="listTitle">ဥပုသ်နေ့များ</h2>
+        <div class="ynav" id="ynav" hidden><button id="yPrev" type="button" aria-label="ယခင်နှစ်">‹</button><span id="yLabel"></span><button id="yNext" type="button" aria-label="နောက်နှစ်">›</button></div>
+      </div>
       <ol id="list"></ol>
     </section>
 
-    <p class="note">မြန်မာရက်စွဲများကို ဒေါက်တာရန်နိုင်အောင်၏ မြန်မာပြက္ခဒိန် တွက်နည်းဖြင့် တွက်ထားပါသည်။ ရက်စုံ (၃၀) လ၊ ရက်မစုံ (၂၉) လ အလှည့်ကျဖြစ်ပြီး ဝါထပ်နှစ်ကို ၁၉ နှစ်တွင် ၇ ကြိမ်ခန့် တွက်ပါသည်။ ရက်ကြီးဝါထပ်နှစ်တွင် နယုန်လ ရက် ၃၀ ဖြစ်သည်။ ဘယ်ညာ ပွတ်ဆွဲ၍ (သို့) ← → ခလုတ်ဖြင့် လပြောင်းနိုင်သည်။</p>
+    <p class="note">မြန်မာရက်စွဲများကို ဒေါက်တာရန်နိုင်အောင်၏ မြန်မာပြက္ခဒိန် တွက်နည်းဖြင့် တွက်ထားပါသည်။ ရက်စုံ (၃၀) လ၊ ရက်မစုံ (၂၉) လ အလှည့်ကျဖြစ်ပြီး ဝါထပ်နှစ်ကို ၁၉ နှစ်တွင် ၇ ကြိမ်ခန့် တွက်ပါသည်။ ရက်ကြီးဝါထပ်နှစ်တွင် နယုန်လ ရက် ၃၀ ဖြစ်သည်။ ရုံးပိတ်ရက်များမှာ ပုံမှန် သတ်မှတ်ရက်များ ဖြစ်ပြီး အစိုးရက ထပ်တိုးကြေညာသော ရက်များ (ဥပမာ သင်္ကြန် အပိုရက်) မပါပါ။ ဘယ်ညာ ပွတ်ဆွဲ၍ (သို့) ← → ခလုတ်ဖြင့် လပြောင်းနိုင်သည်။</p>
   </main>
 </div>
 
@@ -288,10 +371,39 @@ function phaseText(r){
   if(r.mp===3) return 'လကွယ်နေ့';
   return (r.mp===0?'လဆန်း ':'လဆုတ် ')+mn(r.fd)+' ရက်';
 }
+const mmN=r=>r.mm>12?r.mm-12:r.mm;
 function festival(r){
-  if(r.newYear) return 'မြန်မာနှစ်သစ်ကူးနေ့';
   if(r.mp!==1) return '';
-  return ({1:'တန်ခူးလပြည့်',2:'ကဆုန်လပြည့် ဗုဒ္ဓနေ့',4:'ဝါဆိုလပြည့် ဓမ္မစကြာနေ့ (ဝါဆိုနေ့)',7:'သီတင်းကျွတ်လပြည့် (ဝါကျွတ်နေ့)',8:'တန်ဆောင်မုန်းလပြည့်',12:'တပေါင်းလပြည့်'})[r.mm]||'';
+  return ({1:'တန်ခူးလပြည့်',2:'ကဆုန်လပြည့် ဗုဒ္ဓနေ့',4:'ဝါဆိုလပြည့် ဓမ္မစကြာနေ့',7:'သီတင်းကျွတ်လပြည့် ဝါကျွတ်နေ့',8:'တန်ဆောင်တိုင်',12:'တပေါင်းလပြည့်'})[mmN(r)]||'';
+}
+/* ---------- public holidays ---------- */
+const FIXED_HOL={'1-4':'လွတ်လပ်ရေးနေ့','2-12':'ပြည်ထောင်စုနေ့','3-2':'တောင်သူလယ်သမားနေ့','3-27':'တပ်မတော်နေ့','5-1':'မေဒေးနေ့ (ကမ္ဘာ့အလုပ်သမားနေ့)','7-19':'အာဇာနည်နေ့','12-25':'ခရစ္စမတ်နေ့'};
+const tyCache=new Map();
+function thingyan(my){
+  if(tyCache.has(my)) return tyCache.get(my);
+  const ja=SY*my+MO, jk=ja-(my>=1312?2.169918982:2.1675);
+  const da=Math.round(ja), dk=Math.round(jk), t=new Map();
+  t.set(dk-1,'သင်္ကြန်အကြိုနေ့'); t.set(dk,'သင်္ကြန်အကျနေ့');
+  for(let j=dk+1;j<da;j++) t.set(j,'သင်္ကြန်အကြတ်နေ့');
+  t.set(da,'သင်္ကြန်အတက်နေ့'); t.set(da+1,'မြန်မာနှစ်ဆန်း ၁ ရက်နေ့');
+  tyCache.set(my,t); return t;
+}
+function holidays(m,d,j,r){
+  const h=[];
+  const f=FIXED_HOL[m+'-'+d]; if(f) h.push(f);
+  const t=thingyan(r.my).get(j)||thingyan(r.my+1).get(j); if(t) h.push(t);
+  const n=mmN(r), md=r.md;
+  if(r.mp===1&&n===12) h.push('တပေါင်းလပြည့်နေ့');
+  if(r.mp===1&&n===2) h.push('ကဆုန်လပြည့်နေ့ (ဗုဒ္ဓနေ့)');
+  if(r.mp===1&&r.mm===4) h.push('ဝါဆိုလပြည့်နေ့ (ဓမ္မစကြာနေ့)');
+  if(n===7&&md===14) h.push('သီတင်းကျွတ် အဖိတ်နေ့');
+  if(n===7&&md===15) h.push('သီတင်းကျွတ်လပြည့်နေ့');
+  if(n===7&&md===16) h.push('သီတင်းကျွတ် လပြည့်ကျော် ၁ ရက်');
+  if(n===8&&md===14) h.push('တန်ဆောင်တိုင် အဖိတ်နေ့');
+  if(n===8&&md===15) h.push('တန်ဆောင်တိုင် လပြည့်နေ့');
+  if(n===8&&md===25) h.push('အမျိုးသားနေ့');
+  if(n===10&&md===1) h.push('ကရင်နှစ်သစ်ကူးနေ့');
+  return h;
 }
 function sasana(r){
   // Tagu-based year; Sasana year advances after Kason full moon
@@ -302,6 +414,108 @@ function sasana(r){
   return s;
 }
 
+/* ---------- Chinese New Year (astronomical, Beijing time) ---------- */
+const RAD=Math.PI/180;
+function newMoonJDE(k){
+  const T=k/1236.85, T2=T*T, T3=T2*T, T4=T3*T;
+  let J=2451550.09766+29.530588861*k+0.00015437*T2-0.00000015*T3+0.00000000073*T4;
+  const M=(2.5534+29.1053567*k-0.0000014*T2-0.00000011*T3)*RAD;
+  const Mp=(201.5643+385.81693528*k+0.0107582*T2+0.00001238*T3-0.000000058*T4)*RAD;
+  const F=(160.7108+390.67050284*k-0.0016118*T2-0.00000227*T3+0.000000011*T4)*RAD;
+  const Om=(124.7746-1.56375588*k+0.0020672*T2+0.00000215*T3)*RAD;
+  const E=1-0.002516*T-0.0000074*T2, s=Math.sin;
+  J+=-0.4072*s(Mp)+0.17241*E*s(M)+0.01608*s(2*Mp)+0.01039*s(2*F)+0.00739*E*s(Mp-M)-0.00514*E*s(Mp+M)
+    +0.00208*E*E*s(2*M)-0.00111*s(Mp-2*F)-0.00057*s(Mp+2*F)+0.00056*E*s(2*Mp+M)-0.00042*s(3*Mp)
+    +0.00042*E*s(M+2*F)+0.00038*E*s(M-2*F)-0.00024*E*s(2*Mp-M)-0.00017*s(Om)-0.00007*s(Mp+2*M)
+    +0.00004*s(2*Mp-2*F)+0.00004*s(3*M)+0.00003*s(Mp+M-2*F)+0.00003*s(2*Mp+2*F)-0.00003*s(Mp+M+2*F)
+    +0.00003*s(Mp-M+2*F)-0.00002*s(Mp-M-2*F)-0.00002*s(3*Mp+M)+0.00002*s(4*Mp);
+  return J-0.0008; // ~ΔT
+}
+function sunLon(jd){
+  const T=(jd-2451545)/36525;
+  const L0=280.46646+36000.76983*T+0.0003032*T*T, M=(357.52911+35999.05029*T-0.0001537*T*T)*RAD;
+  const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(M)+(0.019993-0.000101*T)*Math.sin(2*M)+0.000289*Math.sin(3*M);
+  const Om=(125.04-1934.136*T)*RAD;
+  return (((L0+C-0.00569-0.00478*Math.sin(Om))%360)+360)%360;
+}
+const bjDay=jd=>Math.floor(jd+0.5+8/24);          // JDN of the Beijing civil date
+const bjMid=d=>d-0.5-8/24;                          // UT instant of Beijing midnight
+function solsticeDay(Y){                           // Beijing date of the December solstice
+  let jd=g2j(Y,12,21)-0.5;
+  for(let i=0;i<50;i++){let d=270-sunLon(jd); if(d>180)d-=360; if(d<-180)d+=360; jd+=d*365.2422/360; if(Math.abs(d)<1e-6)break;}
+  return bjDay(jd);
+}
+function nmDay(k){return bjDay(newMoonJDE(k));}
+function month11k(Y){                              // k of the new moon starting month 11 (contains solstice)
+  const sd=solsticeDay(Y);
+  let k=Math.floor((g2j(Y,12,21)-2451550.1)/29.530588861)+1;
+  while(nmDay(k)>sd) k--;
+  while(nmDay(k+1)<=sd) k++;
+  return k;
+}
+const cnyCache=new Map();
+function chineseNewYear(Y){                        // JDN of Chinese New Year in Gregorian year Y
+  if(cnyCache.has(Y)) return cnyCache.get(Y);
+  const ka=month11k(Y-1), kb=month11k(Y), n=kb-ka;
+  let off=2;
+  if(n===13){
+    for(let i=1;i<13;i++){
+      const a=sunLon(bjMid(nmDay(ka+i))), b=sunLon(bjMid(nmDay(ka+i+1)));
+      if(Math.floor(a/30)===Math.floor(b/30)){ if(i<=2) off=3; break; }
+    }
+  }
+  const d=nmDay(ka+off); cnyCache.set(Y,d); return d;
+}
+
+/* ---------- special & world days (not public holidays) ---------- */
+const WORLD={
+ '1-1':'ကမ္ဘာ့နှစ်သစ်ကူးနေ့ · Happy New Year',
+ '2-14':'ချစ်သူများနေ့ · Valentine\'s Day',
+ '2-21':'ကမ္ဘာ့မိခင်ဘာသာစကားနေ့ · International Mother Language Day',
+ '3-8':'ကမ္ဘာ့အမျိုးသမီးများနေ့ · International Women\'s Day',
+ '3-21':'ကမ္ဘာ့ကဗျာနေ့ · World Poetry Day',
+ '3-22':'ကမ္ဘာ့ရေနေ့ · World Water Day',
+ '4-7':'ကမ္ဘာ့ကျန်းမာရေးနေ့ · World Health Day',
+ '4-22':'ကမ္ဘာမြေနေ့ · Earth Day',
+ '4-23':'ကမ္ဘာ့စာအုပ်နေ့ · World Book Day',
+ '5-31':'ကမ္ဘာ့ဆေးလိပ်ကင်းမဲ့နေ့ · World No Tobacco Day',
+ '6-1':'ကမ္ဘာ့ကလေးများနေ့ · International Children\'s Day',
+ '6-5':'ကမ္ဘာ့ပတ်ဝန်းကျင်နေ့ · World Environment Day',
+ '7-11':'ကမ္ဘာ့လူဦးရေနေ့ · World Population Day',
+ '8-12':'နိုင်ငံတကာ လူငယ်နေ့ · International Youth Day',
+ '9-8':'ကမ္ဘာ့စာတတ်မြောက်ရေးနေ့ · International Literacy Day',
+ '9-21':'ကမ္ဘာ့ငြိမ်းချမ်းရေးနေ့ · International Day of Peace',
+ '10-1':'ကမ္ဘာ့သက်ကြီးရွယ်အိုများနေ့ · International Day of Older Persons',
+ '10-5':'ကမ္ဘာ့ဆရာများနေ့ · World Teachers\' Day',
+ '10-16':'ကမ္ဘာ့စားနပ်ရိက္ခာနေ့ · World Food Day',
+ '10-24':'ကုလသမဂ္ဂနေ့ · United Nations Day',
+ '11-20':'ကမ္ဘာ့ကလေးသူငယ်နေ့ · World Children\'s Day',
+ '12-1':'ကမ္ဘာ့ AIDS နေ့ · World AIDS Day',
+ '12-10':'လူ့အခွင့်အရေးနေ့ · Human Rights Day',
+ '12-24':'ခရစ္စမတ်အကြိုနေ့ · Christmas Eve',
+ '12-31':'နှစ်ကုန်နေ့ · New Year\'s Eve'
+};
+function nthSunday(y,m,n){const f=new Date(y,m-1,1).getDay();return 1+((7-f)%7)+7*(n-1);}
+function observances(y,m,d,j){
+  const o=[];
+  const w=WORLD[m+'-'+d]; if(w) o.push(w);
+  if(m===5&&d===nthSunday(y,5,2)) o.push('အမေများနေ့ · Mother\'s Day');
+  if(m===6&&d===nthSunday(y,6,3)) o.push('အဖေများနေ့ · Father\'s Day');
+  if(y>=1901&&y<=2100&&j===chineseNewYear(y)) o.push('တရုတ်နှစ်သစ်ကူးနေ့ · Chinese New Year');
+  return o;
+}
+/* ---------- ရက်ရာဇာ / ပြဿဒါး / နဂါးခေါင်း ---------- */
+// w = JS weekday (0 Sun .. 6 Sat); traditional rules grouped by Myanmar month (mm % 4)
+function astro(r,w){
+  const wd=(w+1)%7, m1=r.mm%4;                 // wd: 0 Sat, 1 Sun ... 6 Fri
+  const wd1=Math.floor(m1/2)+4, wd2=((1-Math.floor(m1/2))+m1%2)*(1+2*(m1%2));
+  const yat=wd===wd1||wd===wd2;
+  const wda=[1,3,3,0,2,1,2];
+  let pya=0; if(m1===wda[wd]) pya=1; if(m1===0&&wd===4) pya=2;   // 2 = afternoon only
+  const nm=r.mm<=0?4:r.mm, nag=Math.floor((nm%12)/3);            // 0 W,1 N,2 E,3 S
+  return {yat,pya,nag};
+}
+const NAG=['အနောက်','မြောက်','အရှေ့','တောင်'], NAG_DEG=[270,0,90,180];
 /* ---------- UI ---------- */
 
 /* ---------- moon drawing ---------- */
@@ -347,6 +561,9 @@ let view={y:T.y,m:T.m}, sel={...T};
 let showEve=true;
 try{const v=localStorage.getItem('mmcal-eve'); if(v!==null) showEve=v==='1';}catch(e){}
 $('showEve').checked=showEve;
+let showAstro=true;
+try{const v=localStorage.getItem('mmcal-astro'); if(v!==null) showAstro=v==='1';}catch(e){}
+$('showAstro').checked=showAstro;
 function dinfo(y,m,d){const j=g2j(y,m,d);return {y,m,d,j,w:(j+1)%7,r:j2m(j)};}
 function topLabel(r,first){
   const s=monthName(r,true);
@@ -361,59 +578,150 @@ function render(anim){
   $('gTitle').innerHTML=GM[m-1]+' <span>'+y+'</span>';
   $('pick').value=y+'-'+String(m).padStart(2,'0');
   const nd=new Date(y,m,0).getDate(), first=new Date(y,m-1,1).getDay();
-  const names=[], mys=new Set(), sys=new Set(), myts=new Map();
-  for(let d=1;d<=nd;d++){const i=dinfo(y,m,d);const n=monthName(i.r,false);if(names[names.length-1]!==n) names.push(n);mys.add(i.r.my);sys.add(sasana(i.r));myts.set(i.r.my,i.r.myt);}
+  const nags=[], names=[], mys=new Set(), sys=new Set(), myts=new Map();
+  for(let d=1;d<=nd;d++){const i=dinfo(y,m,d);const n=monthName(i.r,false);if(names[names.length-1]!==n) names.push(n);mys.add(i.r.my);sys.add(sasana(i.r));myts.set(i.r.my,i.r.myt);const ng=monthName(i.r,true)+' '+NAG[astro(i.r,i.w).nag];if(!nags.includes(ng))nags.push(ng);}
   const span=a=>{a=[...a];return a.length>1?mn(a[0])+'-'+mn(a[a.length-1]):mn(a[0]);};
   $('mTitle').textContent=names.join(' – ')+'  ·  '+span(mys)+' ခု';
-  $('yType').textContent='သာသနာနှစ် '+span(sys)+'  ·  '+[...myts].map(([k,v])=>(myts.size>1?mn(k)+' ':'')+YT[v]).join('၊ ');
+  $('yType').textContent='သာသနာနှစ် '+span(sys)+'  ·  '+[...myts].map(([k,v])=>(myts.size>1?mn(k)+' ':'')+YT[v]).join('၊ ')+'  ·  နဂါးခေါင်း '+nags.map(s=>s.split(' ')[1]+'လှည့်'+(nags.length>1?' ('+s.split(' ')[0]+')':'')).join('၊ ');
 
   const g=$('grid'); g.innerHTML='';
   const cells=Math.ceil((first+nd)/7)*7, list=[];
   for(let k=0;k<cells;k++){
     const dt=new Date(y,m-1,1-first+k);
     const i=dinfo(dt.getFullYear(),dt.getMonth()+1,dt.getDate());
-    const inMonth=i.m===m&&i.y===y, lab=topLabel(i.r,k===0), fest=festival(i.r);
+    const inMonth=i.m===m&&i.y===y, lab=topLabel(i.r,k===0), hol=holidays(i.m,i.d,i.j,i.r), obs=observances(i.y,i.m,i.d,i.j);
     const b=document.createElement('button');
     b.type='button';b.className='cell';b.setAttribute('role','gridcell');
     if(!inMonth) b.classList.add('out');
     if(i.w===0||i.w===6) b.classList.add('we');
     if(i.r.sab===1) b.classList.add('sab');
+    if(hol.length) b.classList.add('hol'); else if(obs.length) b.classList.add('obs');
     if(i.r.sab===2&&showEve) b.classList.add('eve');
     if(i.y===T.y&&i.m===T.m&&i.d===T.d) b.classList.add('today');
     if(i.y===sel.y&&i.m===sel.m&&i.d===sel.d) b.classList.add('sel');
-    b.innerHTML=(fest?'<span class="fest"></span>':'')+(i.r.sab===1?tinyMoon(i.r,'ph'):'')+'<div class="g">'+i.d+'</div><div class="m '+lab.cls+'">'+lab.t+'</div>';
-    b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':''));
+    const as=astro(i.r,i.w);
+    const ast=!showAstro?'':as.yat&&as.pya===2?'<span class="ast ast-mix">ရာ·ပြ</span>':as.yat?'<span class="ast ast-y">ရာ</span>':as.pya?'<span class="ast ast-p">ပြ</span>':'';
+    b.innerHTML=ast+(i.r.sab===1?tinyMoon(i.r,'ph'):'')+'<div class="g">'+i.d+'</div><div class="m '+lab.cls+'">'+lab.t+'</div>';
+    b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':'')+(hol.length?', ရုံးပိတ်ရက် '+hol.join('၊ '):'')+(obs.length?', '+obs.join('၊ '):''));
     b.onclick=()=>{sel={y:i.y,m:i.m,d:i.d}; if(!inMonth){view={y:i.y,m:i.m};render(true);} else render();};
     g.appendChild(b);
     if(inMonth&&(i.r.sab===1||(i.r.sab===2&&showEve))) list.push(i);
   }
   if(anim){g.classList.remove('swap');void g.offsetWidth;g.classList.add('swap');}
-  const ol=$('list'); ol.innerHTML='';
-  $('listTitle').textContent=GM[m-1]+' လအတွင်း ဥပုသ်နေ့ '+mn(list.filter(i=>i.r.sab===1).length)+' ရက်';
-  list.forEach(i=>{
-    const li=document.createElement('li'); if(i.r.sab===2) li.className='is-eve';
-    const fest=festival(i.r);
-    li.innerHTML='<button type="button">'+(i.r.sab===1?tinyMoon(i.r,'lm'):'<span></span>')+'<div class="dd">'+i.d+'<small>'+GS[i.w]+'</small></div><div class="tx">'+monthName(i.r,false)+' '+phaseText(i.r)+'<small>'+WD[i.w]+'နေ့'+(fest?' · '+fest:'')+'</small></div><span class="ty'+(i.r.sab===2?' eve':'')+'">'+(i.r.sab===1?'ဥပုသ်':'အဖိတ်')+'</span></button>';
-    li.firstChild.onclick=()=>{sel={y:i.y,m:i.m,d:i.d};render();if(window.innerWidth<920)$('panel').scrollIntoView({behavior:'smooth',block:'start'});};
-    ol.appendChild(li);
-  });
+  monthList=list;
+  renderList();
   renderPanel();
 }
+
+/* ---------- lists: month uposatha / year full moons / year holidays ---------- */
+let tab='month', monthList=[];
+try{const t=localStorage.getItem('mmcal-tab'); if(t) tab=t;}catch(e){}
+const h0=(location.hash||'').slice(1); if(h0==='fullmoon') tab='fullmoon'; if(h0==='holidays') tab='holiday'; if(h0==='special') tab='special';
+const GMS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+function goto(i){
+  sel={y:i.y,m:i.m,d:i.d};
+  const move=view.y!==i.y||view.m!==i.m; view={y:i.y,m:i.m}; render(move);
+  if(window.innerWidth<920) $('panel').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function row(i,icon,dd,main,sub,chip,chipCls,liCls){
+  const li=document.createElement('li'); if(liCls) li.className=liCls;
+  li.innerHTML='<button type="button">'+icon+'<div class="dd">'+dd+'</div><div class="tx">'+main+'<small>'+sub+'</small></div><span class="ty '+(chipCls||'')+'">'+chip+'</span></button>';
+  li.firstChild.onclick=()=>goto(i);
+  return li;
+}
+function yearDays(Y,fn){const out=[];for(let dt=new Date(Y,0,1);dt.getFullYear()===Y;dt.setDate(dt.getDate()+1)){const i=dinfo(Y,dt.getMonth()+1,dt.getDate());if(fn(i)) out.push(i);}return out;}
+const holIcon='<span class="hmark" aria-hidden="true"></span>', obsIcon='<span class="hmark omark" aria-hidden="true"></span>';
+function renderList(){
+  document.querySelectorAll('.tabs [role=tab]').forEach(b=>{const on=b.dataset.tab===tab;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;});
+  const ol=$('list'); ol.innerHTML='';
+  const Y=view.y, {m}=view;
+  $('ynav').hidden=tab==='month';
+  $('yLabel').textContent=Y;
+  if(tab==='month'){
+    $('listTitle').textContent=GM[m-1]+' လအတွင်း ဥပုသ်နေ့ '+mn(monthList.filter(i=>i.r.sab===1).length)+' ရက်';
+    monthList.forEach(i=>{
+      const hol=holidays(i.m,i.d,i.j,i.r), fest=festival(i.r);
+      ol.appendChild(row(i,i.r.sab===1?tinyMoon(i.r,'lm'):'<span></span>',i.d+'<small>'+GS[i.w]+'</small>',
+        monthName(i.r,false)+' '+phaseText(i.r),WD[i.w]+'နေ့'+(hol.length?' · ရုံးပိတ်':fest?' · '+fest:''),
+        i.r.sab===1?'ဥပုသ်':'အဖိတ်',i.r.sab===2?'eve':'',i.r.sab===2?'is-eve':''));
+    });
+    if(!monthList.length) ol.innerHTML='<li class="empty">ဥပုသ်နေ့ မရှိပါ</li>';
+  } else if(tab==='fullmoon'){
+    const fm=yearDays(Y,i=>i.r.mp===1);
+    $('listTitle').textContent=mn(Y)+' ခုနှစ် လပြည့်နေ့ '+mn(fm.length)+' ရက်';
+    fm.forEach(i=>{
+      const hol=holidays(i.m,i.d,i.j,i.r), fest=festival(i.r);
+      ol.appendChild(row(i,tinyMoon(i.r,'lm'),i.d+'<small>'+GMS[i.m-1]+' · '+GS[i.w]+'</small>',
+        monthName(i.r,false)+'လပြည့်နေ့',WD[i.w]+'နေ့'+(fest?' · '+fest:''),
+        hol.length?'ရုံးပိတ်':'ဥပုသ်',hol.length?'hol':''));
+    });
+  } else if(tab==='special'){
+    const sd=yearDays(Y,i=>observances(i.y,i.m,i.d,i.j).length>0);
+    $('listTitle').textContent=mn(Y)+' ခုနှစ် ပွဲနေ့နှင့် ကမ္ဘာ့နေ့များ';
+    let lm=0;
+    sd.forEach(i=>{
+      if(i.m!==lm){lm=i.m;const h=document.createElement('li');h.className='mh';h.textContent=GM[i.m-1];ol.appendChild(h);}
+      const o=observances(i.y,i.m,i.d,i.j);
+      o.forEach(name=>{const p=name.split(' · ');
+        ol.appendChild(row(i,obsIcon,i.d+'<small>'+GS[i.w]+'</small>',p[0],(p[1]?p[1]+' · ':'')+WD[i.w]+'နေ့','ပွဲနေ့','obs'));});
+    });
+  } else {
+    const hd=yearDays(Y,i=>holidays(i.m,i.d,i.j,i.r).length>0);
+    $('listTitle').textContent=mn(Y)+' ခုနှစ် ရုံးပိတ်ရက် '+mn(hd.length)+' ရက်';
+    let lastM=0;
+    hd.forEach(i=>{
+      if(i.m!==lastM){lastM=i.m;const h=document.createElement('li');h.className='mh';h.textContent=GM[i.m-1];ol.appendChild(h);}
+      const hol=holidays(i.m,i.d,i.j,i.r);
+      ol.appendChild(row(i,i.r.sab===1?tinyMoon(i.r,'lm'):holIcon,i.d+'<small>'+GS[i.w]+'</small>',
+        hol.join('၊ '),WD[i.w]+'နေ့'+(i.w===0||i.w===6?' (ပုံမှန်ပိတ်ရက်နှင့် တိုက်ဆိုင်)':'')+' · '+monthName(i.r,false)+' '+phaseText(i.r),
+        'ရုံးပိတ်','hol'));
+    });
+  }
+}
+document.querySelectorAll('.tabs [role=tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;try{localStorage.setItem('mmcal-tab',tab);}catch(_){}renderList();}));
+$('yPrev').onclick=()=>{if(view.y>1900){view={y:view.y-1,m:view.m};render(true);}};
+$('yNext').onclick=()=>{if(view.y<2100){view={y:view.y+1,m:view.m};render(true);}};
+function specialsOf(i){
+  const out=[], hol=holidays(i.m,i.d,i.j,i.r), obs=observances(i.y,i.m,i.d,i.j), fest=festival(i.r);
+  hol.forEach(n=>out.push({k:'hol',n}));
+  obs.forEach(n=>out.push({k:'obs',n}));
+  if(fest&&!hol.length) out.push({k:'fest',n:fest});
+  return out;
+}
+function specialHTML(s){
+  const p=s.n.split(' · '), tag=s.k==='hol'?'ရုံးပိတ်ရက်':s.k==='obs'?'ပွဲနေ့':'ဘာသာရေးနေ့';
+  return '<div class="sp sp-'+s.k+'"><span class="sp-k">'+tag+'</span><b>'+p[0]+'</b>'+(p[1]?'<small>'+p[1]+'</small>':'')+'</div>';
+}
 function renderPanel(){
-  const i=dinfo(sel.y,sel.m,sel.d), r=i.r, fest=festival(r);
+  const i=dinfo(sel.y,sel.m,sel.d), r=i.r;
+  const isToday=sel.y===T.y&&sel.m===T.m&&sel.d===T.d;
   const EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  let h='<div class="mp-top">'+bigMoon(r)+'<div class="mp-date"><div class="wd">'+EN[i.w]+'</div><div class="gd">'+i.d+'</div><div class="gm">'+GM[i.m-1]+' '+i.y+'</div></div></div>';
+  const sp=specialsOf(i);
+  let h='';
+  if(sp.length) h+='<div class="mp-special" role="status"><div class="sp-head">'+(isToday?'ယနေ့ ထူးခြားသောနေ့':'ထူးခြားသောနေ့')+'</div>'+sp.map(specialHTML).join('')+'</div>';
+  h+='<div class="mp-top">'+bigMoon(r)+'<div class="mp-date"><div class="wd">'+EN[i.w]+(isToday?' · TODAY':'')+'</div><div class="gd">'+i.d+'</div><div class="gm">'+GM[i.m-1]+' '+i.y+'</div></div></div>';
   h+='<div><div class="mp-mm">'+monthName(r,false)+' '+phaseText(r)+'</div>';
   h+='<div class="mp-meta">'+WD[i.w]+'နေ့ · မြန်မာနှစ် '+mn(r.my)+' ခု · သာသနာနှစ် '+mn(sasana(r))+'<br>'+YT[r.myt]+' · '+monthName(r,false)+'လ ရက် '+mn(r.len)+' ('+(r.len===30?'ရက်စုံ':'ရက်မစုံ')+')</div></div>';
   const bd=[];
   if(r.sab===1) bd.push('<span class="badge">ဥပုသ်နေ့</span>');
   if(r.sab===2) bd.push('<span class="badge ghost">အဖိတ်နေ့ · နက်ဖြန် ဥပုသ်</span>');
-  if(fest) bd.push('<span class="badge soft">'+fest+'</span>');
+  const as=astro(r,i.w);
+  if(as.yat&&as.pya===2) bd.push('<span class="badge yat">နံနက် ရက်ရာဇာ</span><span class="badge pya">မွန်းလွဲ ပြဿဒါး</span>');
+  else if(as.yat) bd.push('<span class="badge yat">ရက်ရာဇာ</span>');
+  else if(as.pya) bd.push('<span class="badge pya">ပြဿဒါး</span>');
+  bd.push('<span class="badge nag"><svg width="14" height="14" viewBox="-7 -7 14 14" aria-hidden="true" style="transform:rotate('+NAG_DEG[as.nag]+'deg)"><path d="M0,-6 L4,2 L0,0 L-4,2Z" fill="currentColor"/></svg>နဂါးခေါင်း '+NAG[as.nag]+'လှည့်</span>');
   if(bd.length) h+='<div class="badges">'+bd.join('')+'</div>';
   for(let k=1;k<=16;k++){
     if(j2m(i.j+k).sab===1){
       const dt=new Date(sel.y,sel.m-1,sel.d+k);
       h+='<div class="next"><b>'+mn(k)+'</b><div>ရက်အကြာ နောက်ဥပုသ်နေ့<small>'+dt.getDate()+' '+GM[dt.getMonth()]+' · '+WD[dt.getDay()]+'နေ့</small></div></div>';
+      break;
+    }
+  }
+  for(let k=1;k<=120;k++){
+    const dt=new Date(sel.y,sel.m-1,sel.d+k), n=dinfo(dt.getFullYear(),dt.getMonth()+1,dt.getDate()), s=specialsOf(n).filter(x=>x.k!=='fest'||true);
+    if(s.length){
+      h+='<div class="next up"><b>'+mn(k)+'</b><div>ရက်အကြာ နောက်ထူးခြားသောနေ့ — '+s.map(x=>x.n.split(' · ')[0]).join('၊ ')+'<small>'+dt.getDate()+' '+GM[dt.getMonth()]+' · '+WD[dt.getDay()]+'နေ့</small></div></div>';
       break;
     }
   }
@@ -424,6 +732,7 @@ $('prev').onclick=()=>shift(-1);
 $('next').onclick=()=>shift(1);
 $('todayBtn').onclick=()=>{view={y:T.y,m:T.m};sel={...T};render(true);};
 $('pick').addEventListener('change',e=>{const [y,m]=e.target.value.split('-').map(Number); if(y&&m){view={y,m};render(true);}});
+$('showAstro').addEventListener('change',e=>{showAstro=e.target.checked;try{localStorage.setItem('mmcal-astro',showAstro?'1':'0');}catch(_){}render();});
 $('showEve').addEventListener('change',e=>{showEve=e.target.checked;try{localStorage.setItem('mmcal-eve',showEve?'1':'0');}catch(_){}render();});
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return; if(e.key==='ArrowLeft')shift(-1); if(e.key==='ArrowRight')shift(1);});
 let tx=null,ty0=null;
