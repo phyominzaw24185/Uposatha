@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a1c12">
+<meta name="description" content="မြန်မာရက်စွဲ၊ လပြည့်လကွယ်နှင့် ဥပုသ်နေ့များ ပါသော ပြက္ခဒိန်">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ဥပုသ်ပြက္ခဒိန်">
+<title>မြန်မာ ဥပုသ်ပြက္ခဒိန်</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;600;700&family=Noto+Serif+Myanmar:wght@500;700&family=Padauk:wght@400;700&display=swap">
+<style>
+:root{
+  /* jade ground · lacquer red · gold leaf */
+  --ground:#e6ece8; --paper:#f7f9f7; --paper-2:#eef3ef; --ink:#1c2420; --muted:#66736b; --faint:#b9c4bd; --line:#d2dbd5;
+  --lacquer:#8a1c12; --lacquer-2:#5c110a; --on-lacquer:#f6e7c8;
+  --gold:#b98a32; --gold-hi:#e7c77a; --gold-ink:#2a1d06; --gold-soft:#f1e3bd;
+  --jade:#2c6b55; --jade-soft:#d5e6dd; --weekend:#9b2517;
+  --moon-lit:#fbf3dc; --moon-dark:#3a2a22;
+  --shadow:0 1px 0 rgba(28,36,32,.04),0 8px 24px -14px rgba(28,36,32,.35);
+  --mm:"Padauk","Noto Sans Myanmar","Myanmar Text","Pyidaungsu",sans-serif;
+  --mm-d:"Noto Serif Myanmar","Padauk","Myanmar Text",serif;
+  --num:"Marcellus","Cormorant Garamond",Georgia,serif;
+  --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#101311; --paper:#181c19; --paper-2:#1e2320; --ink:#ebe6da; --muted:#98a39c; --faint:#4b544e; --line:#2a302c;
+    --lacquer:#7e1a10; --lacquer-2:#3e0c07; --on-lacquer:#f3e2bd;
+    --gold:#d1a24b; --gold-hi:#f0cf82; --gold-ink:#1f1605; --gold-soft:#3b2f16;
+    --jade:#63b394; --jade-soft:#1d3a2f; --weekend:#ee8a79;
+    --moon-dark:#2a1a14;
+    --shadow:0 8px 24px -14px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#101311; --paper:#181c19; --paper-2:#1e2320; --ink:#ebe6da; --muted:#98a39c; --faint:#4b544e; --line:#2a302c;
+  --lacquer:#7e1a10; --lacquer-2:#3e0c07; --on-lacquer:#f3e2bd;
+  --gold:#d1a24b; --gold-hi:#f0cf82; --gold-ink:#1f1605; --gold-soft:#3b2f16;
+  --jade:#63b394; --jade-soft:#1d3a2f; --weekend:#ee8a79;
+  --moon-dark:#2a1a14;
+  --shadow:0 8px 24px -14px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--ui);padding-inline:16px;padding-block:18px 48px;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.app{max-width:1120px;margin:0 auto;display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:920px){.app{grid-template-columns:340px 1fr;align-items:start}.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}}
+.side,.main{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+/* ===== lacquer moon panel ===== */
+.moonpanel{position:relative;border-radius:18px;overflow:hidden;color:var(--on-lacquer);
+  background:
+    radial-gradient(120% 80% at 50% 0%,rgba(255,210,140,.18),transparent 60%),
+    linear-gradient(170deg,var(--lacquer),var(--lacquer-2));
+  box-shadow:var(--shadow);padding:22px 20px 20px;display:grid;gap:14px}
+.moonpanel::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;opacity:.9;
+  background:
+    radial-gradient(circle at 6px 12px,var(--gold-hi) 0 3px,transparent 3.5px) 0 0/12px 12px repeat-x,
+    linear-gradient(var(--gold),var(--gold)) 0 0/100% 1px no-repeat}
+.mp-top{display:flex;align-items:center;gap:18px}
+.bigmoon{flex:none;width:112px;height:112px;filter:drop-shadow(0 0 18px rgba(255,226,160,.35))}
+.mp-date .wd{font:600 12px var(--ui);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.mp-date .gd{font:400 46px/1 var(--num);margin-top:4px}
+.mp-date .gm{font:400 17px var(--num);opacity:.9}
+.mp-mm{font:700 clamp(19px,4.6vw,22px)/1.75 var(--mm-d);color:var(--gold-hi)}
+.mp-meta{font:14px/1.8 var(--mm);opacity:.85;margin-top:-6px}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{font:700 13px/1 var(--mm);padding:8px 12px 7px;border-radius:999px;background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink)}
+.badge.ghost{background:transparent;color:var(--gold-hi);box-shadow:inset 0 0 0 1.5px var(--gold)}
+.badge.soft{background:rgba(255,255,255,.1);color:var(--on-lacquer)}
+.next{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(0,0,0,.18);font:14px/1.6 var(--mm)}
+.next b{font:400 30px/1 var(--num);color:var(--gold-hi);min-width:34px;text-align:center}
+.next small{display:block;opacity:.7;font-size:12.5px}
+
+/* ===== calendar ===== */
+.cal{background:var(--paper);border-radius:18px;box-shadow:var(--shadow);padding:18px 14px 14px;border:1px solid var(--line)}
+.cal-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding:0 4px 14px}
+.cal-head h1{margin:0;font:400 clamp(30px,7vw,44px)/1 var(--num);letter-spacing:-.01em}
+.cal-head h1 span{color:var(--gold)}
+.cal-head .mmonths{font:700 clamp(15px,3.8vw,18px)/1.8 var(--mm-d);color:var(--lacquer);margin-top:6px}
+:root[data-theme="dark"] .cal-head .mmonths{color:var(--gold-hi)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cal-head .mmonths{color:var(--gold-hi)}}
+.cal-head .ytype{font:13.5px/1.6 var(--mm);color:var(--muted)}
+.nav{display:flex;gap:6px}
+.nav button,.nav label{height:40px;min-width:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--paper-2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;position:relative;font:600 14px var(--ui);transition:background .15s,border-color .15s}
+.nav button:hover,.nav label:hover{border-color:var(--gold);background:var(--gold-soft)}
+.nav .today{font:700 14px var(--mm);background:var(--lacquer);color:var(--on-lacquer);border-color:transparent}
+.nav .today:hover{background:var(--lacquer-2);border-color:transparent}
+.nav button:focus-visible,.nav label:focus-within{outline:2px solid var(--jade);outline-offset:2px}
+.nav input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+
+.dow,.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.dow{margin-bottom:6px}
+.dow div{text-align:center;font:700 11px var(--ui);letter-spacing:.14em;color:var(--muted);padding:6px 0}
+.dow .we{color:var(--weekend)}
+.cell{position:relative;border:0;border-radius:12px;background:var(--paper-2);min-height:clamp(64px,15vw,92px);padding:6px 2px 7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:transform .12s,box-shadow .12s,background .15s}
+.cell:hover{box-shadow:inset 0 0 0 1.5px var(--gold)}
+.cell:focus-visible{outline:2px solid var(--jade);outline-offset:1px}
+.cell .g{font:400 clamp(20px,5.2vw,30px)/1 var(--num);font-variant-numeric:tabular-nums}
+.cell .m{font:clamp(11px,2.9vw,14px)/1.55 var(--mm);color:var(--muted);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:clip}
+.cell .m.lbl{color:var(--lacquer);font-weight:700;font-size:clamp(10px,2.5vw,12.5px)}
+.cell.we .g{color:var(--weekend)}
+.cell.out{background:transparent;opacity:.42}
+.cell .ph{position:absolute;top:5px;right:5px;width:clamp(11px,2.6vw,15px);height:clamp(11px,2.6vw,15px)}
+/* uposatha: gold leaf tile */
+.cell.sab{background:linear-gradient(145deg,var(--gold-hi),var(--gold));color:var(--gold-ink)}
+.cell.sab .g,.cell.sab.we .g{color:var(--gold-ink)}
+.cell.sab .m,.cell.sab .m.lbl{color:var(--gold-ink);opacity:.85}
+.cell.sab.out{opacity:.5}
+/* eve: dashed gold edge */
+.cell.eve{background:var(--paper-2);box-shadow:inset 0 0 0 1.5px var(--gold);background-image:linear-gradient(145deg,transparent 60%,var(--gold-soft))}
+/* today: lacquer ring */
+.cell.today::after{content:"";position:absolute;inset:-3px;border-radius:14px;border:2.5px solid var(--lacquer);pointer-events:none}
+.cell.today .g::after{content:"ယနေ့";display:block;font:700 9px var(--mm);color:var(--lacquer);text-align:center;margin-top:1px;letter-spacing:0}
+.cell.sab.today .g::after{color:var(--gold-ink)}
+.cell.sel:not(.today){box-shadow:inset 0 0 0 2px var(--jade)}
+.cell .fest{position:absolute;left:6px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--lacquer)}
+.cell.sab .fest{background:var(--lacquer-2)}
+@media (max-width:420px){.dow div{letter-spacing:.06em;font-size:10px}.cell .ph{top:3px;right:3px}}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:14px 6px 2px;font:14px var(--mm);color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:18px;height:18px;border-radius:6px;display:inline-block}
+.sw.sab{background:linear-gradient(145deg,var(--gold-hi),var(--gold))}
+.sw.eve{box-shadow:inset 0 0 0 1.5px var(--gold);background:var(--paper-2)}
+.sw.today{box-shadow:inset 0 0 0 2.5px var(--lacquer)}
+.toggle{margin-left:auto;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--ink)}
+.toggle input{appearance:none;width:38px;height:22px;border-radius:999px;background:var(--faint);position:relative;cursor:pointer;transition:background .15s;margin:0}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s}
+.toggle input:checked{background:var(--jade)}
+.toggle input:checked::after{transform:translateX(16px)}
+.toggle input:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+
+/* ===== list ===== */
+.list{background:var(--paper);border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden}
+.list h2{margin:0;padding:16px 18px 12px;font:700 17px/1.7 var(--mm-d)}
+.list ol{list-style:none;margin:0;padding:0 8px 8px;display:grid;gap:4px}
+.list li button{width:100%;display:grid;grid-template-columns:30px 54px 1fr auto;gap:12px;align-items:center;padding:10px 10px;border:0;border-radius:12px;background:transparent;cursor:pointer;text-align:left}
+.list li button:hover{background:var(--paper-2)}
+.list li button:focus-visible{outline:2px solid var(--jade)}
+.list .lm{width:28px;height:28px}
+.list .dd{font:400 26px/1 var(--num);font-variant-numeric:tabular-nums}
+.list .dd small{display:block;font:700 10px var(--ui);letter-spacing:.14em;color:var(--muted);margin-top:4px}
+.list .tx{font:15px/1.65 var(--mm);min-width:0}
+.list .tx small{display:block;color:var(--muted);font-size:13px}
+.list .ty{font:700 12px/1 var(--mm);padding:7px 10px 6px;border-radius:999px;background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink);white-space:nowrap}
+.list .ty.eve{background:transparent;color:var(--gold);box-shadow:inset 0 0 0 1.5px var(--gold)}
+.list li.is-eve .dd,.list li.is-eve .tx{opacity:.8}
+.note{font:13px/1.85 var(--mm);color:var(--muted);padding:0 6px;margin:0}
+@media (prefers-reduced-motion:no-preference){
+  .grid.swap{animation:fade .22s ease}
+  @keyframes fade{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+}
+</style>
+
+<style>
+html{background:#e6ece8}
+@media (prefers-color-scheme: dark){html{background:#101311}}
+body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;gap:10px;align-items:center;padding:10px 12px 10px 16px;border-radius:14px;background:var(--lacquer);color:var(--on-lacquer);box-shadow:0 10px 30px -10px rgba(0,0,0,.5);font:14px var(--mm);max-width:calc(100% - 32px)}
+.install button{border:0;border-radius:10px;padding:8px 14px;font:700 14px var(--mm);background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink);cursor:pointer}
+.install .x{background:transparent;color:var(--on-lacquer);padding:8px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <section class="moonpanel" id="panel" aria-live="polite"></section>
+  </aside>
+
+  <main class="main">
+    <section class="cal" aria-label="ပြက္ခဒိန်">
+      <header class="cal-head">
+        <div>
+          <h1 id="gTitle">September <span>2026</span></h1>
+          <div class="mmonths" id="mTitle"></div>
+          <div class="ytype" id="yType"></div>
+        </div>
+        <nav class="nav" aria-label="လ ရွေ့ရန်">
+          <button id="prev" type="button" aria-label="ယခင်လ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button id="todayBtn" type="button" class="today">ယနေ့</button>
+          <label aria-label="လ ရွေးရန်">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            <input id="pick" type="month" min="1900-01" max="2100-12">
+          </label>
+          <button id="next" type="button" aria-label="နောက်လ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </nav>
+      </header>
+      <div class="dow" aria-hidden="true"><div class="we">SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div class="we">SAT</div></div>
+      <div class="grid" id="grid" role="grid"></div>
+      <div class="legend">
+        <span><i class="sw sab"></i>ဥပုသ်နေ့</span>
+        <span><i class="sw eve"></i>အဖိတ်နေ့</span>
+        <span><i class="sw today"></i>ယနေ့</span>
+        <label class="toggle"><input type="checkbox" id="showEve" checked> အဖိတ်နေ့ ပြမည်</label>
+      </div>
+    </section>
+
+    <section class="list">
+      <h2 id="listTitle">ဥပုသ်နေ့များ</h2>
+      <ol id="list"></ol>
+    </section>
+
+    <p class="note">မြန်မာရက်စွဲများကို ဒေါက်တာရန်နိုင်အောင်၏ မြန်မာပြက္ခဒိန် တွက်နည်းဖြင့် တွက်ထားပါသည်။ ရက်စုံ (၃၀) လ၊ ရက်မစုံ (၂၉) လ အလှည့်ကျဖြစ်ပြီး ဝါထပ်နှစ်ကို ၁၉ နှစ်တွင် ၇ ကြိမ်ခန့် တွက်ပါသည်။ ရက်ကြီးဝါထပ်နှစ်တွင် နယုန်လ ရက် ၃၀ ဖြစ်သည်။ ဘယ်ညာ ပွတ်ဆွဲ၍ (သို့) ← → ခလုတ်ဖြင့် လပြောင်းနိုင်သည်။</p>
+  </main>
+</div>
+
+<div class="install" id="install" hidden><span>ဖုန်းထဲ app အဖြစ် ထည့်မလား</span><button id="doInstall" type="button">ထည့်မည်</button><button class="x" id="noInstall" type="button" aria-label="ပိတ်">✕</button></div>
+<script>
+/* ---------- Myanmar calendar core (Yan Naing Aung algorithm) ---------- */
+const SY=1577917828/4320000, LM=1577917828/53433336, MO=1954168.050623;
+function hit(k,a){for(const r of a) if(r[0]===k) return r; return null;}
+function myConst(my){
+  let EI,WO,NM,EW=0,fme,wte;
+  if(my>=1312){EI=3;WO=-0.5;NM=8;fme=[[1377,1]];wte=[[1344,1],[1345,0]];}
+  else if(my>=1217){EI=2;WO=-1;NM=4;fme=[[1234,1],[1261,-1]];wte=[[1263,1],[1264,0]];}
+  else{EI=1.3;WO=-0.85;NM=-1;fme=[[1120,1],[1126,-1],[1150,1],[1172,-1],[1207,1]];wte=[[1201,1],[1202,0]];}
+  let r=hit(my,fme); if(r) WO+=r[1];
+  r=hit(my,wte); if(r) EW=r[1];
+  return {EI,WO,NM,EW};
+}
+function calWatat(my){
+  const c=myConst(my), TA=(SY/12-LM)*(12-c.NM);
+  let ed=(SY*(my+3739))%LM; if(ed<TA) ed+=LM;
+  const fm=Math.round(SY*my+MO-ed+4.5*LM+c.WO);
+  let w=0;
+  if(c.EI>=2){ if(ed>=LM-(SY/12-LM)*c.NM) w=1; }
+  else { w=(my*7+2)%19; if(w<0) w+=19; w=Math.floor(w/12); }
+  return {fm, watat:w^c.EW};
+}
+const yCache=new Map();
+function calMy(my){
+  if(yCache.has(my)) return yCache.get(my);
+  let yd=0,y1,fm; const y2=calWatat(my); let myt=y2.watat;
+  do{yd++;y1=calWatat(my-yd);}while(y1.watat===0&&yd<3);
+  if(myt){const nd=(y2.fm-y1.fm)%354; myt=Math.floor(nd/31)+1; fm=y2.fm;} else fm=y1.fm+354*yd;
+  const o={myt,tg1:y1.fm+354*yd-102,fm}; yCache.set(my,o); return o;
+}
+function mLen(mm,myt){let l=30-(mm%2); if(mm===3) l+=Math.floor(myt/2); return l;}
+function j2m(jdn){
+  const my=Math.floor((jdn-0.5-MO)/SY), yo=calMy(my);
+  let dd=jdn-yo.tg1+1;
+  const b=Math.floor(yo.myt/2), c=Math.floor(1/(yo.myt+1)), myl=354+(1-c)*30+b;
+  const mtype=Math.floor((dd-1)/myl); dd-=mtype*myl;
+  const a=Math.floor((dd+423)/512);
+  let mm=Math.floor((dd-b*a+c*a*30+29.26)/29.544);
+  const e=Math.floor((mm+12)/16), f=Math.floor((mm+11)/16);
+  const md=dd-Math.floor(29.544*mm-29.26)-b*e+c*f*30;
+  mm+=f*3-e*4+12*mtype;
+  const len=mLen(mm,yo.myt);
+  const mp=Math.floor((md+1)/16)+Math.floor(md/16)+Math.floor(md/len); // 0 ဆန်း 1 ပြည့် 2 ဆုတ် 3 ကွယ်
+  const fd=md-15*Math.floor(md/16);
+  let sab=0;
+  if(md===8||md===15||md===23||md===len) sab=1;
+  else if(md===7||md===14||md===22||md===len-1) sab=2;
+  const newYear=Math.round(SY*my+MO)+1;
+  return {my,myt:yo.myt,mm,md,len,mp,fd,sab,newYear:jdn===newYear};
+}
+function g2j(y,m,d){const a=Math.floor((14-m)/12);y=y+4800-a;m=m+12*a-3;return d+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400)-32045;}
+
+/* ---------- Burmese text ---------- */
+const DIG='၀၁၂၃၄၅၆၇၈၉';
+const mn=n=>String(n).replace(/\d/g,d=>DIG[d]);
+const MFULL=['ပဝါဆို','တန်ခူး','ကဆုန်','နယုန်','ဝါဆို','ဝါခေါင်','တော်သလင်း','သီတင်းကျွတ်','တန်ဆောင်မုန်း','နတ်တော်','ပြာသို','တပို့တွဲ','တပေါင်း','နှောင်းတန်ခူး','နှောင်းကဆုန်'];
+const MSHORT=['ပဆို','ခူး','ဆုန်','ယုန်','ဆို','ခေါင်','လင်း','ကျွတ်','မုန်း','တော်','သို','တွဲ','ပေါင်း','ခူး','ဆုန်'];
+const WD=['တနင်္ဂနွေ','တနင်္လာ','အင်္ဂါ','ဗုဒ္ဓဟူး','ကြာသပတေး','သောကြာ','စနေ'];
+const GM=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const GS=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const YT=['ဝါမထပ်နှစ်','ရက်ငယ်ဝါထပ်နှစ်','ရက်ကြီးဝါထပ်နှစ်'];
+function monthName(r,short){
+  if(r.mm===4&&r.myt) return short?'ဒုဆို':'ဒုတိယဝါဆို';
+  return (short?MSHORT:MFULL)[r.mm];
+}
+function phaseText(r){
+  if(r.mp===1) return 'လပြည့်နေ့';
+  if(r.mp===3) return 'လကွယ်နေ့';
+  return (r.mp===0?'လဆန်း ':'လဆုတ် ')+mn(r.fd)+' ရက်';
+}
+function festival(r){
+  if(r.newYear) return 'မြန်မာနှစ်သစ်ကူးနေ့';
+  if(r.mp!==1) return '';
+  return ({1:'တန်ခူးလပြည့်',2:'ကဆုန်လပြည့် ဗုဒ္ဓနေ့',4:'ဝါဆိုလပြည့် ဓမ္မစကြာနေ့ (ဝါဆိုနေ့)',7:'သီတင်းကျွတ်လပြည့် (ဝါကျွတ်နေ့)',8:'တန်ဆောင်မုန်းလပြည့်',12:'တပေါင်းလပြည့်'})[r.mm]||'';
+}
+function sasana(r){
+  // Tagu-based year; Sasana year advances after Kason full moon
+  let ty=r.my, m=r.mm;
+  if(m>=13){ty+=1;m-=12;}
+  let s=ty+1182;
+  if(m===1||(m===2&&r.md<=15)) s-=1;
+  return s;
+}
+
+/* ---------- UI ---------- */
+
+/* ---------- moon drawing ---------- */
+function phaseFrac(r){
+  if(r.mp===1) return .5;
+  if(r.mp===3) return 1;
+  if(r.mp===0) return Math.min(r.fd/30,.49);
+  return Math.min(.5+r.fd/(2*(r.len-15)),.99);
+}
+function litPath(p,R){
+  if(p<=.005||p>=.995) return '';
+  if(Math.abs(p-.5)<.005) return `M0,${-R}A${R},${R} 0 1 1 0,${R}A${R},${R} 0 1 1 0,${-R}Z`;
+  const rx=(R*Math.abs(Math.cos(2*Math.PI*p))).toFixed(2);
+  return p<.5
+    ? `M0,${-R}A${R},${R} 0 0 1 0,${R}A${rx},${R} 0 0 ${p<.25?0:1} 0,${-R}Z`
+    : `M0,${-R}A${R},${R} 0 0 0 0,${R}A${rx},${R} 0 0 ${p<.75?0:1} 0,${-R}Z`;
+}
+let uid=0;
+function bigMoon(r){
+  const p=phaseFrac(r), id='m'+(++uid), R=52;
+  return `<svg class="bigmoon" viewBox="-60 -60 120 120" aria-hidden="true">
+    <defs>
+      <radialGradient id="${id}g" cx="-.25" cy="-.3" r="1.1" gradientUnits="objectBoundingBox" fx="35%" fy="30%"><stop offset="0" stop-color="#fffaf0"/><stop offset=".6" stop-color="#f3e3b8"/><stop offset="1" stop-color="#d8bf82"/></radialGradient>
+      <clipPath id="${id}c"><path d="${litPath(p,R)}"/></clipPath>
+    </defs>
+    <circle r="${R}" fill="rgba(0,0,0,.28)" stroke="rgba(246,231,200,.35)" stroke-width="1"/>
+    <path d="${litPath(p,R)}" fill="url(#${id}g)"/>
+    <g clip-path="url(#${id}c)" fill="rgba(120,90,40,.13)">
+      <circle cx="-18" cy="-14" r="11"/><circle cx="14" cy="10" r="15"/><circle cx="-10" cy="24" r="7"/><circle cx="22" cy="-22" r="6"/><circle cx="-30" cy="8" r="5"/>
+    </g>
+  </svg>`;
+}
+function tinyMoon(r,cls){
+  const p=phaseFrac(r), R=10;
+  return `<svg class="${cls}" viewBox="-12 -12 24 24" aria-hidden="true"><circle r="${R}" fill="rgba(0,0,0,.22)" stroke="currentColor" stroke-opacity=".35" stroke-width="1"/><path d="${litPath(p,R)}" fill="#fbf3dc" stroke="rgba(90,60,20,.35)" stroke-width=".6"/></svg>`;
+}
+
+/* ---------- UI ---------- */
+const $=id=>document.getElementById(id);
+const now=new Date();
+const T={y:now.getFullYear(),m:now.getMonth()+1,d:now.getDate()};
+let view={y:T.y,m:T.m}, sel={...T};
+let showEve=true;
+try{const v=localStorage.getItem('mmcal-eve'); if(v!==null) showEve=v==='1';}catch(e){}
+$('showEve').checked=showEve;
+function dinfo(y,m,d){const j=g2j(y,m,d);return {y,m,d,j,w:(j+1)%7,r:j2m(j)};}
+function topLabel(r,first){
+  const s=monthName(r,true);
+  if(r.mp===1) return {t:s+'ပြည့်',cls:'lbl'};
+  if(r.mp===3) return {t:s+'ကွယ်',cls:'lbl'};
+  if(r.fd===1) return {t:s+(r.mp===0?'ဆန်း':'ဆုတ်'),cls:'lbl'};
+  if(first) return {t:s+' '+mn(r.fd),cls:'lbl'};
+  return {t:mn(r.fd),cls:''};
+}
+function render(anim){
+  const {y,m}=view;
+  $('gTitle').innerHTML=GM[m-1]+' <span>'+y+'</span>';
+  $('pick').value=y+'-'+String(m).padStart(2,'0');
+  const nd=new Date(y,m,0).getDate(), first=new Date(y,m-1,1).getDay();
+  const names=[], mys=new Set(), sys=new Set(), myts=new Map();
+  for(let d=1;d<=nd;d++){const i=dinfo(y,m,d);const n=monthName(i.r,false);if(names[names.length-1]!==n) names.push(n);mys.add(i.r.my);sys.add(sasana(i.r));myts.set(i.r.my,i.r.myt);}
+  const span=a=>{a=[...a];return a.length>1?mn(a[0])+'-'+mn(a[a.length-1]):mn(a[0]);};
+  $('mTitle').textContent=names.join(' – ')+'  ·  '+span(mys)+' ခု';
+  $('yType').textContent='သာသနာနှစ် '+span(sys)+'  ·  '+[...myts].map(([k,v])=>(myts.size>1?mn(k)+' ':'')+YT[v]).join('၊ ');
+
+  const g=$('grid'); g.innerHTML='';
+  const cells=Math.ceil((first+nd)/7)*7, list=[];
+  for(let k=0;k<cells;k++){
+    const dt=new Date(y,m-1,1-first+k);
+    const i=dinfo(dt.getFullYear(),dt.getMonth()+1,dt.getDate());
+    const inMonth=i.m===m&&i.y===y, lab=topLabel(i.r,k===0), fest=festival(i.r);
+    const b=document.createElement('button');
+    b.type='button';b.className='cell';b.setAttribute('role','gridcell');
+    if(!inMonth) b.classList.add('out');
+    if(i.w===0||i.w===6) b.classList.add('we');
+    if(i.r.sab===1) b.classList.add('sab');
+    if(i.r.sab===2&&showEve) b.classList.add('eve');
+    if(i.y===T.y&&i.m===T.m&&i.d===T.d) b.classList.add('today');
+    if(i.y===sel.y&&i.m===sel.m&&i.d===sel.d) b.classList.add('sel');
+    b.innerHTML=(fest?'<span class="fest"></span>':'')+(i.r.sab===1?tinyMoon(i.r,'ph'):'')+'<div class="g">'+i.d+'</div><div class="m '+lab.cls+'">'+lab.t+'</div>';
+    b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':''));
+    b.onclick=()=>{sel={y:i.y,m:i.m,d:i.d}; if(!inMonth){view={y:i.y,m:i.m};render(true);} else render();};
+    g.appendChild(b);
+    if(inMonth&&(i.r.sab===1||(i.r.sab===2&&showEve))) list.push(i);
+  }
+  if(anim){g.classList.remove('swap');void g.offsetWidth;g.classList.add('swap');}
+  const ol=$('list'); ol.innerHTML='';
+  $('listTitle').textContent=GM[m-1]+' လအတွင်း ဥပုသ်နေ့ '+mn(list.filter(i=>i.r.sab===1).length)+' ရက်';
+  list.forEach(i=>{
+    const li=document.createElement('li'); if(i.r.sab===2) li.className='is-eve';
+    const fest=festival(i.r);
+    li.innerHTML='<button type="button">'+(i.r.sab===1?tinyMoon(i.r,'lm'):'<span></span>')+'<div class="dd">'+i.d+'<small>'+GS[i.w]+'</small></div><div class="tx">'+monthName(i.r,false)+' '+phaseText(i.r)+'<small>'+WD[i.w]+'နေ့'+(fest?' · '+fest:'')+'</small></div><span class="ty'+(i.r.sab===2?' eve':'')+'">'+(i.r.sab===1?'ဥပုသ်':'အဖိတ်')+'</span></button>';
+    li.firstChild.onclick=()=>{sel={y:i.y,m:i.m,d:i.d};render();if(window.innerWidth<920)$('panel').scrollIntoView({behavior:'smooth',block:'start'});};
+    ol.appendChild(li);
+  });
+  renderPanel();
+}
+function renderPanel(){
+  const i=dinfo(sel.y,sel.m,sel.d), r=i.r, fest=festival(r);
+  const EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  let h='<div class="mp-top">'+bigMoon(r)+'<div class="mp-date"><div class="wd">'+EN[i.w]+'</div><div class="gd">'+i.d+'</div><div class="gm">'+GM[i.m-1]+' '+i.y+'</div></div></div>';
+  h+='<div><div class="mp-mm">'+monthName(r,false)+' '+phaseText(r)+'</div>';
+  h+='<div class="mp-meta">'+WD[i.w]+'နေ့ · မြန်မာနှစ် '+mn(r.my)+' ခု · သာသနာနှစ် '+mn(sasana(r))+'<br>'+YT[r.myt]+' · '+monthName(r,false)+'လ ရက် '+mn(r.len)+' ('+(r.len===30?'ရက်စုံ':'ရက်မစုံ')+')</div></div>';
+  const bd=[];
+  if(r.sab===1) bd.push('<span class="badge">ဥပုသ်နေ့</span>');
+  if(r.sab===2) bd.push('<span class="badge ghost">အဖိတ်နေ့ · နက်ဖြန် ဥပုသ်</span>');
+  if(fest) bd.push('<span class="badge soft">'+fest+'</span>');
+  if(bd.length) h+='<div class="badges">'+bd.join('')+'</div>';
+  for(let k=1;k<=16;k++){
+    if(j2m(i.j+k).sab===1){
+      const dt=new Date(sel.y,sel.m-1,sel.d+k);
+      h+='<div class="next"><b>'+mn(k)+'</b><div>ရက်အကြာ နောက်ဥပုသ်နေ့<small>'+dt.getDate()+' '+GM[dt.getMonth()]+' · '+WD[dt.getDay()]+'နေ့</small></div></div>';
+      break;
+    }
+  }
+  $('panel').innerHTML=h;
+}
+function shift(n){let {y,m}=view; m+=n; if(m<1){m=12;y--;} if(m>12){m=1;y++;} if(y<1900||y>2100) return; view={y,m}; render(true);}
+$('prev').onclick=()=>shift(-1);
+$('next').onclick=()=>shift(1);
+$('todayBtn').onclick=()=>{view={y:T.y,m:T.m};sel={...T};render(true);};
+$('pick').addEventListener('change',e=>{const [y,m]=e.target.value.split('-').map(Number); if(y&&m){view={y,m};render(true);}});
+$('showEve').addEventListener('change',e=>{showEve=e.target.checked;try{localStorage.setItem('mmcal-eve',showEve?'1':'0');}catch(_){}render();});
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return; if(e.key==='ArrowLeft')shift(-1); if(e.key==='ArrowRight')shift(1);});
+let tx=null,ty0=null;
+$('grid').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+$('grid').addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty0; if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5) shift(dx<0?1:-1); tx=null;});
+render();
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+let deferred=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;document.getElementById('install').hidden=false;});
+document.getElementById('doInstall').onclick=async()=>{document.getElementById('install').hidden=true;if(deferred){deferred.prompt();deferred=null;}};
+document.getElementById('noInstall').onclick=()=>{document.getElementById('install').hidden=true;};
+window.addEventListener('appinstalled',()=>{document.getElementById('install').hidden=true;});
+</script>
+</body>
+</html>

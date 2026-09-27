@@ -1,0 +1,17 @@
+{
+  "name": "မြန်မာ ဥပုသ်ပြက္ခဒိန်",
+  "short_name": "ဥပုသ်ပြက္ခဒိန်",
+  "description": "မြန်မာရက်စွဲ၊ လပြည့်လကွယ်နှင့် ဥပုသ်နေ့များ ပါသော ပြက္ခဒိန်",
+  "lang": "my",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#e6ece8",
+  "theme_color": "#8a1c12",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
