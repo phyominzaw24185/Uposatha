@@ -230,6 +230,307 @@ button{font:inherit;color:inherit}
 .badge.yat{background:#2c6b55;color:#fff}
 .badge.pya{background:#2a2d3e;color:#e9e6f5}
 .badge.nag{background:rgba(255,255,255,.1);color:var(--on-lacquer);display:inline-flex;align-items:center;gap:5px}
+/* ===== day detail sheet ===== */
+body.noscroll{overflow:hidden;overscroll-behavior:none}
+.sheet-back{position:fixed;inset:0;z-index:50;background:rgba(18,12,10,0);display:flex;align-items:flex-end;justify-content:center;transition:background .18s}
+.sheet-back.on{background:rgba(18,12,10,.55)}
+.sheet{width:100%;max-width:520px;max-height:88vh;overflow:auto;background:var(--paper);color:var(--ink);border-radius:22px 22px 0 0;box-shadow:0 -10px 40px -10px rgba(0,0,0,.5);transform:translateY(24px);opacity:0;transition:transform .2s ease,opacity .2s ease;padding-bottom:env(safe-area-inset-bottom,0px)}
+.sheet-back.on .sheet{transform:none;opacity:1}
+@media (min-width:640px){.sheet-back{align-items:center}.sheet{border-radius:22px}}
+.sh-head{position:sticky;top:0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;padding:12px 14px;background:var(--paper-2);border-bottom:1px solid var(--line);z-index:1}
+.sh-head h2{margin:0;text-align:center;font:400 19px var(--num)}
+.sh-back{border:0;background:transparent;color:var(--lacquer);font:700 15px var(--mm);padding:8px 6px;cursor:pointer}
+:root[data-theme="dark"] .sh-back{color:var(--gold-hi)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sh-back{color:var(--gold-hi)}}
+.sh-nav{display:flex;gap:6px}
+.sh-nav button{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sh-nav button:hover{border-color:var(--gold);background:var(--gold-soft)}
+.sh-body{padding:18px 20px 22px;display:grid;gap:14px}
+.sh-top{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px}
+.sh-num{font:400 clamp(72px,22vw,96px)/.9 var(--num);color:var(--jade)}
+.sh-num.we{color:var(--lacquer)}
+.sh-date{display:grid;justify-items:end;gap:6px;text-align:right}
+.sh-gm{font:600 18px var(--ui)}
+.sh-wd{font:800 clamp(22px,6vw,28px)/1 var(--ui);background:var(--jade);color:#fff;padding:8px 14px;border-radius:6px}
+.sh-wd.we{background:var(--lacquer)}
+.sh-mwd{font:18px var(--mm)}
+.sh-mm{display:flex;align-items:center;justify-content:space-between;gap:12px;font:17px/1.8 var(--mm)}
+.sh-mm b{font-weight:700}
+.sh-moon{width:46px;height:46px;flex:none;color:var(--ink)}
+.sh-sp{display:grid;gap:8px;padding:12px 14px;border-radius:14px;background:linear-gradient(160deg,var(--lacquer),var(--lacquer-2));color:var(--on-lacquer)}
+.sh-sp .sp b{font-size:19px}
+.sh-list{list-style:none;margin:0;padding:12px 16px;border-radius:14px;background:var(--paper-2);border:1px solid var(--line);display:grid;gap:4px}
+.sh-list li{font:17px/1.9 var(--mm);display:flex;align-items:center;gap:10px}
+.sh-list li::before{content:"✣";color:var(--gold);font-size:14px}
+.sh-list li.yat{color:var(--jade);font-weight:700}
+.sh-list li.pya{font-weight:700}
+.sh-list li.gold{color:var(--gold);font-weight:700}
+.sh-next{margin:0;font:14px/1.7 var(--mm);color:var(--muted)}
+/* ===== date finder ===== */
+.mmh{font:700 17px var(--mm)!important}
+.ftabs{margin:0}
+.fform{display:grid;gap:12px}
+.fform label{display:grid;gap:5px;font:700 14px var(--mm);color:var(--muted)}
+.fform input,.fform select{font:16px var(--mm);color:var(--ink);background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:46px;width:100%}
+.fform input:focus-visible,.fform select:focus-visible{outline:2px solid var(--jade);outline-offset:1px}
+.fform input:disabled{opacity:.45}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fgo{border:0;border-radius:12px;padding:12px;font:700 16px var(--mm);background:var(--lacquer);color:var(--on-lacquer);cursor:pointer}
+.fgo:hover{background:var(--lacquer-2)}
+.fout{display:grid;gap:8px}
+.fout .res{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--line);background:var(--paper-2);border-radius:12px;padding:12px 14px;cursor:pointer;font:15px/1.6 var(--mm);color:var(--ink)}
+.fout .res:hover{border-color:var(--gold);background:var(--gold-soft)}
+.fout .res b{font:400 22px var(--num)}
+.fout .res small{display:block;color:var(--muted)}
+.fout .msg{font:14px/1.7 var(--mm);color:var(--muted);margin:0}
+/* selected day: solid jade tile */
+.cell.sel:not(.today){background:linear-gradient(160deg,#2f7a60,#1f5443)!important;box-shadow:0 0 0 2px var(--gold-hi),0 6px 16px -6px rgba(31,84,67,.7)!important;z-index:1}
+.cell.sel:not(.today) .g,.cell.sel:not(.today).we .g,.cell.sel:not(.today).hol .g,.cell.sel:not(.today).sab .g{color:#fff!important}
+.cell.sel:not(.today) .m,.cell.sel:not(.today) .m.lbl{color:#d9f2e6!important;opacity:1}
+.cell.sel:not(.today).out{opacity:1}
+.cell.today.sel::after{border-color:#2f7a60;opacity:.9}
+/* fixed-height moon card (so tapping days never pushes the calendar) */
+.mp-special{margin:-6px -6px 0;padding:10px 12px;border-radius:14px;display:grid;gap:4px;background:rgba(0,0,0,.14);box-shadow:inset 0 0 0 1px rgba(240,207,130,.18)}
+.mp-special.on{background:linear-gradient(135deg,rgba(240,207,130,.24),rgba(240,207,130,.08));box-shadow:inset 0 0 0 1px rgba(240,207,130,.5)}
+.sp-head{font:600 12.5px/1.6 var(--mm)!important;letter-spacing:0!important;color:var(--gold-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-line{display:flex;align-items:center;gap:8px;min-width:0;height:34px}
+.sp-line b{font:700 17px/1.9 var(--mm-d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sp-line b.dim{color:var(--on-lacquer);opacity:.85;font-weight:500}
+.sp-line .sp-k{flex:none;margin:0}
+.sp-k.k-hol{background:var(--on-lacquer);color:var(--lacquer-2)}
+.sp-k.k-obs{background:transparent;color:#9fe0c3;box-shadow:inset 0 0 0 1.3px #7fcaa9}
+.sp-k.k-fest{background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink)}
+.mp-mm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mp-meta{margin-top:-2px}
+.mp-meta div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.5px}
+.moonpanel .badges{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;height:34px;align-items:center}
+.moonpanel .badges::-webkit-scrollbar{display:none}
+.moonpanel .badge{flex:none;white-space:nowrap}
+.mp-top{height:112px}
+/* ===== compact phone layout: moon card + calendar on one screen ===== */
+details.legwrap{margin-top:10px}
+details.legwrap>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font:600 13px var(--mm);color:var(--muted);padding:6px;border-radius:10px}
+details.legwrap>summary::-webkit-details-marker{display:none}
+details.legwrap>summary::after{content:"▾";font-size:12px;transition:transform .15s}
+details.legwrap[open]>summary::after{transform:rotate(180deg)}
+details.legwrap>summary:focus-visible{outline:2px solid var(--jade)}
+.nx-chip{display:none}
+@media (max-width:919px){
+  body{padding-block:10px 40px}
+  .app{gap:10px}
+  .side,.main{gap:10px}
+  .moonpanel{padding:10px 12px 14px;gap:7px;border-radius:16px}
+  .moonpanel::after{height:8px}
+  .mp-special{margin:0;padding:5px 10px;gap:0;border-radius:11px}
+  .sp-head{font-size:11px!important;line-height:1.5}
+  .sp-line{height:26px;gap:6px}
+  .sp-line b{font-size:14.5px;line-height:1.7}
+  .sp-line .sp-k{font-size:10.5px;padding:4px 7px 3px}
+  .mp-top{height:auto;gap:12px;display:grid;grid-template-columns:52px 1fr;align-items:center}
+  .bigmoon{width:52px;height:52px}
+  .mp-date{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:end}
+  .mp-date .gd{grid-row:1/3;font-size:40px;margin:0;line-height:.95}
+  .mp-date .wd{font-size:10.5px;align-self:end}
+  .mp-date .gm{font-size:14px;align-self:start}
+  .mp-top+div{margin-top:-2px}
+  .mp-mm{font-size:16px;line-height:1.6}
+  .mp-meta{display:none}
+  .moonpanel .badges{height:28px;gap:5px}
+  .moonpanel .badge{font-size:11.5px;padding:6px 9px 5px}
+  .moonpanel .next{display:none}
+  .nx-chip{display:inline-flex}
+  .cal{padding:12px 8px 8px;border-radius:16px}
+  .cal-head{padding:0 4px 8px;gap:8px;align-items:center}
+  .cal-head h1{font-size:28px}
+  .cal-head .mmonths{font-size:13.5px;line-height:1.6;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100vw - 60px)}
+  .cal-head .ytype{font-size:11.5px;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100vw - 60px)}
+  .nav button,.nav label{height:34px;min-width:36px;padding:0 9px;border-radius:10px}
+  .dow{margin-bottom:3px}
+  .dow div{padding:3px 0}
+  .dow,.grid{gap:4px}
+  .cell{min-height:50px;padding:4px 1px 5px;border-radius:10px}
+  .cell .g{font-size:21px}
+  .cell .m{font-size:10.5px;line-height:1.4}
+  .cell .m.lbl{font-size:9.5px}
+  .cell.today .g{font-size:22px}
+  .cell.today .g::after{font-size:8.5px}
+  .cell .ph{width:10px;height:10px;top:3px;right:3px}
+  .cell.hol::before,.cell.obs::before{border-width:12px 12px 0 0;border-top-left-radius:10px}
+  .ast{font-size:8px;padding:2px 3px 1px;right:2px;bottom:2px}
+  .legend{padding-top:6px}
+}
+/* let Burmese glyphs breathe and shrink long text instead of cutting it */
+.sp-head{overflow:visible!important;text-overflow:clip!important;line-height:1.9!important;padding-block:1px}
+.sp-line{height:auto!important;min-height:30px;overflow:visible}
+.sp-line b{line-height:2.1!important;text-overflow:clip!important;overflow:visible!important}
+.mp-mm{text-overflow:clip!important;overflow:visible!important;line-height:1.9!important}
+.fit{display:block;white-space:nowrap}
+@media (max-width:919px){
+  .cal-head .mmonths,.cal-head .ytype{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-width:none!important}
+  .cal-head .ytype{font-size:11px!important;line-height:1.75!important}
+  .sp-head{font-size:11px!important}
+}
+/* phone: fill the screen with the card + calendar (lists stay below, reached by scrolling) */
+@media (max-width:919px){
+  .cal-head .ytype{display:none}
+  .cal{padding-top:10px}
+  .cal-head{padding-bottom:6px}
+  .moonpanel{padding:12px 14px 16px;gap:9px}
+  .mp-top{grid-template-columns:66px 1fr;gap:14px}
+  .bigmoon{width:66px;height:66px}
+  .mp-date .gd{font-size:50px}
+  .mp-date .wd{font-size:11.5px}
+  .mp-date .gm{font-size:17px}
+  .mp-mm{font-size:19px}
+  .sp-head{font-size:12px!important}
+  .sp-line b{font-size:16px}
+  .sp-line .sp-k{font-size:11.5px}
+  .moonpanel .badges{height:32px}
+  .moonpanel .badge{font-size:12.5px;padding:7px 11px 6px}
+  .cal-head h1{font-size:32px}
+  .cal-head .mmonths{font-size:15px}
+  .cal .cell .g{font-size:24px}
+  .cal .cell .m{font-size:11.5px}
+  .cal .cell .m.lbl{font-size:10.5px}
+  .cal .cell.today .g{font-size:25px}
+}
+/* status badges live in the empty space right of the date */
+.mp-top{position:relative}
+.mp-stat{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;margin-left:auto;flex:none}
+.mp-stat .badge{font-size:11.5px;padding:5px 9px 4px;white-space:nowrap}
+.mp-stat:empty{display:none}
+@media (max-width:919px){
+  .mp-top{grid-template-columns:58px minmax(0,1fr) auto!important}
+  .bigmoon{width:58px!important;height:58px!important}
+  .mp-date{overflow:hidden}
+  .mp-date{min-width:0}
+  .mp-date .gm,.mp-date .wd{white-space:nowrap}
+  .mp-date .gm{font-size:15px}
+  .mp-date .gd{font-size:44px}
+  .mp-top{column-gap:10px}
+  .mp-stat{display:grid!important;grid-auto-flow:row;justify-items:end;align-content:center;gap:5px 4px}
+  .mp-stat.n3{grid-template-columns:auto auto}
+  .mp-top{height:62px!important}
+  .moonpanel{grid-template-columns:minmax(0,1fr)}
+  .moonpanel>*{min-width:0;max-width:100%}
+  .mp-meta,.mp-meta div,.mp-mm{max-width:100%}
+  .moonpanel{min-height:320px;align-content:start}
+  .mp-stat:empty{display:block!important}
+  .mp-stat .badge{padding:4px 8px 3px!important;line-height:1.5}
+  .mp-stat.n3 .badge:first-child{grid-column:1/3}
+  .mp-stat .badge{font-size:11px;padding:5px 8px 4px}
+}
+@media (min-width:920px){
+  .mp-top{flex-wrap:wrap}
+  .mp-stat{flex-direction:row;flex-wrap:wrap;width:100%;justify-content:flex-start;margin:4px 0 0}
+  .mp-top{height:auto}
+}
+/* phone: bring back the full details, just smaller */
+@media (max-width:919px){
+  .mp-meta{display:block!important;margin-top:0}
+  .mp-meta div{font-size:12.5px;line-height:1.75;opacity:.9;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important}
+  .cal-head .ytype{display:block!important;font-size:11.5px!important;line-height:1.7!important}
+}
+/* traditional days line (သမားညို, ရက်ပုပ် …) */
+.mp-astro{display:flex;align-items:center;gap:7px;min-width:0;height:30px;padding:0 10px;border-radius:10px;background:rgba(0,0,0,.16)}
+.mp-astro span{color:var(--gold-hi);font-size:13px;flex:none}
+.mp-astro b{font:600 14.5px/1.9 var(--mm);color:var(--on-lacquer);white-space:nowrap;overflow:visible;min-width:0}
+.mp-astro i{font-style:normal;opacity:.6;font-weight:400}
+@media (max-width:419px){
+  .moonpanel .badges .badge{font-size:11px;padding:6px 8px 5px}
+  .moonpanel .badges{gap:4px}
+}
+/* ===== phone: full-screen calendar, everything else in a pull-up drawer ===== */
+.drawer,.dr-back{display:none}
+body.m-full{overflow:hidden;padding:0;height:100%}
+body.m-full .app{display:block}
+body.m-full .cal{position:fixed;left:0;right:0;top:0;bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:10;margin:0;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;padding:0;background:var(--paper)}
+body.m-full .cal-head{flex:none;margin:0;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 10px;background:linear-gradient(170deg,var(--lacquer),var(--lacquer-2));color:var(--on-lacquer);align-items:center;gap:8px;flex-wrap:wrap}
+body.m-full .cal-head h1{font-size:25px;color:#fff}
+body.m-full .cal-head h1 span{color:var(--gold-hi)}
+body.m-full .cal-head .mmonths{color:var(--gold-hi)!important;font-size:13.5px;margin-top:1px}
+body.m-full .cal-head .ytype{display:none!important}
+body.m-full .nav{gap:4px;margin-left:auto}
+body.m-full .nav button,body.m-full .nav label{height:34px;min-width:34px;padding:0 8px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:var(--on-lacquer)}
+body.m-full .nav .today{background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink)}
+body.m-full .dow{flex:none;margin:0;padding:6px 4px 2px}
+body.m-full .grid{flex:1;min-height:0;grid-auto-rows:minmax(0,1fr);padding:2px 4px 6px;gap:3px}
+body.m-full .cal .cell{min-height:0!important;justify-content:center;gap:4px}
+body.m-full .cal .cell .g{font-size:clamp(20px,6.4vw,28px)}
+body.m-full .cal .cell .m{font-size:clamp(10px,3.1vw,13px)}
+body.m-full .cal .cell.today::after{inset:-2px}
+body.m-full .drawer{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;z-index:30;height:88vh;height:88dvh;background:var(--ground);border-radius:18px 18px 0 0;box-shadow:0 -10px 30px -12px rgba(0,0,0,.45);transform:translateY(calc(100% - 60px - env(safe-area-inset-bottom,0px)));transition:transform .26s cubic-bezier(.2,.8,.2,1);will-change:transform}
+body.m-full .drawer.open{transform:translateY(0)}
+body.m-full .drawer.drag{transition:none}
+body.m-full .dr-back{display:block;position:fixed;inset:0;z-index:25;background:rgba(18,12,10,.45);opacity:0;transition:opacity .2s}
+body.m-full .dr-back.on{opacity:1}
+.dr-handle{flex:none;height:60px;width:100%;border:0;background:var(--paper);border-radius:18px 18px 0 0;border-top:1px solid var(--line);display:grid;justify-items:center;align-content:center;gap:6px;cursor:grab;padding:6px 14px 0;touch-action:none}
+.dr-handle:focus-visible{outline:2px solid var(--jade);outline-offset:-3px}
+.dr-handle .grab{width:42px;height:5px;border-radius:3px;background:var(--faint)}
+.dr-sum{font:600 13.5px/1.7 var(--mm);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.dr-sum b{color:var(--lacquer);font-weight:700}
+.dr-sum em{font-style:normal;color:var(--gold)}
+.dr-body{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:10px 12px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;background:var(--ground)}
+.dr-body .legwrap{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:6px 10px;margin:0}
+.dr-body .side{position:static}
+.dr-body>*{flex:none}
+/* side menu instead of bottom drawer */
+.menu-btn{display:none!important}
+body.m-full .menu-btn{display:inline-flex!important}
+body.m-full .cal{bottom:0!important}
+body.m-full .drawer{top:0;bottom:0;left:auto;right:0;width:min(90vw,440px);height:100%!important;border-radius:20px 0 0 20px;transform:translateX(104%)!important;box-shadow:-12px 0 32px -12px rgba(0,0,0,.5)}
+body.m-full .drawer.open{transform:translateX(0)!important}
+body.m-full .drawer.drag{transition:none}
+body.m-full .dr-handle{display:none}
+.dr-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 10px 18px;background:var(--paper);border-bottom:1px solid var(--line);border-radius:20px 0 0 0}
+.dr-title{font:700 17px var(--mm)}
+/* full-screen phone: bigger text and moon icons inside the tall cells */
+body.m-full .cal .cell{gap:6px}
+body.m-full .cal .cell .g{font-size:clamp(26px,8vw,34px)!important}
+body.m-full .cal .cell .m{font-size:clamp(13px,4vw,16px)!important;line-height:1.6}
+body.m-full .cal .cell .m.lbl{font-size:clamp(11.5px,3.4vw,14px)!important}
+body.m-full .cal .cell .ph{width:clamp(18px,5.4vw,24px)!important;height:clamp(18px,5.4vw,24px)!important;top:5px!important;right:5px!important}
+body.m-full .cal .cell .ast{font-size:clamp(10px,3vw,12px)!important;padding:3px 5px 2px!important;right:4px!important;bottom:4px!important;border-radius:6px}
+body.m-full .cal .cell.hol::before,body.m-full .cal .cell.obs::before{border-width:18px 18px 0 0!important}
+body.m-full .cal .cell.today .g{font-size:clamp(27px,8.4vw,35px)!important}
+body.m-full .cal .cell.today .g::after{font-size:11px!important}
+body.m-full .dow div{font-size:12px}
+/* big moon behind the label (full / new moon) */
+.cell .bgmoon{position:absolute;left:50%;top:72%;width:min(64%,56px);aspect-ratio:1;transform:translate(-50%,-50%);z-index:0;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}
+.cell .bgmoon.new{opacity:.85}
+.cell .bgmoon.half{filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}
+.cell.bigm .g,.cell.bigm .m{position:relative;z-index:1}
+.cell.bigm .m,.cell.bigm .m.lbl{color:#5a1109!important;opacity:1!important;font-weight:700;text-shadow:0 0 6px rgba(255,250,235,.9)}
+.cell.bigm.sel .m,.cell.bigm.today .m{color:#5a1109!important}
+body.m-full .cal .cell.bigm .bgmoon{top:63%;width:min(100%,92px)}
+/* inside the ☰ menu there is room again: big moon card like the original */
+body.m-full .dr-body .moonpanel{min-height:0!important;padding:22px 20px 22px!important;gap:14px!important;border-radius:18px!important}
+body.m-full .dr-body .moonpanel::after{height:12px!important}
+body.m-full .dr-body .mp-top{display:flex!important;height:auto!important;gap:18px!important;align-items:center;flex-wrap:wrap}
+body.m-full .dr-body .bigmoon{width:112px!important;height:112px!important}
+body.m-full .dr-body .mp-date{display:block!important;overflow:visible}
+body.m-full .dr-body .mp-date .wd{font-size:12px!important}
+body.m-full .dr-body .mp-date .gd{font-size:46px!important;margin-top:4px;line-height:1}
+body.m-full .dr-body .mp-date .gm{font-size:17px!important}
+body.m-full .dr-body .mp-stat{flex-direction:row!important;display:flex!important;flex-wrap:wrap;width:100%;justify-content:flex-start;gap:6px;margin:0}
+body.m-full .dr-body .mp-stat .badge{font-size:13px!important;padding:8px 12px 7px!important}
+body.m-full .dr-body .mp-mm{font-size:21px!important;white-space:normal;line-height:1.75!important}
+body.m-full .dr-body .mp-meta div{font-size:14px!important;white-space:normal!important;line-height:1.8}
+body.m-full .dr-body .mp-astro{height:auto;min-height:34px;padding:4px 12px}
+body.m-full .dr-body .mp-astro b{font-size:15px!important;white-space:normal}
+body.m-full .dr-body .mp-special{padding:12px 14px!important;margin:-6px -6px 0!important}
+body.m-full .dr-body .sp-head{font-size:13px!important}
+body.m-full .dr-body .sp-line b{font-size:19px!important;white-space:normal}
+body.m-full .dr-body .badges{height:auto!important;flex-wrap:wrap!important;overflow:visible!important}
+body.m-full .dr-body .badges .badge{font-size:13px!important;padding:8px 12px 7px!important}
+body.m-full .dr-body .nx-chip{display:none!important}
+body.m-full .dr-body .moonpanel .next{display:flex!important;font-size:15px}
+body.m-full .dr-body .moonpanel .next b{font-size:32px}
+/* the drawer shows either the day card (☰) or the lists (list button), never both */
+body.m-full .drawer[data-mode="card"] .dr-body>.list{display:none}
+body.m-full .drawer[data-mode="list"] .dr-body>.side,
+body.m-full .drawer[data-mode="list"] .dr-body>.legwrap,
+body.m-full .drawer[data-mode="list"] .dr-body>.note{display:none}
 </style>
 
 <style>
@@ -265,10 +566,14 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
             <input id="pick" type="month" min="1900-01" max="2100-12">
           </label>
           <button id="next" type="button" aria-label="နောက်လ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button id="findBtn" type="button" aria-label="ရက်စွဲရှာမည်"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
+          <button id="listBtn" type="button" aria-label="ဥပုသ်၊ လပြည့်၊ ရုံးပိတ်၊ ပွဲနေ့ စာရင်းများ" title="စာရင်းများ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="6.5" r="1.3" fill="currentColor"/><circle cx="5" cy="12" r="1.3" fill="currentColor"/><circle cx="5" cy="17.5" r="1.3" fill="currentColor"/><path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20"/></svg></button>
+          <button id="menuBtn" type="button" class="menu-btn" aria-label="မီနူး" aria-controls="drawer" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         </nav>
       </header>
       <div class="dow" aria-hidden="true"><div class="we">SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div class="we">SAT</div></div>
       <div class="grid" id="grid" role="grid"></div>
+      <details class="legwrap" id="legwrap"><summary>ညွှန်းချက်နှင့် ဆက်တင်</summary>
       <div class="legend">
         <span><i class="sw sab"></i>ဥပုသ်နေ့</span>
         <span><i class="sw eve"></i>အဖိတ်နေ့</span>
@@ -279,7 +584,9 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
         <span><i class="sw pya"></i>ပြဿဒါး</span>
         <label class="toggle"><input type="checkbox" id="showAstro" checked> ရာဇာ/ပြဿဒါး</label>
         <label class="toggle t2"><input type="checkbox" id="showEve" checked> အဖိတ်နေ့</label>
+        <label class="toggle"><input type="checkbox" id="showPop" checked> ရက်နှိပ်လျှင် သီးသန့်ပြမည်</label>
       </div>
+      </details>
     </section>
 
     <section class="list">
@@ -298,6 +605,65 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
 
     <p class="note">မြန်မာရက်စွဲများကို ဒေါက်တာရန်နိုင်အောင်၏ မြန်မာပြက္ခဒိန် တွက်နည်းဖြင့် တွက်ထားပါသည်။ ရက်စုံ (၃၀) လ၊ ရက်မစုံ (၂၉) လ အလှည့်ကျဖြစ်ပြီး ဝါထပ်နှစ်ကို ၁၉ နှစ်တွင် ၇ ကြိမ်ခန့် တွက်ပါသည်။ ရက်ကြီးဝါထပ်နှစ်တွင် နယုန်လ ရက် ၃၀ ဖြစ်သည်။ ရုံးပိတ်ရက်များမှာ ပုံမှန် သတ်မှတ်ရက်များ ဖြစ်ပြီး အစိုးရက ထပ်တိုးကြေညာသော ရက်များ (ဥပမာ သင်္ကြန် အပိုရက်) မပါပါ။ ဘယ်ညာ ပွတ်ဆွဲ၍ (သို့) ← → ခလုတ်ဖြင့် လပြောင်းနိုင်သည်။</p>
   </main>
+</div>
+
+<div class="dr-back" id="drBack" hidden></div>
+<div class="drawer" id="drawer" aria-label="အသေးစိတ်">
+  <button type="button" class="dr-handle" id="drHandle" aria-expanded="false" aria-controls="drBody">
+    <span class="grab" aria-hidden="true"></span>
+    <span class="dr-sum" id="drSum"></span>
+  </button>
+  <div class="dr-top"><span class="dr-title">အသေးစိတ်</span><button type="button" id="drClose" class="sh-back">ပိတ်မည်</button></div>
+  <div class="dr-body" id="drBody"></div>
+</div>
+
+<div class="sheet-back" id="findBack" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="fTitle">
+    <header class="sh-head">
+      <button type="button" id="fClose" class="sh-back">ပိတ်မည်</button>
+      <h2 id="fTitle" class="mmh">ရက်စွဲ ရှာမည်</h2>
+      <span></span>
+    </header>
+    <div class="sh-body">
+      <div class="tabs ftabs" role="tablist" aria-label="ရှာနည်း">
+        <button role="tab" type="button" data-f="mm" aria-selected="true">မြန်မာနှစ်ဖြင့်</button>
+        <button role="tab" type="button" data-f="en" aria-selected="false">ခရစ်နှစ်ဖြင့်</button>
+      </div>
+      <form id="fMM" class="fform" novalidate>
+        <label>မြန်မာနှစ် (ခု)<input id="fYear" type="number" inputmode="numeric" min="1262" max="1462"></label>
+        <label>လ<select id="fMonth">
+          <option value="1">တန်ခူး</option><option value="2">ကဆုန်</option><option value="3">နယုန်</option>
+          <option value="0">ပဝါဆို (ဝါထပ်နှစ်)</option><option value="4">ဝါဆို / ဒုတိယဝါဆို</option>
+          <option value="5">ဝါခေါင်</option><option value="6">တော်သလင်း</option><option value="7">သီတင်းကျွတ်</option>
+          <option value="8">တန်ဆောင်မုန်း</option><option value="9">နတ်တော်</option><option value="10">ပြာသို</option>
+          <option value="11">တပို့တွဲ</option><option value="12">တပေါင်း</option></select></label>
+        <div class="frow">
+          <label>ဆန်း/ဆုတ်<select id="fPhase"><option value="0">လဆန်း</option><option value="1">လပြည့်</option><option value="2">လဆုတ်</option><option value="3">လကွယ်</option></select></label>
+          <label>ရက်<input id="fDay" type="number" inputmode="numeric" min="1" max="15" value="1"></label>
+        </div>
+        <button type="submit" class="fgo">ရှာမည်</button>
+      </form>
+      <form id="fEN" class="fform" novalidate hidden>
+        <label>ခရစ်နှစ် ရက်စွဲ<input id="fDate" type="date" min="1900-01-01" max="2100-12-31"></label>
+        <button type="submit" class="fgo">ရှာမည်</button>
+      </form>
+      <div id="fOut" class="fout" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-back" id="sheetBack" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <header class="sh-head">
+      <button type="button" id="shClose" class="sh-back">ပိတ်မည်</button>
+      <h2 id="shTitle">27 Sep 2026</h2>
+      <div class="sh-nav">
+        <button type="button" id="shPrev" aria-label="ယခင်ရက်"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" id="shNext" aria-label="နောက်ရက်"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </header>
+    <div class="sh-body" id="sheetBody"></div>
+  </div>
 </div>
 
 <div class="install" id="install" hidden><span>ဖုန်းထဲ app အဖြစ် ထည့်မလား</span><button id="doInstall" type="button">ထည့်မည်</button><button class="x" id="noInstall" type="button" aria-label="ပိတ်">✕</button></div>
@@ -356,7 +722,7 @@ function g2j(y,m,d){const a=Math.floor((14-m)/12);y=y+4800-a;m=m+12*a-3;return d
 /* ---------- Burmese text ---------- */
 const DIG='၀၁၂၃၄၅၆၇၈၉';
 const mn=n=>String(n).replace(/\d/g,d=>DIG[d]);
-const MFULL=['ပဝါဆို','တန်ခူး','ကဆုန်','နယုန်','ဝါဆို','ဝါခေါင်','တော်သလင်း','သီတင်းကျွတ်','တန်ဆောင်မုန်း','နတ်တော်','ပြာသို','တပို့တွဲ','တပေါင်း','နှောင်းတန်ခူး','နှောင်းကဆုန်'];
+const MFULL=['ပဝါဆို','တန်ခူး','ကဆုန်','နယုန်','ဝါဆို','ဝါခေါင်','တော်သလင်း','သီတင်းကျွတ်','တန်ဆောင်မုန်း','နတ်တော်','ပြာသို','တပို့တွဲ','တပေါင်း','တန်ခူး','ကဆုန်'];
 const MSHORT=['ပဆို','ခူး','ဆုန်','ယုန်','ဆို','ခေါင်','လင်း','ကျွတ်','မုန်း','တော်','သို','တွဲ','ပေါင်း','ခူး','ဆုန်'];
 const WD=['တနင်္ဂနွေ','တနင်္လာ','အင်္ဂါ','ဗုဒ္ဓဟူး','ကြာသပတေး','သောကြာ','စနေ'];
 const GM=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -516,6 +882,34 @@ function astro(r,w){
   return {yat,pya,nag};
 }
 const NAG=['အနောက်','မြောက်','အရှေ့','တောင်'], NAG_DEG=[270,0,90,180];
+/* ---------- other traditional days (after Yan Naing Aung's rules) ---------- */
+function astroDays(r,w){
+  const wd=(w+1)%7, md=r.md, mf=md-15*Math.floor(md/16), out=[];
+  const n=r.mm>12?r.mm-12:(r.mm<=0?4:r.mm);
+  if(mf===[5,8,3,7,2,4,1][wd]) out.push('အမြိတ္တစုတ်');
+  if(mf===[7,1,4,8,9,6,3][wd]) out.push('ဝါရမိတ္တုကြီး');
+  if(12-mf===(wd+6)%7) out.push('ဝါရမိတ္တုငယ်');
+  if(mf===[8,1,4,6,9,8,7][wd]) out.push('ရက်ပုပ်');
+  if(mf===[1,2,6,6,5,6,7][wd]||mf===[0,1,0,0,0,3,3][wd]) out.push('သမားဖြူ');
+  { const m1=n-1-Math.floor(n/9), wd1=(m1*2-Math.floor(m1/8))%7; if((wd+7-wd1)%7<=1) out.push('သမားညို'); }
+  { let m1=n%2?n:((n+9)%12); m1=(m1+4)%12+1; if(mf===m1) out.push('ရက်ယုတ်မာ'); }
+  { const m1=((Math.floor((n%12)/2)+4)%6)+1; if(mf===m1) out.push('မဟာရက်ကြမ်း'); }
+  if(mf===[8,8,2,2,9,3,3,5,1,4,7,4][n-1]) out.push('ရှမ်းရက်');
+  if(md===[26,21,2,10,18,2,21][wd]||md===[17,19,1,0,9,0,0][wd]||(md===2&&wd===1)||(md===12&&wd===0)||(md===18&&wd===2)) out.push('နဂါးပေါ်');
+  return out;
+}
+
+/* large moon drawn behind the label on full-moon and new-moon days */
+function cellMoon(r){
+  const full=r.mp===1, nw=r.mp===3, R=28, uid2='cm'+r.mm+'_'+r.md+'_'+Math.random().toString(36).slice(2,6);
+  const g=nw?['#eeeeee','#c4c4c4','#9a9a9a']:['#fffaf0','#f1e2b6','#d2b877'];
+  const craters='<g fill="rgba(90,70,40,.13)"><circle cx="-10" cy="-8" r="7"/><circle cx="9" cy="6" r="9"/><circle cx="-6" cy="14" r="4"/><circle cx="13" cy="-13" r="3.5"/><circle cx="-18" cy="4" r="3"/></g>';
+  let body;
+  if(full||nw) body='<circle r="'+R+'" fill="url(#'+uid2+')"/>'+craters;
+  else{ const d=litPath(phaseFrac(r),R);
+    body='<circle r="'+R+'" fill="rgba(40,30,25,.28)" stroke="rgba(210,184,119,.55)" stroke-width="1"/><clipPath id="'+uid2+'c"><path d="'+d+'"/></clipPath><path d="'+d+'" fill="url(#'+uid2+')"/><g clip-path="url(#'+uid2+'c)">'+craters+'</g>'; }
+  return '<svg class="bgmoon '+(full?'full':nw?'new':'half')+'" viewBox="-30 -30 60 60" aria-hidden="true"><defs><radialGradient id="'+uid2+'" cx="38%" cy="34%" r="75%"><stop offset="0" stop-color="'+g[0]+'"/><stop offset=".6" stop-color="'+g[1]+'"/><stop offset="1" stop-color="'+g[2]+'"/></radialGradient></defs>'+body+'</svg>';
+}
 /* ---------- UI ---------- */
 
 /* ---------- moon drawing ---------- */
@@ -561,6 +955,11 @@ let view={y:T.y,m:T.m}, sel={...T};
 let showEve=true;
 try{const v=localStorage.getItem('mmcal-eve'); if(v!==null) showEve=v==='1';}catch(e){}
 $('showEve').checked=showEve;
+if(window.innerWidth>=920) $('legwrap').open=true;
+let showPop=true;
+try{const v=localStorage.getItem('mmcal-pop'); if(v!==null) showPop=v==='1';}catch(e){}
+$('showPop').checked=showPop;
+$('showPop').addEventListener('change',e=>{showPop=e.target.checked;try{localStorage.setItem('mmcal-pop',showPop?'1':'0');}catch(_){}});
 let showAstro=true;
 try{const v=localStorage.getItem('mmcal-astro'); if(v!==null) showAstro=v==='1';}catch(e){}
 $('showAstro').checked=showAstro;
@@ -591,7 +990,7 @@ function render(anim){
     const i=dinfo(dt.getFullYear(),dt.getMonth()+1,dt.getDate());
     const inMonth=i.m===m&&i.y===y, lab=topLabel(i.r,k===0), hol=holidays(i.m,i.d,i.j,i.r), obs=observances(i.y,i.m,i.d,i.j);
     const b=document.createElement('button');
-    b.type='button';b.className='cell';b.setAttribute('role','gridcell');
+    b.type='button';b.className='cell';b.setAttribute('role','gridcell');b.dataset.key=i.y+'-'+i.m+'-'+i.d;
     if(!inMonth) b.classList.add('out');
     if(i.w===0||i.w===6) b.classList.add('we');
     if(i.r.sab===1) b.classList.add('sab');
@@ -601,12 +1000,15 @@ function render(anim){
     if(i.y===sel.y&&i.m===sel.m&&i.d===sel.d) b.classList.add('sel');
     const as=astro(i.r,i.w);
     const ast=!showAstro?'':as.yat&&as.pya===2?'<span class="ast ast-mix">ရာ·ပြ</span>':as.yat?'<span class="ast ast-y">ရာ</span>':as.pya?'<span class="ast ast-p">ပြ</span>':'';
-    b.innerHTML=ast+(i.r.sab===1?tinyMoon(i.r,'ph'):'')+'<div class="g">'+i.d+'</div><div class="m '+lab.cls+'">'+lab.t+'</div>';
+    const bigM=i.r.mp===1||i.r.mp===3||i.r.sab===1;
+    if(bigM) b.classList.add('bigm');
+    b.innerHTML=ast+(bigM?cellMoon(i.r):(i.r.sab===1?tinyMoon(i.r,'ph'):''))+'<div class="g">'+i.d+'</div><div class="m '+lab.cls+'">'+lab.t+'</div>';
     b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':'')+(hol.length?', ရုံးပိတ်ရက် '+hol.join('၊ '):'')+(obs.length?', '+obs.join('၊ '):''));
-    b.onclick=()=>{sel={y:i.y,m:i.m,d:i.d}; if(!inMonth){view={y:i.y,m:i.m};render(true);} else render();};
+    b.onclick=()=>{pick(i.y,i.m,i.d); if(showPop) openSheet();};
     g.appendChild(b);
     if(inMonth&&(i.r.sab===1||(i.r.sab===2&&showEve))) list.push(i);
   }
+  sizeGrid();
   if(anim){g.classList.remove('swap');void g.offsetWidth;g.classList.add('swap');}
   monthList=list;
   renderList();
@@ -621,7 +1023,7 @@ const GMS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DE
 function goto(i){
   sel={y:i.y,m:i.m,d:i.d};
   const move=view.y!==i.y||view.m!==i.m; view={y:i.y,m:i.m}; render(move);
-  if(window.innerWidth<920) $('panel').scrollIntoView({behavior:'smooth',block:'start'});
+  if(showPop) openSheet();
 }
 function row(i,icon,dd,main,sub,chip,chipCls,liCls){
   const li=document.createElement('li'); if(liCls) li.className=liCls;
@@ -632,7 +1034,7 @@ function row(i,icon,dd,main,sub,chip,chipCls,liCls){
 function yearDays(Y,fn){const out=[];for(let dt=new Date(Y,0,1);dt.getFullYear()===Y;dt.setDate(dt.getDate()+1)){const i=dinfo(Y,dt.getMonth()+1,dt.getDate());if(fn(i)) out.push(i);}return out;}
 const holIcon='<span class="hmark" aria-hidden="true"></span>', obsIcon='<span class="hmark omark" aria-hidden="true"></span>';
 function renderList(){
-  document.querySelectorAll('.tabs [role=tab]').forEach(b=>{const on=b.dataset.tab===tab;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;});
+  document.querySelectorAll('.list .tabs [role=tab]').forEach(b=>{const on=b.dataset.tab===tab;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;});
   const ol=$('list'); ol.innerHTML='';
   const Y=view.y, {m}=view;
   $('ynav').hidden=tab==='month';
@@ -678,7 +1080,7 @@ function renderList(){
     });
   }
 }
-document.querySelectorAll('.tabs [role=tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;try{localStorage.setItem('mmcal-tab',tab);}catch(_){}renderList();}));
+document.querySelectorAll('.list .tabs [role=tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;try{localStorage.setItem('mmcal-tab',tab);}catch(_){}renderList();}));
 $('yPrev').onclick=()=>{if(view.y>1900){view={y:view.y-1,m:view.m};render(true);}};
 $('yNext').onclick=()=>{if(view.y<2100){view={y:view.y+1,m:view.m};render(true);}};
 function specialsOf(i){
@@ -692,40 +1094,300 @@ function specialHTML(s){
   const p=s.n.split(' · '), tag=s.k==='hol'?'ရုံးပိတ်ရက်':s.k==='obs'?'ပွဲနေ့':'ဘာသာရေးနေ့';
   return '<div class="sp sp-'+s.k+'"><span class="sp-k">'+tag+'</span><b>'+p[0]+'</b>'+(p[1]?'<small>'+p[1]+'</small>':'')+'</div>';
 }
+
+/* ---------- day detail sheet ---------- */
+let lastFocus=null;
+function sheetHTML(){
+  const i=dinfo(sel.y,sel.m,sel.d), r=i.r, as=astro(r,i.w);
+  const isToday=sel.y===T.y&&sel.m===T.m&&sel.d===T.d;
+  const EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const sp=specialsOf(i);
+  let h='<div class="sh-top"><div class="sh-num'+(i.w===0||i.w===6?' we':'')+'">'+i.d+'</div><div class="sh-date"><div class="sh-gm">'+GM[i.m-1]+', '+i.y+'</div><div class="sh-wd'+(i.w===0||i.w===6?' we':'')+'">'+EN[i.w]+'</div><div class="sh-mwd">'+WD[i.w]+(isToday?' (ယနေ့)':'')+'</div></div></div>';
+  h+='<div class="sh-mm"><div><b>'+monthName(r,false)+' '+phaseText(r)+'</b>၊ '+mn(r.my)+' ခု။<br>သာသနာနှစ် '+mn(sasana(r))+'။</div>'+tinyMoon(r,'sh-moon')+'</div>';
+  if(sp.length) h+='<div class="sh-sp">'+sp.map(specialHTML).join('')+'</div>';
+  const items=[];
+  if(r.sab===1) items.push(['gold','ဥပုသ်နေ့']);
+  if(r.sab===2) items.push(['gold','အဖိတ်နေ့']);
+  items.push(['','နဂါးခေါင်း'+NAG[as.nag]+'သို့လှည့်']);
+  if(as.yat&&as.pya===2){items.push(['yat','ရက်ရာဇာ']);items.push(['pya','မွန်းလွဲပြဿဒါး']);}
+  else{ if(as.yat) items.push(['yat','ရက်ရာဇာ']); if(as.pya) items.push(['pya',as.pya===2?'မွန်းလွဲပြဿဒါး':'ပြဿဒါး']); }
+  astroDays(r,i.w).forEach(n=>items.push(['',n]));
+  h+='<ul class="sh-list">'+items.map(([k,t])=>'<li class="'+k+'">'+t+'</li>').join('')+'</ul>';
+  for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){const dt=new Date(sel.y,sel.m-1,sel.d+k); h+='<p class="sh-next">နောက်ဥပုသ်နေ့ — '+dt.getDate()+' '+GM[dt.getMonth()]+' ('+WD[dt.getDay()]+')၊ '+mn(k)+' ရက်အကြာ</p>'; break;} }
+  return h;
+}
+function fillSheet(){
+  $('shTitle').textContent=sel.d+' '+GM[sel.m-1].slice(0,3)+' '+sel.y;
+  $('sheetBody').innerHTML=sheetHTML();
+}
+function openSheet(){
+  fillSheet();
+  if(!$('sheetBack').hidden) return;
+  lastFocus=document.activeElement;
+  $('sheetBack').hidden=false; document.body.classList.add('noscroll');
+  requestAnimationFrame(()=>$('sheetBack').classList.add('on'));
+  $('shClose').focus({preventScroll:true});
+}
+function closeSheet(){
+  $('sheetBack').classList.remove('on'); document.body.classList.remove('noscroll');
+  setTimeout(()=>{$('sheetBack').hidden=true;},180);
+  if(lastFocus&&lastFocus.isConnected&&lastFocus.focus) lastFocus.focus({preventScroll:true});
+}
+function stepDay(n){
+  const dt=new Date(sel.y,sel.m-1,sel.d+n); if(dt.getFullYear()<1900||dt.getFullYear()>2100) return;
+  sel={y:dt.getFullYear(),m:dt.getMonth()+1,d:dt.getDate()};
+  pick(sel.y,sel.m,sel.d);
+  fillSheet();
+}
+
+/* ---------- date finder ---------- */
+let fLast=null;
+function openFind(){
+  fLast=document.activeElement;
+  const r=dinfo(sel.y,sel.m,sel.d).r;
+  if(!$('fYear').value) $('fYear').value=r.my;
+  if(!$('fDate').value) $('fDate').value=sel.y+'-'+String(sel.m).padStart(2,'0')+'-'+String(sel.d).padStart(2,'0');
+  $('findBack').hidden=false; document.body.classList.add('noscroll');
+  requestAnimationFrame(()=>$('findBack').classList.add('on'));
+  $('fClose').focus({preventScroll:true});
+}
+function closeFind(){
+  $('findBack').classList.remove('on'); document.body.classList.remove('noscroll');
+  setTimeout(()=>{$('findBack').hidden=true;},180);
+  if(fLast&&fLast.isConnected&&fLast.focus) fLast.focus({preventScroll:true});
+}
+function setFTab(t){
+  document.querySelectorAll('.ftabs [role=tab]').forEach(b=>{const on=b.dataset.f===t;b.setAttribute('aria-selected',on);});
+  $('fMM').hidden=t!=='mm'; $('fEN').hidden=t!=='en'; $('fOut').innerHTML='';
+}
+document.querySelectorAll('.ftabs [role=tab]').forEach(b=>b.addEventListener('click',()=>setFTab(b.dataset.f)));
+function syncPhase(){const p=+$('fPhase').value; $('fDay').disabled=(p===1||p===3);}
+$('fPhase').addEventListener('change',syncPhase);
+function showDay(y,m,d){
+  closeFind();
+  sel={y,m,d}; view={y,m}; render(true);
+  setTimeout(openSheet,200);
+}
+function resButton(i){
+  const b=document.createElement('button'); b.type='button'; b.className='res';
+  b.innerHTML='<span><b>'+i.d+' '+GM[i.m-1]+' '+i.y+'</b><small>'+WD[i.w]+'နေ့ · '+monthName(i.r,false)+' '+phaseText(i.r)+'၊ '+mn(i.r.my)+' ခု</small></span><span aria-hidden="true">›</span>';
+  b.onclick=()=>showDay(i.y,i.m,i.d);
+  return b;
+}
+$('fMM').addEventListener('submit',e=>{
+  e.preventDefault();
+  const out=$('fOut'); out.innerHTML='';
+  const Y=parseInt($('fYear').value,10), M=+$('fMonth').value, P=+$('fPhase').value, D=parseInt($('fDay').value,10);
+  const msg=t=>{out.innerHTML='<p class="msg">'+t+'</p>';};
+  if(!(Y>=1262&&Y<=1462)) return msg('မြန်မာနှစ်ကို ၁၂၆၂ မှ ၁၄၆၂ အတွင်း ထည့်ပါ (ခရစ်နှစ် ၁၉၀၀–၂၁၀၀)။');
+  if((P===0||P===2)&&!(D>=1&&D<=15)) return msg('ရက်ကို ၁ မှ ၁၅ အတွင်း ထည့်ပါ။');
+  const start=Math.round(SY*Y+MO)+1, end=Math.round(SY*(Y+1)+MO)+1;
+  const hits=[];
+  for(let j=start;j<end;j++){
+    const r=j2m(j), mmN2=r.mm>12?r.mm-12:r.mm;
+    if(mmN2!==M) continue;
+    let ok=false;
+    if(P===0) ok=r.mp===0&&r.md===D || (D===15&&r.md===15&&false);
+    if(P===1) ok=r.mp===1;
+    if(P===2) ok=(r.mp===2||r.mp===3)&&r.md===15+D;
+    if(P===3) ok=r.mp===3;
+    if(ok){const dt=new Date(Date.UTC(2000,0,1)+(j-2451545)*864e5); hits.push(dinfo(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate()));}
+  }
+  if(!hits.length){
+    if(M===0) return msg(mn(Y)+' ခုနှစ်က ဝါမထပ်လို့ ပဝါဆိုလ မရှိပါ။');
+    if(P===0&&D===15) return msg('လဆန်း ၁၅ ရက်က လပြည့်နေ့ ဖြစ်ပါတယ်။ "လပြည့်" ကို ရွေးပါ။');
+    if(P===2) return msg('ဒီလမှာ လဆုတ် '+mn(D)+' ရက် မရှိပါ။ ရက်မစုံလ (၂၉ ရက်) ဆိုရင် လဆုတ် ၁၄ ရက်က လကွယ်နေ့ ဖြစ်ပါတယ်။');
+    return msg('ရှာမတွေ့ပါ။');
+  }
+  if(hits.length>1) out.insertAdjacentHTML('beforeend','<p class="msg">'+mn(Y)+' ခုနှစ်ထဲမှာ '+mn(hits.length)+' ကြိမ် ကျပါတယ် (နှစ်ဆန်းမတိုင်ခင်နှင့် နှစ်ကုန်ခါနီး)။</p>');
+  hits.forEach(i=>out.appendChild(resButton(i)));
+});
+$('fEN').addEventListener('submit',e=>{
+  e.preventDefault();
+  const v=$('fDate').value; if(!v){$('fOut').innerHTML='<p class="msg">ရက်စွဲ ရွေးပါ။</p>';return;}
+  const [y,m,d]=v.split('-').map(Number);
+  if(y<1900||y>2100){$('fOut').innerHTML='<p class="msg">၁၉၀၀ မှ ၂၁၀၀ အတွင်း ရွေးပါ။</p>';return;}
+  $('fOut').innerHTML=''; $('fOut').appendChild(resButton(dinfo(y,m,d)));
+});
+$('findBtn').onclick=openFind;
+$('fClose').onclick=closeFind;
+$('findBack').addEventListener('click',e=>{if(e.target===$('findBack')) closeFind();});
+document.addEventListener('keydown',e=>{if(!$('findBack').hidden&&e.key==='Escape'){e.preventDefault();closeFind();}},true);
+syncPhase();
+$('shClose').onclick=closeSheet;
+$('shPrev').onclick=()=>stepDay(-1);
+$('shNext').onclick=()=>stepDay(1);
+$('sheetBack').addEventListener('click',e=>{if(e.target===$('sheetBack')) closeSheet();});
+document.addEventListener('keydown',e=>{ if($('sheetBack').hidden) return;
+  if(e.key==='Escape'){e.preventDefault();closeSheet();}
+  if(e.key==='ArrowLeft'){e.preventDefault();e.stopImmediatePropagation();stepDay(-1);}
+  if(e.key==='ArrowRight'){e.preventDefault();e.stopImmediatePropagation();stepDay(1);} },true);
+let sx=null,sy=null;
+$('sheetBody').addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+$('sheetBody').addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5) stepDay(dx<0?1:-1);sx=null;});
+
+/* select a day without moving the page: only swap the highlight and keep the grid where it was */
+function keepPlace(fn){
+  const g=$('grid'), before=g.getBoundingClientRect().top;
+  fn();
+  const d=g.getBoundingClientRect().top-before;
+  if(Math.abs(d)>0.5) window.scrollBy(0,d);
+}
+function pick(y,m,d){
+  keepPlace(()=>{
+    sel={y,m,d};
+    if(view.y!==y||view.m!==m){view={y,m};render(true);return;}
+    document.querySelectorAll('.cell.sel').forEach(c=>c.classList.remove('sel'));
+    const c=document.querySelector('.cell[data-key="'+y+'-'+m+'-'+d+'"]'); if(c) c.classList.add('sel');
+    renderPanel();
+  });
+}
+
+/* shrink a line's font until it fits its box (never below 10px) */
+function fitText(el,min){
+  if(!el) return; el.style.fontSize='';
+  let fs=parseFloat(getComputedStyle(el).fontSize), box=el.parentElement;
+  const avail=()=>box.clientWidth-(el.offsetLeft-box.offsetLeft)-2;
+  let guard=40; while(el.scrollWidth>avail()&&fs>(min||10)&&guard--){fs-=0.5;el.style.fontSize=fs+'px';}
+}
+function fitPanel(){
+  const p=$('panel'); if(!p) return;
+  if(document.body.classList.contains('m-full')){ p.querySelectorAll('[style*="font-size"]').forEach(e=>e.style.fontSize=''); return; }
+  fitText(p.querySelector('.sp-head'),9.5);
+  fitText(p.querySelector('.sp-line b'),10.5);
+  fitText(p.querySelector('.mp-mm'),12);
+  fitText(p.querySelector('.mp-date .gm'),10);
+  fitText(p.querySelector('.mp-date .wd'),8.5);
+  p.querySelectorAll('.mp-meta div').forEach(d=>fitText(d,8));
+  fitText(p.querySelector('.mp-astro b'),9.5);
+}
+window.addEventListener('resize',fitPanel);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitPanel);
+
+/* phone: stretch the rows so the card + calendar fill exactly one screen */
+function sizeGrid(){
+  const g=$('grid'); if(!g) return;
+  const cells=g.querySelectorAll('.cell');
+  if(window.innerWidth>=920||document.body.classList.contains('m-full')){cells.forEach(c=>c.style.minHeight='');return;}
+  const rows=Math.ceil(cells.length/7)||6;
+  cells.forEach(c=>c.style.minHeight='');
+  const top=g.getBoundingClientRect().top+window.scrollY;
+  const after=($('legwrap').getBoundingClientRect().bottom-g.getBoundingClientRect().bottom)+24;
+  const gap=parseFloat(getComputedStyle(g).rowGap)||4;
+  const avail=window.innerHeight-top-after-gap*(rows-1);
+  const h=Math.max(50,Math.min(92,Math.floor(avail/rows)));
+  cells.forEach(c=>c.style.minHeight=h+'px');
+}
+window.addEventListener('resize',()=>{sizeGrid();});
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(sizeGrid);
+
+/* ---------- phone full-screen mode + pull-up drawer ---------- */
+const mqPhone=window.matchMedia('(max-width:919px)');
+const movables=[{sel:'.side'},{sel:'#legwrap'},{sel:'.list'},{sel:'.note'}].map(m=>({el:document.querySelector(m.sel)}));
+function applyMode(){
+  const on=mqPhone.matches, is=document.body.classList.contains('m-full');
+  if(on&&!is){
+    document.body.classList.add('m-full');
+    movables.forEach(m=>{ if(!m.el) return; m.ph=document.createComment('ph'); m.el.parentNode.insertBefore(m.ph,m.el); $('drBody').appendChild(m.el); });
+    $('legwrap').open=true;
+  } else if(!on&&is){
+    closeDrawer(true);
+    document.body.classList.remove('m-full');
+    movables.forEach(m=>{ if(m.el&&m.ph){ m.ph.parentNode.insertBefore(m.el,m.ph); m.ph.remove(); m.ph=null; } });
+  }
+  sizeGrid(); fitPanel();
+}
+function openDrawer(mode){
+  const d=$('drawer'); d.dataset.mode=mode||'card'; document.querySelector('.dr-title').textContent=(mode==='list')?'ဥပုသ်၊ ရုံးပိတ်၊ ပွဲနေ့ စာရင်းများ':'ယနေ့ အသေးစိတ်'; $('drBody').scrollTop=0; d.classList.remove('drag'); d.style.transform='';
+  d.classList.add('open'); $('drHandle').setAttribute('aria-expanded','true'); $('menuBtn').setAttribute('aria-expanded','true'); d.scrollTop=0;
+  $('drBack').hidden=false; requestAnimationFrame(()=>$('drBack').classList.add('on'));
+  setTimeout(fitPanel,30);
+}
+function closeDrawer(now){
+  const d=$('drawer'); d.classList.remove('drag'); d.style.transform='';
+  d.classList.remove('open'); $('drHandle').setAttribute('aria-expanded','false'); $('menuBtn').setAttribute('aria-expanded','false');
+  $('drBack').classList.remove('on'); if(now) $('drBack').hidden=true; else setTimeout(()=>{ if(!d.classList.contains('open')) $('drBack').hidden=true; },220);
+}
+(function(){
+  const hd=$('drHandle'), d=$('drawer');
+  let y0=null, t0=0, moved=false, base=0;
+  const closedOffset=()=>d.getBoundingClientRect().height-hd.offsetHeight;
+  hd.addEventListener('pointerdown',e=>{ y0=e.clientY; t0=Date.now(); moved=false; base=d.classList.contains('open')?0:closedOffset(); d.classList.add('drag'); hd.setPointerCapture(e.pointerId); });
+  hd.addEventListener('pointermove',e=>{ if(y0===null) return; const dy=e.clientY-y0; if(Math.abs(dy)>6) moved=true; const t=Math.max(0,Math.min(closedOffset(),base+dy)); d.style.transform='translateY('+t+'px)'; });
+  hd.addEventListener('pointerup',e=>{ if(y0===null) return; const dy=e.clientY-y0; y0=null; d.classList.remove('drag'); d.style.transform='';
+    if(!moved){ d.classList.contains('open')?closeDrawer():openDrawer(); return; }
+    if(dy<-40) openDrawer(); else if(dy>40) closeDrawer(); else (d.classList.contains('open')?openDrawer():closeDrawer()); });
+  hd.addEventListener('pointercancel',()=>{ y0=null; d.classList.remove('drag'); d.style.transform=''; });
+  hd.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDrawer(); });
+  $('drBack').addEventListener('click',()=>closeDrawer());
+  // swipe down inside the drawer when it is scrolled to the top closes it
+  const body=$('drBody'); let sy=null;
+  body.addEventListener('touchstart',e=>{ sy=body.scrollTop<=0?e.touches[0].clientY:null; },{passive:true});
+
+})();
+
+
+/* list button: jump straight to the Uposatha / holiday / special-day lists */
+$('listBtn').onclick=()=>{
+  const d=$('drawer');
+  if(document.body.classList.contains('m-full')){ if(d.classList.contains('open')&&d.dataset.mode==='list') closeDrawer(); else openDrawer('list'); }
+  else document.querySelector('.list').scrollIntoView({behavior:'smooth',block:'start'});
+};
+/* side menu */
+$('menuBtn').onclick=()=>{ const d=$('drawer'); if(d.classList.contains('open')&&d.dataset.mode!=='list') closeDrawer(); else openDrawer('card'); };
+$('drClose').onclick=()=>closeDrawer();
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('drawer').classList.contains('open')) closeDrawer(); });
+(function(){ // swipe right to close
+  const d=$('drawer'); let sx=null,sy=null;
+  d.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  d.addEventListener('touchend',e=>{ if(sx===null) return; const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; if(dx>70&&Math.abs(dx)>Math.abs(dy)*1.4) closeDrawer(); sx=null; },{passive:true});
+})();
+function updateHandle(i,r,nk,nd){
+  const el=$('drSum'); if(!el) return;
+  const sp=specialsOf(i);
+  el.innerHTML='<b>'+i.d+' '+GM[i.m-1].slice(0,3)+'</b> · '+monthName(r,false)+' '+phaseText(r)+(r.sab===1?' · <em>ဥပုသ်</em>':'')+(sp.length?' · <em>'+sp[0].n.split(' · ')[0]+'</em>':'')+(nk?' · နောက်ဥပုသ် ('+GM[nd.getMonth()].slice(0,3)+' '+nd.getDate()+')':'');
+}
+mqPhone.addEventListener?mqPhone.addEventListener('change',applyMode):mqPhone.addListener(applyMode);
 function renderPanel(){
   const i=dinfo(sel.y,sel.m,sel.d), r=i.r;
   const isToday=sel.y===T.y&&sel.m===T.m&&sel.d===T.d;
   const EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const sp=specialsOf(i);
-  let h='';
-  if(sp.length) h+='<div class="mp-special" role="status"><div class="sp-head">'+(isToday?'ယနေ့ ထူးခြားသောနေ့':'ထူးခြားသောနေ့')+'</div>'+sp.map(specialHTML).join('')+'</div>';
-  h+='<div class="mp-top">'+bigMoon(r)+'<div class="mp-date"><div class="wd">'+EN[i.w]+(isToday?' · TODAY':'')+'</div><div class="gd">'+i.d+'</div><div class="gm">'+GM[i.m-1]+' '+i.y+'</div></div></div>';
+  const tagOf=k=>k==='hol'?'ရုံးပိတ်':k==='obs'?'ပွဲနေ့':'ဘာသာရေး';
+  // notable-day strip: always exactly two single lines, so the card never changes height
+  let head, line;
+  if(sp.length){
+    head=(isToday?'ယနေ့ ':'')+'ထူးခြားသောနေ့';
+    line='<span class="sp-k k-'+sp[0].k+'">'+tagOf(sp[0].k)+'</span><b>'+sp.map(s=>s.n.split(' · ')[0]).join('၊ ')+'</b>';
+  }else{
+    head='နောက်ထူးခြားသောနေ့'; line='<b>—</b>';
+    for(let k=1;k<=370;k++){
+      const dt=new Date(sel.y,sel.m-1,sel.d+k), n=dinfo(dt.getFullYear(),dt.getMonth()+1,dt.getDate()), s=specialsOf(n);
+      if(s.length){head='နောက်ထူးခြားသောနေ့ · '+mn(k)+' ရက်အကြာ ('+dt.getDate()+' '+GM[dt.getMonth()].slice(0,3)+')';
+        line='<span class="sp-k k-'+s[0].k+'">'+tagOf(s[0].k)+'</span><b class="dim">'+s.map(x=>x.n.split(' · ')[0]).join('၊ ')+'</b>';break;}
+    }
+  }
+  let h='<div class="mp-special'+(sp.length?' on':'')+'"><div class="sp-head">'+head+'</div><div class="sp-line">'+line+'</div></div>';
+  const as0=astro(r,i.w), st=[];
+  if(r.sab===1) st.push('<span class="badge">ဥပုသ်နေ့</span>');
+  if(r.sab===2) st.push('<span class="badge ghost">အဖိတ်နေ့</span>');
+  if(as0.yat) st.push('<span class="badge yat">ရက်ရာဇာ</span>');
+  if(as0.pya) st.push('<span class="badge pya">'+(as0.pya===2?'မွန်းလွဲပြဿဒါး':'ပြဿဒါး')+'</span>');
+  h+='<div class="mp-top">'+bigMoon(r)+'<div class="mp-date"><div class="wd">'+EN[i.w]+(isToday?' · TODAY':'')+'</div><div class="gd">'+i.d+'</div><div class="gm">'+GM[i.m-1]+' '+i.y+'</div></div><div class="mp-stat'+(st.length>2?' n3':'')+'">'+st.join('')+'</div></div>';
   h+='<div><div class="mp-mm">'+monthName(r,false)+' '+phaseText(r)+'</div>';
-  h+='<div class="mp-meta">'+WD[i.w]+'နေ့ · မြန်မာနှစ် '+mn(r.my)+' ခု · သာသနာနှစ် '+mn(sasana(r))+'<br>'+YT[r.myt]+' · '+monthName(r,false)+'လ ရက် '+mn(r.len)+' ('+(r.len===30?'ရက်စုံ':'ရက်မစုံ')+')</div></div>';
-  const bd=[];
-  if(r.sab===1) bd.push('<span class="badge">ဥပုသ်နေ့</span>');
-  if(r.sab===2) bd.push('<span class="badge ghost">အဖိတ်နေ့ · နက်ဖြန် ဥပုသ်</span>');
-  const as=astro(r,i.w);
-  if(as.yat&&as.pya===2) bd.push('<span class="badge yat">နံနက် ရက်ရာဇာ</span><span class="badge pya">မွန်းလွဲ ပြဿဒါး</span>');
-  else if(as.yat) bd.push('<span class="badge yat">ရက်ရာဇာ</span>');
-  else if(as.pya) bd.push('<span class="badge pya">ပြဿဒါး</span>');
-  bd.push('<span class="badge nag"><svg width="14" height="14" viewBox="-7 -7 14 14" aria-hidden="true" style="transform:rotate('+NAG_DEG[as.nag]+'deg)"><path d="M0,-6 L4,2 L0,0 L-4,2Z" fill="currentColor"/></svg>နဂါးခေါင်း '+NAG[as.nag]+'လှည့်</span>');
-  if(bd.length) h+='<div class="badges">'+bd.join('')+'</div>';
-  for(let k=1;k<=16;k++){
-    if(j2m(i.j+k).sab===1){
-      const dt=new Date(sel.y,sel.m-1,sel.d+k);
-      h+='<div class="next"><b>'+mn(k)+'</b><div>ရက်အကြာ နောက်ဥပုသ်နေ့<small>'+dt.getDate()+' '+GM[dt.getMonth()]+' · '+WD[dt.getDay()]+'နေ့</small></div></div>';
-      break;
-    }
-  }
-  for(let k=1;k<=120;k++){
-    const dt=new Date(sel.y,sel.m-1,sel.d+k), n=dinfo(dt.getFullYear(),dt.getMonth()+1,dt.getDate()), s=specialsOf(n).filter(x=>x.k!=='fest'||true);
-    if(s.length){
-      h+='<div class="next up"><b>'+mn(k)+'</b><div>ရက်အကြာ နောက်ထူးခြားသောနေ့ — '+s.map(x=>x.n.split(' · ')[0]).join('၊ ')+'<small>'+dt.getDate()+' '+GM[dt.getMonth()]+' · '+WD[dt.getDay()]+'နေ့</small></div></div>';
-      break;
-    }
-  }
-  $('panel').innerHTML=h;
+  h+='<div class="mp-meta"><div>'+WD[i.w]+'နေ့ · မြန်မာနှစ် '+mn(r.my)+' ခု · သာသနာနှစ် '+mn(sasana(r))+'</div><div>'+YT[r.myt]+' · '+monthName(r,false)+'လ ရက် '+mn(r.len)+' ('+(r.len===30?'ရက်စုံ':'ရက်မစုံ')+')</div></div></div>';
+  const ad=astroDays(r,i.w);
+  h+='<div class="mp-astro"><span>✣</span><b>'+(ad.length?ad.join(' · '):'<i>ဗေဒင်နေ့ မရှိ</i>')+'</b></div>';
+  const bd=[], as=as0;
+  bd.push('<span class="badge nag"><svg width="14" height="14" viewBox="-7 -7 14 14" aria-hidden="true" style="transform:rotate('+NAG_DEG[as.nag]+'deg)"><path d="M0,-6 L4,2 L0,0 L-4,2Z" fill="currentColor"/></svg>နဂါးခေါင်း '+NAG[as.nag]+'</span>');
+  let nk=0; for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){nk=k;break;} }
+  if(nk){const nd=new Date(sel.y,sel.m-1,sel.d+nk); bd.push('<span class="badge soft nx-chip">နောက်ဥပုသ် ('+GM[nd.getMonth()].slice(0,3)+' '+nd.getDate()+') ('+mn(nk)+' ရက်လို)</span>');}
+  h+='<div class="badges">'+bd.join('')+'</div>';
+  let nx='';
+  for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){const dt=new Date(sel.y,sel.m-1,sel.d+k); nx='<div class="next"><b>'+mn(k)+'</b><div>ရက်အကြာ နောက်ဥပုသ်နေ့<small>'+dt.getDate()+' '+GM[dt.getMonth()]+' · '+WD[dt.getDay()]+'နေ့</small></div></div>'; break;} }
+  $('panel').innerHTML=h+nx;
+  { let k2=0; for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){k2=k;break;} } updateHandle(i,r,k2,new Date(sel.y,sel.m-1,sel.d+k2)); }
+  fitPanel();
 }
 function shift(n){let {y,m}=view; m+=n; if(m<1){m=12;y--;} if(m>12){m=1;y++;} if(y<1900||y>2100) return; view={y,m}; render(true);}
 $('prev').onclick=()=>shift(-1);
@@ -734,11 +1396,12 @@ $('todayBtn').onclick=()=>{view={y:T.y,m:T.m};sel={...T};render(true);};
 $('pick').addEventListener('change',e=>{const [y,m]=e.target.value.split('-').map(Number); if(y&&m){view={y,m};render(true);}});
 $('showAstro').addEventListener('change',e=>{showAstro=e.target.checked;try{localStorage.setItem('mmcal-astro',showAstro?'1':'0');}catch(_){}render();});
 $('showEve').addEventListener('change',e=>{showEve=e.target.checked;try{localStorage.setItem('mmcal-eve',showEve?'1':'0');}catch(_){}render();});
-document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return; if(e.key==='ArrowLeft')shift(-1); if(e.key==='ArrowRight')shift(1);});
+document.addEventListener('keydown',e=>{if(/INPUT|SELECT/.test(e.target.tagName)||!$('findBack').hidden)return; if(e.key==='ArrowLeft')shift(-1); if(e.key==='ArrowRight')shift(1);});
 let tx=null,ty0=null;
 $('grid').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
 $('grid').addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty0; if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5) shift(dx<0?1:-1); tx=null;});
 render();
+applyMode();
 </script>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
