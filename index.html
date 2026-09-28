@@ -559,13 +559,19 @@ body.m-full .nav .today{flex:1.4;max-width:80px}
 /* ===== colour themes (only the accent colours change) ===== */
 :root[data-skin="2"]{--lacquer:#1f5c49;--lacquer-2:#0e3326;--on-lacquer:#e8f3eb;--gold:#b98a32;--gold-hi:#e7c77a}
 :root[data-skin="3"]{--lacquer:#27336b;--lacquer-2:#111a3f;--on-lacquer:#e9e7f7;--gold:#b89a5a;--gold-hi:#e3cf95}
+:root[data-skin="5"]{--lacquer:#6b2d5c;--lacquer-2:#3d1433;--on-lacquer:#f7e6f1;--gold:#c28a3a;--gold-hi:#ecc97c}
+:root[data-skin="6"]{--lacquer:#0f6b73;--lacquer-2:#063b40;--on-lacquer:#e2f5f5;--gold:#c29a4a;--gold-hi:#ecd28f}
+:root[data-skin="7"]{--lacquer:#3a3a3a;--lacquer-2:#141414;--on-lacquer:#f2efe8;--gold:#b98a32;--gold-hi:#e7c77a}
+:root[data-skin="8"]{--lacquer:#9c2a55;--lacquer-2:#5a1030;--on-lacquer:#fde8f0;--gold:#c98a3a;--gold-hi:#f0c77a}
+:root[data-skin="9"]{--lacquer:#4a6b1f;--lacquer-2:#243a0b;--on-lacquer:#eff5e0;--gold:#b98a32;--gold-hi:#e7c77a}
+:root[data-skin="10"]{--lacquer:#6b4a2b;--lacquer-2:#3a2512;--on-lacquer:#f6ecdf;--gold:#c79a4a;--gold-hi:#efd08a}
 :root[data-skin="4"]{--lacquer:#b4561a;--lacquer-2:#76300c;--on-lacquer:#fff1de;--gold:#c08a2a;--gold-hi:#f0c56a}
 .skins{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%;padding-top:6px;border-top:1px dashed var(--line);margin-top:4px}
 .skins-l{font:700 13px var(--mm);color:var(--ink);width:100%}
 .skins button{flex:1 1 calc(50% - 8px);min-width:0;display:grid;justify-items:center;gap:2px;padding:8px 4px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font:700 12.5px var(--mm);color:var(--ink)}
 .skins{display:grid!important;grid-template-columns:1fr 1fr}
 .skins-l{grid-column:1/-1}
-@media (min-width:920px){.skins{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:920px){.skins{grid-template-columns:repeat(5,1fr)}}
 .skins button small{font:500 11px var(--mm);color:var(--muted)}
 .skins button i{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--a) 55%,var(--b) 55%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
 .skins button[aria-checked="true"]{border-color:var(--lacquer);box-shadow:0 0 0 2px var(--lacquer)}
@@ -736,6 +742,12 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
           <button type="button" role="radio" data-skin="2" aria-checked="false"><i style="--a:#1f5c49;--b:#b98a32"></i>Theme ၂<small>ကျောက်စိမ်း</small></button>
           <button type="button" role="radio" data-skin="3" aria-checked="false"><i style="--a:#27336b;--b:#c9b27a"></i>Theme ၃<small>ညကောင်းကင်</small></button>
           <button type="button" role="radio" data-skin="4" aria-checked="false"><i style="--a:#b4561a;--b:#e2b04a"></i>Theme ၄<small>သင်္ကန်းရောင်</small></button>
+          <button type="button" role="radio" data-skin="5" aria-checked="false"><i style="--a:#6b2d5c;--b:#c28a3a"></i>Theme ၅<small>ပိတောက်ခရမ်း</small></button>
+          <button type="button" role="radio" data-skin="6" aria-checked="false"><i style="--a:#0f6b73;--b:#c29a4a"></i>Theme ၆<small>ပင်လယ်ပြာ</small></button>
+          <button type="button" role="radio" data-skin="7" aria-checked="false"><i style="--a:#3a3a3a;--b:#b98a32"></i>Theme ၇<small>မင်မည်း</small></button>
+          <button type="button" role="radio" data-skin="8" aria-checked="false"><i style="--a:#9c2a55;--b:#c98a3a"></i>Theme ၈<small>ပန်းနုရောင်</small></button>
+          <button type="button" role="radio" data-skin="9" aria-checked="false"><i style="--a:#4a6b1f;--b:#b98a32"></i>Theme ၉<small>စပါးခင်း</small></button>
+          <button type="button" role="radio" data-skin="10" aria-checked="false"><i style="--a:#6b4a2b;--b:#c79a4a"></i>Theme ၁၀<small>ကျွန်းသစ်</small></button>
         </div>
       </div>
       </details>
@@ -1577,7 +1589,7 @@ $('listBtn').onclick=()=>{
 };
 
 /* ---------- colour theme picker ---------- */
-const SKIN_META={1:'#8a1c12',2:'#1f5c49',3:'#27336b',4:'#b4561a'};
+const SKIN_META={1:'#8a1c12',2:'#1f5c49',3:'#27336b',4:'#b4561a',5:'#6b2d5c',6:'#0f6b73',7:'#3a3a3a',8:'#9c2a55',9:'#4a6b1f',10:'#6b4a2b'};
 function setSkin(n,save){
   n=String(n); if(!SKIN_META[n]) n='1';
   if(n==='1') document.documentElement.removeAttribute('data-skin'); else document.documentElement.setAttribute('data-skin',n);
