@@ -483,7 +483,7 @@ body.m-full .drawer.open{transform:translateX(0)!important}
 body.m-full .drawer.drag{transition:none}
 body.m-full .dr-handle{display:none}
 .dr-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 10px 18px;background:var(--paper);border-bottom:1px solid var(--line);border-radius:20px 0 0 0}
-.dr-title{font:700 17px var(--mm)}
+.dr-title{font:700 17px var(--mm);white-space:nowrap;min-width:0}
 /* full-screen phone: bigger text and moon icons inside the tall cells */
 body.m-full .cal .cell{gap:6px}
 body.m-full .cal .cell .g{font-size:clamp(26px,8vw,34px)!important}
@@ -502,7 +502,7 @@ body.m-full .dow div{font-size:12px}
 .cell.bigm .g,.cell.bigm .m{position:relative;z-index:1}
 .cell.bigm .m,.cell.bigm .m.lbl{color:#5a1109!important;opacity:1!important;font-weight:700;text-shadow:0 0 6px rgba(255,250,235,.9)}
 .cell.bigm.sel .m,.cell.bigm.today .m{color:#5a1109!important}
-body.m-full .cal .cell.bigm .bgmoon{top:63%;width:min(100%,92px)}
+body.m-full .cal .cell.bigm .bgmoon{top:63%;width:min(90%,86px)}
 /* inside the ☰ menu there is room again: big moon card like the original */
 body.m-full .dr-body .moonpanel{min-height:0!important;padding:22px 20px 22px!important;gap:14px!important;border-radius:18px!important}
 body.m-full .dr-body .moonpanel::after{height:12px!important}
@@ -531,6 +531,143 @@ body.m-full .drawer[data-mode="card"] .dr-body>.list{display:none}
 body.m-full .drawer[data-mode="list"] .dr-body>.side,
 body.m-full .drawer[data-mode="list"] .dr-body>.legwrap,
 body.m-full .drawer[data-mode="list"] .dr-body>.note{display:none}
+/* phone header: summary of the selected day in the empty space beside the title */
+.hd-info{display:none}
+body.m-full .cal-head{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,auto);column-gap:10px;row-gap:8px}
+body.m-full .cal-head>div:first-child{min-width:0}
+body.m-full .cal-head .mmonths{white-space:nowrap!important;overflow:visible!important;line-height:1.7!important;font-size:12.5px!important}
+body.m-full .cal-head{grid-template-rows:62px auto}
+body.m-full .hd-info{height:62px;overflow:hidden}
+body.m-full .cal-head>div:first-child{display:contents}
+body.m-full .cal-head h1{grid-column:1;grid-row:1;align-self:center}
+body.m-full .hd-info{grid-column:2;grid-row:1}
+body.m-full .cal-head .mmonths{grid-column:1/-1;grid-row:2;margin:0!important}
+body.m-full .nav{grid-row:3}
+body.m-full .cal-head{grid-template-rows:62px auto auto!important;row-gap:6px}
+
+body.m-full .hd-info{display:grid;align-content:center;justify-items:end;text-align:right;gap:1px;min-width:0;max-width:62vw}
+body.m-full .hd-info div{white-space:nowrap;overflow:visible;max-width:100%}
+body.m-full .hd-info .h1{font:600 12px/1.6 var(--mm);color:var(--gold-hi)}
+body.m-full .hd-info .h2{font:700 14.5px/1.75 var(--mm);color:#fff}
+body.m-full .hd-info .h3{font:500 12px/1.7 var(--mm);color:var(--on-lacquer);opacity:.9}
+body.m-full .hd-info .h3 b{color:var(--gold-hi);font-weight:700}
+body.m-full .nav{grid-column:1/-1;justify-content:space-between;margin-left:0!important;width:100%}
+body.m-full .nav button,body.m-full .nav label{flex:1;max-width:58px}
+body.m-full .nav .today{flex:1.4;max-width:80px}
+/* Burmese weekday names under SUN MON … */
+.dow div small{display:block!important;font:500 clamp(8.5px,2.6vw,12px)/1.6 var(--mm);letter-spacing:0;text-transform:none;color:inherit;opacity:.85;margin-top:1px;white-space:nowrap}
+/* ===== colour themes (only the accent colours change) ===== */
+:root[data-skin="2"]{--lacquer:#1f5c49;--lacquer-2:#0e3326;--on-lacquer:#e8f3eb;--gold:#b98a32;--gold-hi:#e7c77a}
+:root[data-skin="3"]{--lacquer:#27336b;--lacquer-2:#111a3f;--on-lacquer:#e9e7f7;--gold:#b89a5a;--gold-hi:#e3cf95}
+:root[data-skin="4"]{--lacquer:#b4561a;--lacquer-2:#76300c;--on-lacquer:#fff1de;--gold:#c08a2a;--gold-hi:#f0c56a}
+.skins{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%;padding-top:6px;border-top:1px dashed var(--line);margin-top:4px}
+.skins-l{font:700 13px var(--mm);color:var(--ink);width:100%}
+.skins button{flex:1 1 calc(50% - 8px);min-width:0;display:grid;justify-items:center;gap:2px;padding:8px 4px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font:700 12.5px var(--mm);color:var(--ink)}
+.skins{display:grid!important;grid-template-columns:1fr 1fr}
+.skins-l{grid-column:1/-1}
+@media (min-width:920px){.skins{grid-template-columns:repeat(4,1fr)}}
+.skins button small{font:500 11px var(--mm);color:var(--muted)}
+.skins button i{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--a) 55%,var(--b) 55%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.skins button[aria-checked="true"]{border-color:var(--lacquer);box-shadow:0 0 0 2px var(--lacquer)}
+.skins button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+/* Uposatha days: the big moon marks them, so no gold tile */
+.cell.sab:not(.today):not(.sel):not(.out){background:var(--paper-2)!important}
+.cell.sab.out:not(.sel){background:transparent!important}
+.cell.sab:not(.today):not(.sel) .g{color:var(--ink)!important}
+.cell.sab.we:not(.today):not(.sel) .g{color:var(--weekend)!important}
+.cell.sab.hol:not(.today):not(.sel) .g{color:var(--lacquer)!important}
+.cell.sab:not(.today):not(.sel) .m{color:var(--muted)}
+.cell.sab:not(.today):not(.sel) .m.lbl{color:var(--lacquer)}
+.cell.sab.hol:not(.today):not(.sel)::before{border-top-color:var(--lacquer)!important}
+.sw.sab{border-radius:50%!important;background:linear-gradient(90deg,#d2b877 50%,#6b5a4a 50%)!important}
+/* eve day: small oil-lamp symbol instead of a border */
+.cell.eve{box-shadow:none!important;background-image:none!important}
+.cell .lamp{position:absolute;top:4px;right:4px;width:clamp(14px,4.2vw,20px);height:clamp(14px,4.2vw,20px);pointer-events:none}
+body.m-full .cal .cell .lamp{width:clamp(18px,5.4vw,24px);height:clamp(18px,5.4vw,24px);top:5px;right:5px}
+.sw.eve{box-shadow:none!important;background:no-repeat center/100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5c2.2 2.6 2.9 4.4 2.9 5.8a2.9 2.9 0 0 1-5.8 0c0-1.4.7-3.2 2.9-5.8z' fill='%23f0a93a'/%3E%3Cpath d='M3.5 13h17c-.6 3.6-4 6.2-8.5 6.2S4.1 16.6 3.5 13z' fill='%23b98a32'/%3E%3Cpath d='M8 19.4h8l-1 2H9z' fill='%238a6424'/%3E%3C/svg%3E")!important}
+/* ရက်ရာဇာ / ပြဿဒါး written in full at the foot of the cell */
+.cell .astw{position:absolute;left:2px;right:2px;bottom:3px;display:grid;justify-items:center;gap:0;pointer-events:none;z-index:2}
+.cell .astw b{font:700 clamp(8px,2.5vw,11px)/1.35 var(--mm);white-space:nowrap;letter-spacing:0;padding:0 3px;border-radius:4px;background:color-mix(in srgb,var(--paper-2) 70%,transparent)}
+.cell .astw b.y{color:var(--jade)}
+.cell .astw b.p{color:#4a4468}
+:root[data-theme="dark"] .cell .astw b.p{color:#b9b3e0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cell .astw b.p{color:#b9b3e0}}
+.cell.today .astw b,.cell.sel .astw b{background:rgba(255,255,255,.85)}
+.cell.out .astw{opacity:.6}
+body.m-full .cal .cell .astw b{font-size:clamp(8.5px,2.7vw,12px)}
+.sw.yat,.sw.pya{border-radius:4px}
+/* full Burmese month label on two lines (e.g. ဝါခေါင် / လကွယ်) */
+.cell .m.two{display:grid;justify-items:center;line-height:1.35;white-space:nowrap;overflow:visible}
+.cell .m.two span{display:block;white-space:nowrap}
+.cell .m.two .l2{font-size:.92em}
+/* holiday / festival name written at the top of the cell; tidy text stacking */
+.cell .evn{position:absolute;top:3px;left:3px;right:3px;text-align:center;font:700 clamp(7.5px,2.4vw,11px)/1.5 var(--mm);white-space:nowrap;overflow:visible;z-index:2;pointer-events:none}
+.cell .evn.h{color:var(--lacquer)}
+.cell .evn.o{color:var(--jade)}
+.cell .evn.f{color:#8c6424}
+.cell.today .evn,.cell.sel .evn{color:#fff}
+.cell.out .evn{opacity:.6}
+.cell .astw{position:static!important;order:3;margin-top:1px}
+.cell .g{order:1}.cell .m{order:2}
+.cell .m.two{line-height:1.6!important}
+.cell .m.two .l2{margin-top:-1px}
+.cell.bigm .m,.cell.bigm .m.lbl{text-shadow:0 0 3px rgba(255,250,235,.95),0 0 1px rgba(255,250,235,.95)!important}
+/* ===== clean cell layout: four fixed rows, nothing overlaps ===== */
+.cal .cell.v2{display:grid!important;grid-template-rows:auto 1fr auto auto;justify-items:center;align-items:center;row-gap:0;padding:4px 2px 4px!important;gap:0!important}
+.cell.v2 .evn{position:static!important;grid-row:1;max-width:100%;padding:0 9px;min-height:1.5em;overflow:hidden;text-overflow:clip}
+.cell.v2 .g{grid-row:2;line-height:1}
+.cell.v2 .g::after{display:none!important}
+.cell.v2 .mrow{grid-row:3;display:flex;align-items:center;justify-content:center;height:clamp(18px,5.6vw,28px)}
+.cell.v2 .mrow .bgmoon{position:static!important;transform:none!important;width:clamp(18px,5.6vw,28px)!important;height:clamp(18px,5.6vw,28px)!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.2))}
+.cell.v2 .md{font:500 clamp(11px,3.4vw,15px)/1.6 var(--mm);color:var(--muted)}
+.cell.v2.today .md,.cell.v2.sel .md{color:#fff;opacity:.85}
+.cell.v2 .astw{grid-row:4;position:static!important;min-height:1.4em;margin:0}
+.cell.v2 .evn.p{color:var(--lacquer);font-weight:600}
+.cell.v2.today .evn,.cell.v2.sel .evn{color:#fff!important}
+.cell.v2 .lamp{top:3px;right:3px}
+.cell.v2.hol::before,.cell.v2.obs::before{border-width:10px 10px 0 0!important}
+body.m-full .cal .cell.v2 .g{font-size:clamp(24px,7.6vw,34px)!important}
+body.m-full .cal .cell.v2 .evn{font-size:clamp(8px,2.6vw,11.5px)}
+/* planetary animals of the weekdays (ဂဠုန်, ကျား, ခြင်္သေ့, ဆင်, ကြွက်, ပူး, နဂါး) */
+.dow .anim{display:block;font-style:normal;font-size:clamp(15px,4.6vw,22px);line-height:1.15;margin-bottom:1px;filter:saturate(.9)}
+/* names wrap onto a second / third line instead of shrinking */
+.cell.v2 .evn{white-space:normal!important;overflow:visible!important;overflow-wrap:anywhere;word-break:normal;line-break:auto;text-align:center;padding:0 3px!important;font-size:clamp(8.5px,2.6vw,11px)!important;line-height:1.45!important;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;min-height:1.45em}
+body.m-full .cal .cell.v2 .evn{font-size:clamp(9px,2.7vw,11.5px)!important}
+.cal .cell.v2{grid-template-rows:auto minmax(0,1fr) auto auto}
+/* rows size to content; the cell spreads them out, so nothing is squeezed on top of each other */
+.cal .cell.v2{grid-template-rows:auto auto auto auto!important;align-content:space-evenly!important}
+.cell.v2 .evn{max-height:none;overflow:visible!important;-webkit-line-clamp:unset!important;display:block!important}
+.cell.v2.hasevn .g{font-size:clamp(20px,6.4vw,28px)!important}
+/* printed-calendar layout: top = festival / moon phrase, middle = small Burmese day (left) + big date (right), bottom = ရက်ရာဇာ/ပြဿဒါး */
+.cal .cell.v2{grid-template-columns:auto minmax(0,1fr)!important;grid-template-rows:auto 1fr auto!important;grid-template-areas:"e e" "m g" "a a";align-content:stretch!important;align-items:center;justify-items:stretch;padding:4px 5px 4px!important;column-gap:3px!important}
+.cell.v2 .evn{grid-area:e;justify-self:stretch}
+.cell.v2 .mrow{grid-area:m;justify-self:start;align-self:center;height:auto!important}
+.cell.v2 .g{grid-area:g;justify-self:end;align-self:center;text-align:right}
+.cell.v2 .astw{grid-area:a;justify-self:stretch;justify-items:end}
+.cell.v2 .md{font-size:clamp(10px,3.1vw,14px)!important}
+.cell.v2 .mrow .bgmoon{width:clamp(14px,4.4vw,24px)!important;height:clamp(14px,4.4vw,24px)!important}
+body.m-full .cal .cell.v2 .g,.cal .cell.v2.hasevn .g{font-size:clamp(20px,6.6vw,32px)!important}
+@media (min-width:920px){.cal .cell.v2 .g{font-size:30px}}
+@media (max-width:380px){
+  body.m-full .cal .cell.v2 .g,.cal .cell.v2 .g{font-size:19px!important;letter-spacing:-.02em}
+  .cal .cell.v2{padding:3px 3px!important;column-gap:1px!important}
+  .cell.v2 .md{font-size:10px!important}
+  .cell.v2 .mrow .bgmoon{width:13px!important;height:13px!important}
+}
+/* break names only between whole words */
+.cell.v2 .evn{overflow-wrap:normal!important;word-break:keep-all!important}
+.cell.v2 .evn .sg{display:inline-block;white-space:nowrap;max-width:none}
+.cell.v2 .evn{overflow:hidden!important}
+/* never clip the end of a name; lamp sits beside the Burmese day */
+.cell.v2 .evn{overflow:visible!important;padding:0 2px!important}
+.cell.v2 .mrow{flex-direction:column;gap:1px}
+.cell.v2 .mrow .lamp{position:static!important;width:clamp(12px,3.6vw,18px)!important;height:clamp(12px,3.6vw,18px)!important}
+/* names are written in the cell now, so no green / red corner triangles */
+.cal .cell.v2.hol::before,.cal .cell.v2.obs::before{display:none!important;content:none!important}
+.sw.hol,.sw.obs{background:none!important;box-shadow:none!important;width:auto!important;height:auto!important;font:700 12px var(--mm);font-style:normal}
+.sw.hol::before{content:"က";color:var(--lacquer)}
+.sw.obs::before{content:"က";color:var(--jade)}
+@media (max-width:919px){ .cell.v2 .mrow .bgmoon{width:15px!important;height:15px!important} .cell.v2 .md{font-size:10.5px!important} }
 </style>
 
 <style>
@@ -558,6 +695,7 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
           <div class="mmonths" id="mTitle"></div>
           <div class="ytype" id="yType"></div>
         </div>
+        <div class="hd-info" id="hdInfo" aria-live="polite"></div>
         <nav class="nav" aria-label="လ ရွေ့ရန်">
           <button id="prev" type="button" aria-label="ယခင်လ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <button id="todayBtn" type="button" class="today">ယနေ့</button>
@@ -571,7 +709,7 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
           <button id="menuBtn" type="button" class="menu-btn" aria-label="မီနူး" aria-controls="drawer" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         </nav>
       </header>
-      <div class="dow" aria-hidden="true"><div class="we">SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div class="we">SAT</div></div>
+      <div class="dow" aria-hidden="true"><div class="we"><i class="anim" title="ဂဠုန်" aria-hidden="true">🦅</i>SUN<small>တနင်္ဂနွေ</small></div><div><i class="anim" title="ကျား" aria-hidden="true">🐅</i>MON<small>တနင်္လာ</small></div><div><i class="anim" title="ခြင်္သေ့" aria-hidden="true">🦁</i>TUE<small>အင်္ဂါ</small></div><div><i class="anim" title="ဆင်" aria-hidden="true">🐘</i>WED<small>ဗုဒ္ဓဟူး</small></div><div><i class="anim" title="ကြွက်" aria-hidden="true">🐀</i>THU<small>ကြာသပတေး</small></div><div><i class="anim" title="ပူး" aria-hidden="true">🐹</i>FRI<small>သောကြာ</small></div><div class="we"><i class="anim" title="နဂါး" aria-hidden="true">🐉</i>SAT<small>စနေ</small></div></div>
       <div class="grid" id="grid" role="grid"></div>
       <details class="legwrap" id="legwrap"><summary>ညွှန်းချက်နှင့် ဆက်တင်</summary>
       <div class="legend">
@@ -582,9 +720,16 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
         <span><i class="sw today"></i>ယနေ့</span>
         <span><i class="sw yat"></i>ရက်ရာဇာ</span>
         <span><i class="sw pya"></i>ပြဿဒါး</span>
-        <label class="toggle"><input type="checkbox" id="showAstro" checked> ရာဇာ/ပြဿဒါး</label>
-        <label class="toggle t2"><input type="checkbox" id="showEve" checked> အဖိတ်နေ့</label>
-        <label class="toggle"><input type="checkbox" id="showPop" checked> ရက်နှိပ်လျှင် သီးသန့်ပြမည်</label>
+        <label class="toggle"><input type="checkbox" id="showAstro"> ရာဇာ/ပြဿဒါး</label>
+        <label class="toggle t2"><input type="checkbox" id="showEve"> အဖိတ်နေ့</label>
+        <label class="toggle"><input type="checkbox" id="showPop"> ရက်နှိပ်လျှင် သီးသန့်ပြမည်</label>
+        <div class="skins" role="radiogroup" aria-label="အရောင် Theme ရွေးရန်">
+          <span class="skins-l">အရောင် Theme</span>
+          <button type="button" role="radio" data-skin="1" aria-checked="true"><i style="--a:#8a1c12;--b:#b98a32"></i>Theme ၁<small>ယွန်းအနီ</small></button>
+          <button type="button" role="radio" data-skin="2" aria-checked="false"><i style="--a:#1f5c49;--b:#b98a32"></i>Theme ၂<small>ကျောက်စိမ်း</small></button>
+          <button type="button" role="radio" data-skin="3" aria-checked="false"><i style="--a:#27336b;--b:#c9b27a"></i>Theme ၃<small>ညကောင်းကင်</small></button>
+          <button type="button" role="radio" data-skin="4" aria-checked="false"><i style="--a:#b4561a;--b:#e2b04a"></i>Theme ၄<small>သင်္ကန်းရောင်</small></button>
+        </div>
       </div>
       </details>
     </section>
@@ -740,7 +885,7 @@ function phaseText(r){
 const mmN=r=>r.mm>12?r.mm-12:r.mm;
 function festival(r){
   if(r.mp!==1) return '';
-  return ({1:'တန်ခူးလပြည့်',2:'ကဆုန်လပြည့် ဗုဒ္ဓနေ့',4:'ဝါဆိုလပြည့် ဓမ္မစကြာနေ့',7:'သီတင်းကျွတ်လပြည့် ဝါကျွတ်နေ့',8:'တန်ဆောင်တိုင်',12:'တပေါင်းလပြည့်'})[mmN(r)]||'';
+  return ({1:'တန်ခူးလပြည့်',2:'ကဆုန်လပြည့် ဗုဒ္ဓနေ့',4:'ဝါဆိုလပြည့် ဓမ္မစကြာနေ့',7:'သီတင်းကျွတ်လပြည့် ဝါကျွတ်နေ့',8:'တန်ဆောင်တိုင်',11:'တပို့တွဲလပြည့် ထမနဲပွဲတော်',12:'တပေါင်းလပြည့်'})[mmN(r)]||'';
 }
 /* ---------- public holidays ---------- */
 const FIXED_HOL={'1-4':'လွတ်လပ်ရေးနေ့','2-12':'ပြည်ထောင်စုနေ့','3-2':'တောင်သူလယ်သမားနေ့','3-27':'တပ်မတော်နေ့','5-1':'မေဒေးနေ့ (ကမ္ဘာ့အလုပ်သမားနေ့)','7-19':'အာဇာနည်နေ့','12-25':'ခရစ္စမတ်နေ့'};
@@ -910,6 +1055,38 @@ function cellMoon(r){
     body='<circle r="'+R+'" fill="rgba(40,30,25,.28)" stroke="rgba(210,184,119,.55)" stroke-width="1"/><clipPath id="'+uid2+'c"><path d="'+d+'"/></clipPath><path d="'+d+'" fill="url(#'+uid2+')"/><g clip-path="url(#'+uid2+'c)">'+craters+'</g>'; }
   return '<svg class="bgmoon '+(full?'full':nw?'new':'half')+'" viewBox="-30 -30 60 60" aria-hidden="true"><defs><radialGradient id="'+uid2+'" cx="38%" cy="34%" r="75%"><stop offset="0" stop-color="'+g[0]+'"/><stop offset=".6" stop-color="'+g[1]+'"/><stop offset="1" stop-color="'+g[2]+'"/></radialGradient></defs>'+body+'</svg>';
 }
+
+/* allow line breaks between Burmese syllables (a consonant not followed by ် or ္ starts a new syllable) */
+function mmBreaks(t){
+  return t.replace(/(?<![္])([က-အဣ-ဧဩဪဿ၌-၏])(?![ါ-ှ]*[်္])/g,'​$1').replace(/^​/,'');
+}
+
+/* split a Burmese name into whole words so a line only breaks between words
+   (e.g. ကမ္ဘာ့ | ဆရာများနေ့,  တော်သလင်း | လပြည့်) */
+const MM_PREFIX=['ကမ္ဘာ့','နိုင်ငံတကာ','သင်္ကြန်','ကရင်','တရုတ်','မြန်မာ','ပြည်ထောင်စု','တောင်သူလယ်သမား','တပ်မတော်','အာဇာနည်','အမျိုးသား','ကုလသမဂ္ဂ','ခရစ္စမတ်','ချစ်သူ','လူ့အခွင့်အရေး',
+  'ပဝါဆို','ဒုတိယဝါဆို','တန်ခူး','ကဆုန်','နယုန်','ဝါဆို','ဝါခေါင်','တော်သလင်း','သီတင်းကျွတ်','တန်ဆောင်မုန်း','တန်ဆောင်တိုင်','နတ်တော်','ပြာသို','တပို့တွဲ','တပေါင်း'];
+const MM_SUFFIX=['များနေ့','လပြည့်ကျော်','လပြည့်နေ့','လပြည့်','လကွယ်','လဆန်း','လဆုတ်','နှစ်သစ်ကူးနေ့','အဖိတ်နေ့','ပွဲတော်','အကြိုနေ့','အကျနေ့','အကြတ်နေ့','အတက်နေ့'];
+function mmWords(t){
+  // dictionary word segmentation for the names this calendar shows; lines may only break between words
+  const DICT=['ကမ္ဘာ့','ကမ္ဘာမြေ','နိုင်ငံတကာ','နှစ်သစ်ကူး','နှစ်ဆန်း','နှစ်ကုန်','ချစ်သူ','မိခင်','ဘာသာစကား','အမျိုးသမီး','အမျိုးသား','ကဗျာ','ရေ','ကျန်းမာရေး','စာအုပ်','ဆေးလိပ်','ကင်းမဲ့','ကလေးသူငယ်','ကလေး','ပတ်ဝန်းကျင်','လူဦးရေ','လူငယ်','စာတတ်မြောက်ရေး','ငြိမ်းချမ်းရေး','သက်ကြီးရွယ်အို','ဆရာ','စားနပ်ရိက္ခာ','ကုလသမဂ္ဂ','လူ့အခွင့်အရေး','ခရစ္စမတ်','အကြို','အကျ','အကြတ်','အတက်','အမေ','အဖေ','တရုတ်','ကရင်','လွတ်လပ်ရေး','ပြည်ထောင်စု','တောင်သူလယ်သမား','တပ်မတော်','မေဒေး','အလုပ်သမား','အာဇာနည်','သင်္ကြန်','မြန်မာ','ဗုဒ္ဓ','ဓမ္မစကြာ','ဝါကျွတ်','ထမနဲ','ပွဲတော်','အဖိတ်','တန်ဆောင်တိုင်','ဝါဆို','ဝါခေါင်','ပဝါဆို','ဒုတိယဝါဆို','တန်ခူး','ကဆုန်','နယုန်','တော်သလင်း','သီတင်းကျွတ်','တန်ဆောင်မုန်း','နတ်တော်','ပြာသို','တပို့တွဲ','တပေါင်း','လပြည့်ကျော်','လပြည့်','လကွယ်','လဆန်း','လဆုတ်','များ','ရက်','နေ့'].sort((a,b)=>b.length-a.length);
+  const out=[];
+  t.split(/\s+/).filter(Boolean).forEach((w,ci)=>{
+    const ws=[]; let i=0, buf='';
+    while(i<w.length){
+      const hit=DICT.find(d=>w.startsWith(d,i));
+      if(hit){ if(buf){ws.push(buf);buf='';} ws.push(hit); i+=hit.length; }
+      else { buf+=w[i]; i++; }
+    }
+    if(buf) ws.push(buf);
+    // "နေ့" sticks to the word before it; "များနေ့" stays one piece
+    const m=[]; ws.forEach(x=>{ if(x==='နေ့'&&m.length) m[m.length-1]+=x; else m.push(x); });
+    // a Burmese number stays with the "ရက်" after it (… ၁ ရက်)
+    if(/^[၀-၉]+$/.test(w)) { out.push({w,num:true}); return; }
+    if(w.startsWith('ရက်')&&out.length&&out[out.length-1].num){ out[out.length-1].w+=' '+w; out[out.length-1].num=false; return; }
+    m.forEach(x=>out.push({w:x}));
+  });
+  return out.map(o=>'<span class="sg">'+o.w+'</span>').join('');
+}
 /* ---------- UI ---------- */
 
 /* ---------- moon drawing ---------- */
@@ -952,24 +1129,25 @@ const $=id=>document.getElementById(id);
 const now=new Date();
 const T={y:now.getFullYear(),m:now.getMonth()+1,d:now.getDate()};
 let view={y:T.y,m:T.m}, sel={...T};
-let showEve=true;
+let showEve=false;
 try{const v=localStorage.getItem('mmcal-eve'); if(v!==null) showEve=v==='1';}catch(e){}
 $('showEve').checked=showEve;
 if(window.innerWidth>=920) $('legwrap').open=true;
-let showPop=true;
+let showPop=false;
 try{const v=localStorage.getItem('mmcal-pop'); if(v!==null) showPop=v==='1';}catch(e){}
 $('showPop').checked=showPop;
 $('showPop').addEventListener('change',e=>{showPop=e.target.checked;try{localStorage.setItem('mmcal-pop',showPop?'1':'0');}catch(_){}});
-let showAstro=true;
+let showAstro=false;
 try{const v=localStorage.getItem('mmcal-astro'); if(v!==null) showAstro=v==='1';}catch(e){}
 $('showAstro').checked=showAstro;
 function dinfo(y,m,d){const j=g2j(y,m,d);return {y,m,d,j,w:(j+1)%7,r:j2m(j)};}
 function topLabel(r,first){
-  const s=monthName(r,true);
-  if(r.mp===1) return {t:s+'ပြည့်',cls:'lbl'};
-  if(r.mp===3) return {t:s+'ကွယ်',cls:'lbl'};
-  if(r.fd===1) return {t:s+(r.mp===0?'ဆန်း':'ဆုတ်'),cls:'lbl'};
-  if(first) return {t:s+' '+mn(r.fd),cls:'lbl'};
+  const s=monthName(r,false);
+  const two=(a,b)=>({t:'<span class="l1">'+a+'</span><span class="l2">'+b+'</span>',cls:'lbl two'});
+  if(r.mp===1) return two(s,'လပြည့်');
+  if(r.mp===3) return two(s,'လကွယ်');
+  if(r.fd===1) return two(s,(r.mp===0?'လဆန်း ':'လဆုတ် ')+mn(1));
+  if(first) return two(s,(r.mp===0?'လဆန်း ':'လဆုတ် ')+mn(r.fd));
   return {t:mn(r.fd),cls:''};
 }
 function render(anim){
@@ -980,7 +1158,7 @@ function render(anim){
   const nags=[], names=[], mys=new Set(), sys=new Set(), myts=new Map();
   for(let d=1;d<=nd;d++){const i=dinfo(y,m,d);const n=monthName(i.r,false);if(names[names.length-1]!==n) names.push(n);mys.add(i.r.my);sys.add(sasana(i.r));myts.set(i.r.my,i.r.myt);const ng=monthName(i.r,true)+' '+NAG[astro(i.r,i.w).nag];if(!nags.includes(ng))nags.push(ng);}
   const span=a=>{a=[...a];return a.length>1?mn(a[0])+'-'+mn(a[a.length-1]):mn(a[0]);};
-  $('mTitle').textContent=names.join(' – ')+'  ·  '+span(mys)+' ခု';
+  $('mTitle').textContent=names.join(' – ')+'  ·  '+span(mys)+' ခု (သာသနာ '+span(sys)+')';
   $('yType').textContent='သာသနာနှစ် '+span(sys)+'  ·  '+[...myts].map(([k,v])=>(myts.size>1?mn(k)+' ':'')+YT[v]).join('၊ ')+'  ·  နဂါးခေါင်း '+nags.map(s=>s.split(' ')[1]+'လှည့်'+(nags.length>1?' ('+s.split(' ')[0]+')':'')).join('၊ ');
 
   const g=$('grid'); g.innerHTML='';
@@ -999,16 +1177,31 @@ function render(anim){
     if(i.y===T.y&&i.m===T.m&&i.d===T.d) b.classList.add('today');
     if(i.y===sel.y&&i.m===sel.m&&i.d===sel.d) b.classList.add('sel');
     const as=astro(i.r,i.w);
-    const ast=!showAstro?'':as.yat&&as.pya===2?'<span class="ast ast-mix">ရာ·ပြ</span>':as.yat?'<span class="ast ast-y">ရာ</span>':as.pya?'<span class="ast ast-p">ပြ</span>':'';
-    const bigM=i.r.mp===1||i.r.mp===3||i.r.sab===1;
-    if(bigM) b.classList.add('bigm');
-    b.innerHTML=ast+(bigM?cellMoon(i.r):(i.r.sab===1?tinyMoon(i.r,'ph'):''))+'<div class="g">'+i.d+'</div><div class="m '+lab.cls+'">'+lab.t+'</div>';
+    const ast=!showAstro?'':as.yat&&as.pya===2?'<span class="astw"><b class="y">ရက်ရာဇာ</b><b class="p">မွန်းလွဲပြဿဒါး</b></span>':as.yat?'<span class="astw"><b class="y">ရက်ရာဇာ</b></span>':as.pya?'<span class="astw"><b class="p">ပြဿဒါး</b></span>':'';
+    const moonDay=i.r.sab===1;
+    b.classList.add('v2');
+    const eveMark=(i.r.sab===2&&showEve)?'<svg class="lamp" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c2.2 2.6 2.9 4.4 2.9 5.8a2.9 2.9 0 0 1-5.8 0c0-1.4.7-3.2 2.9-5.8z" fill="#f0a93a"/><path d="M12 5.6c1 1.3 1.3 2.2 1.3 2.8a1.3 1.3 0 0 1-2.6 0c0-.6.3-1.5 1.3-2.8z" fill="#fff3c4"/><path d="M3.5 13h17c-.6 3.6-4 6.2-8.5 6.2S4.1 16.6 3.5 13z" fill="#b98a32"/><path d="M8 19.4h8l-1 2H9z" fill="#8a6424"/></svg>':'';
+    // one text line at the top: holiday > special day > Myanmar month phrase > festival
+    const mName=monthName(i.r,false);
+    const phase=i.r.mp===1?'လပြည့်':i.r.mp===3?'လကွယ်':i.r.fd===1?(i.r.mp===0?'လဆန်း':'လဆုတ်'):(k===0?(i.r.mp===0?'လဆန်း':'လဆုတ်'):'');
+    const fst=festival(i.r);
+    let top='',tc='';
+    if(hol.length){top=hol[0];tc='h';}
+    else if(obs.length){top=obs[0].split(' · ')[0];tc='o';}
+    else if(phase){top=mName+phase;tc='p';}
+    else if(fst){top=fst;tc='f';}
+    top=top.replace(/ \(.*\)$/,'');
+    // Myanmar day: a moon on Uposatha days, otherwise the Myanmar number
+    const mrow=moonDay?'<span class="mrow">'+cellMoon(i.r)+'</span>':'<span class="mrow"><span class="md">'+mn(i.r.fd)+'</span>'+eveMark+'</span>';
+    if(top) b.classList.add('hasevn');
+    b.innerHTML='<span class="evn '+tc+'">'+mmWords(top)+'</span><div class="g">'+i.d+'</div>'+mrow+(ast||'<span class="astw"></span>');
     b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':'')+(hol.length?', ရုံးပိတ်ရက် '+hol.join('၊ '):'')+(obs.length?', '+obs.join('၊ '):''));
-    b.onclick=()=>{pick(i.y,i.m,i.d); if(showPop) openSheet();};
+    b.onclick=()=>{pick(i.y,i.m,i.d,true); if(showPop) openSheet();};
     g.appendChild(b);
     if(inMonth&&(i.r.sab===1||(i.r.sab===2&&showEve))) list.push(i);
   }
   sizeGrid();
+  fitAstro();
   if(anim){g.classList.remove('swap');void g.offsetWidth;g.classList.add('swap');}
   monthList=list;
   renderList();
@@ -1108,6 +1301,8 @@ function sheetHTML(){
   const items=[];
   if(r.sab===1) items.push(['gold','ဥပုသ်နေ့']);
   if(r.sab===2) items.push(['gold','အဖိတ်နေ့']);
+  const ANIMALS=[['🦅','ဂဠုန်'],['🐅','ကျား'],['🦁','ခြင်္သေ့'],['🐘','ဆင်'],['🐀','ကြွက်'],['🐹','ပူး'],['🐉','နဂါး']];
+  items.push(['','နေ့နံ တိရစ္ဆာန် — '+ANIMALS[i.w][1]+' '+ANIMALS[i.w][0]]);
   items.push(['','နဂါးခေါင်း'+NAG[as.nag]+'သို့လှည့်']);
   if(as.yat&&as.pya===2){items.push(['yat','ရက်ရာဇာ']);items.push(['pya','မွန်းလွဲပြဿဒါး']);}
   else{ if(as.yat) items.push(['yat','ရက်ရာဇာ']); if(as.pya) items.push(['pya',as.pya===2?'မွန်းလွဲပြဿဒါး':'ပြဿဒါး']); }
@@ -1233,10 +1428,10 @@ function keepPlace(fn){
   const d=g.getBoundingClientRect().top-before;
   if(Math.abs(d)>0.5) window.scrollBy(0,d);
 }
-function pick(y,m,d){
+function pick(y,m,d,stay){
   keepPlace(()=>{
     sel={y,m,d};
-    if(view.y!==y||view.m!==m){view={y,m};render(true);return;}
+    if(!stay&&(view.y!==y||view.m!==m)){view={y,m};render(true);return;}
     document.querySelectorAll('.cell.sel').forEach(c=>c.classList.remove('sel'));
     const c=document.querySelector('.cell[data-key="'+y+'-'+m+'-'+d+'"]'); if(c) c.classList.add('sel');
     renderPanel();
@@ -1265,6 +1460,41 @@ window.addEventListener('resize',fitPanel);
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitPanel);
 
 /* phone: stretch the rows so the card + calendar fill exactly one screen */
+
+/* shrink the ရက်ရာဇာ / ပြဿဒါး words until they fit their cell */
+function fitAstro(){
+  // keep a clear gap between the small Burmese day (left) and the big date (right);
+  // one size for every date in the month so the grid looks even
+  { const cs=[...document.querySelectorAll('#grid .cell.v2')]; let best=99;
+    cs.forEach(c=>{ const g=c.querySelector('.g'); if(g) g.style.removeProperty('font-size'); });
+    cs.forEach(c=>{
+      const g=c.querySelector('.g'), m=c.querySelector('.mrow'); if(!g||!m) return;
+      const st=getComputedStyle(c), inner=c.clientWidth-parseFloat(st.paddingLeft)-parseFloat(st.paddingRight);
+      const fs0=parseFloat(getComputedStyle(g).fontSize), w0=g.scrollWidth, free=inner-m.getBoundingClientRect().width-6;
+      if(w0>free) best=Math.min(best,Math.floor(fs0*free/w0));
+    });
+    if(best<99){ best=Math.max(best,16); cs.forEach(c=>{const g=c.querySelector('.g'); if(g) g.style.setProperty('font-size',best+'px','important');}); }
+  }
+  document.querySelectorAll('#grid .evn').forEach(e=>{
+    e.style.removeProperty('font-size'); let fs=parseFloat(getComputedStyle(e).fontSize), n=40;
+    const lh=()=>parseFloat(getComputedStyle(e).lineHeight)||fs*1.45;
+    const cw=e.clientWidth||e.closest('.cell').clientWidth-6;
+    const tooWide=()=>[...e.querySelectorAll('.sg')].some(g=>g.getBoundingClientRect().width>cw-4);
+    while((tooWide()||e.scrollHeight>lh()*3+1)&&fs>6.5&&n--){fs-=0.5;e.style.setProperty('font-size',fs+'px','important');}
+  });
+  document.querySelectorAll('#grid .m.two span').forEach(b=>{
+    b.style.fontSize=''; const cw=b.closest('.cell').clientWidth-4;
+    let fs=parseFloat(getComputedStyle(b).fontSize), n=30;
+    while(b.scrollWidth>cw&&fs>6.5&&n--){fs-=0.5;b.style.fontSize=fs+'px';}
+  });
+  document.querySelectorAll('#grid .astw b').forEach(b=>{
+    b.style.fontSize=''; const cw=b.closest('.cell').clientWidth-4;
+    let fs=parseFloat(getComputedStyle(b).fontSize), n=30;
+    while(b.scrollWidth>cw&&fs>6&&n--){fs-=0.5;b.style.fontSize=fs+'px';}
+  });
+}
+window.addEventListener('resize',fitAstro);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitAstro);
 function sizeGrid(){
   const g=$('grid'); if(!g) return;
   const cells=g.querySelectorAll('.cell');
@@ -1298,7 +1528,7 @@ function applyMode(){
   sizeGrid(); fitPanel();
 }
 function openDrawer(mode){
-  const d=$('drawer'); d.dataset.mode=mode||'card'; document.querySelector('.dr-title').textContent=(mode==='list')?'ဥပုသ်၊ ရုံးပိတ်၊ ပွဲနေ့ စာရင်းများ':'ယနေ့ အသေးစိတ်'; $('drBody').scrollTop=0; d.classList.remove('drag'); d.style.transform='';
+  const d=$('drawer'); d.dataset.mode=mode||'card'; document.querySelector('.dr-title').textContent=(mode==='list')?'ဥပုသ်၊ လပြည့်၊ ရုံးပိတ်၊ ပွဲနေ့ စာရင်းများ':'ယနေ့ အသေးစိတ်'; $('drBody').scrollTop=0; setTimeout(()=>fitText(document.querySelector('.dr-title'),11),30); d.classList.remove('drag'); d.style.transform='';
   d.classList.add('open'); $('drHandle').setAttribute('aria-expanded','true'); $('menuBtn').setAttribute('aria-expanded','true'); d.scrollTop=0;
   $('drBack').hidden=false; requestAnimationFrame(()=>$('drBack').classList.add('on'));
   setTimeout(fitPanel,30);
@@ -1333,6 +1563,18 @@ $('listBtn').onclick=()=>{
   if(document.body.classList.contains('m-full')){ if(d.classList.contains('open')&&d.dataset.mode==='list') closeDrawer(); else openDrawer('list'); }
   else document.querySelector('.list').scrollIntoView({behavior:'smooth',block:'start'});
 };
+
+/* ---------- colour theme picker ---------- */
+const SKIN_META={1:'#8a1c12',2:'#1f5c49',3:'#27336b',4:'#b4561a'};
+function setSkin(n,save){
+  n=String(n); if(!SKIN_META[n]) n='1';
+  if(n==='1') document.documentElement.removeAttribute('data-skin'); else document.documentElement.setAttribute('data-skin',n);
+  document.querySelectorAll('.skins [data-skin]').forEach(b=>b.setAttribute('aria-checked',b.dataset.skin===n));
+  const tc=document.querySelector('meta[name="theme-color"]'); if(tc) tc.setAttribute('content',SKIN_META[n]);
+  if(save){try{localStorage.setItem('mmcal-skin',n);}catch(_){}}
+}
+document.querySelectorAll('.skins [data-skin]').forEach(b=>b.addEventListener('click',()=>setSkin(b.dataset.skin,true)));
+try{setSkin(localStorage.getItem('mmcal-skin')||'1');}catch(_){setSkin('1');}
 /* side menu */
 $('menuBtn').onclick=()=>{ const d=$('drawer'); if(d.classList.contains('open')&&d.dataset.mode!=='list') closeDrawer(); else openDrawer('card'); };
 $('drClose').onclick=()=>closeDrawer();
@@ -1342,6 +1584,22 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('drawer').classL
   d.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
   d.addEventListener('touchend',e=>{ if(sx===null) return; const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; if(dx>70&&Math.abs(dx)>Math.abs(dy)*1.4) closeDrawer(); sx=null; },{passive:true});
 })();
+
+function updateHeaderInfo(i,r,nk,nd){
+  const el=$('hdInfo'); if(!el) return;
+  const MGM=['ဇန်နဝါရီ','ဖေဖော်ဝါရီ','မတ်','ဧပြီ','မေ','ဇွန်','ဇူလိုင်','ဩဂုတ်','စက်တင်ဘာ','အောက်တိုဘာ','နိုဝင်ဘာ','ဒီဇင်ဘာ'];
+  const isToday=i.y===T.y&&i.m===T.m&&i.d===T.d, sp=specialsOf(i), as=astro(r,i.w);
+  let st='';
+  if(r.sab===1) st='ဥပုသ်နေ့';
+  else if(r.sab===2) st='အဖိတ်နေ့';
+  else if(sp.length) st=sp[0].n.split(' · ')[0];
+  else if(as.yat) st='ရက်ရာဇာ';
+  else if(as.pya) st=(as.pya===2?'မွန်းလွဲပြဿဒါး':'ပြဿဒါး');
+  const nx=nk?'နောက်ဥပုသ် '+MGM[nd.getMonth()]+' '+mn(nd.getDate()):'';
+  el.innerHTML='<div class="h1">'+(isToday?'ယနေ့ · ':'')+WD[i.w]+' · '+MGM[i.m-1]+' '+mn(i.d)+'</div><div class="h2">'+monthName(r,false)+' '+phaseText(r)+'</div><div class="h3">'+(st?'<b>'+st+'</b>':nx)+'</div>';
+  el.querySelectorAll('div').forEach(d=>fitText(d,8.5));
+  const mt=$('mTitle'); if(mt) fitText(mt,9);
+}
 function updateHandle(i,r,nk,nd){
   const el=$('drSum'); if(!el) return;
   const sp=specialsOf(i);
@@ -1386,7 +1644,7 @@ function renderPanel(){
   let nx='';
   for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){const dt=new Date(sel.y,sel.m-1,sel.d+k); nx='<div class="next"><b>'+mn(k)+'</b><div>ရက်အကြာ နောက်ဥပုသ်နေ့<small>'+dt.getDate()+' '+GM[dt.getMonth()]+' · '+WD[dt.getDay()]+'နေ့</small></div></div>'; break;} }
   $('panel').innerHTML=h+nx;
-  { let k2=0; for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){k2=k;break;} } updateHandle(i,r,k2,new Date(sel.y,sel.m-1,sel.d+k2)); }
+  { let k2=0; for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){k2=k;break;} } updateHandle(i,r,k2,new Date(sel.y,sel.m-1,sel.d+k2)); updateHeaderInfo(i,r,k2,new Date(sel.y,sel.m-1,sel.d+k2)); }
   fitPanel();
 }
 function shift(n){let {y,m}=view; m+=n; if(m<1){m=12;y--;} if(m>12){m=1;y++;} if(y<1900||y>2100) return; view={y,m}; render(true);}
