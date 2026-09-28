@@ -668,6 +668,13 @@ body.m-full .cal .cell.v2 .g,.cal .cell.v2.hasevn .g{font-size:clamp(20px,6.6vw,
 .sw.hol::before{content:"က";color:var(--lacquer)}
 .sw.obs::before{content:"က";color:var(--jade)}
 @media (max-width:919px){ .cell.v2 .mrow .bgmoon{width:15px!important;height:15px!important} .cell.v2 .md{font-size:10.5px!important} }
+/* list: never split a Burmese word */
+.list .sg,.dr-title .sg,#listTitle .sg{display:inline-block;white-space:nowrap}
+.drawer .dr-title{white-space:normal}
+#drClose{white-space:nowrap;flex:none}
+.list .hmark.omark,.list .hmark{width:12px!important;height:12px!important;border-radius:50%!important;box-shadow:none!important;margin-left:8px}
+.list .hmark{background:var(--lacquer)!important}
+.list .hmark.omark{background:var(--jade)!important}
 </style>
 
 <style>
@@ -1218,9 +1225,14 @@ function goto(i){
   const move=view.y!==i.y||view.m!==i.m; view={y:i.y,m:i.m}; render(move);
   if(showPop) openSheet();
 }
+
+/* wrap Burmese text so lines break only between whole words */
+function mmWrap(t){
+  return String(t).split(/(\s+)/).map(p=>/^\s+$/.test(p)||!/[က-႟]/.test(p)?p:mmWords(p)).join('');
+}
 function row(i,icon,dd,main,sub,chip,chipCls,liCls){
   const li=document.createElement('li'); if(liCls) li.className=liCls;
-  li.innerHTML='<button type="button">'+icon+'<div class="dd">'+dd+'</div><div class="tx">'+main+'<small>'+sub+'</small></div><span class="ty '+(chipCls||'')+'">'+chip+'</span></button>';
+  li.innerHTML='<button type="button">'+icon+'<div class="dd">'+dd+'</div><div class="tx">'+mmWrap(main)+'<small>'+sub+'</small></div><span class="ty '+(chipCls||'')+'">'+chip+'</span></button>';
   li.firstChild.onclick=()=>goto(i);
   return li;
 }
@@ -1233,7 +1245,7 @@ function renderList(){
   $('ynav').hidden=tab==='month';
   $('yLabel').textContent=Y;
   if(tab==='month'){
-    $('listTitle').textContent=GM[m-1]+' လအတွင်း ဥပုသ်နေ့ '+mn(monthList.filter(i=>i.r.sab===1).length)+' ရက်';
+    $('listTitle').innerHTML=mmWrap(GM[m-1]+' လအတွင်း ဥပုသ်နေ့ '+mn(monthList.filter(i=>i.r.sab===1).length)+' ရက်');
     monthList.forEach(i=>{
       const hol=holidays(i.m,i.d,i.j,i.r), fest=festival(i.r);
       ol.appendChild(row(i,i.r.sab===1?tinyMoon(i.r,'lm'):'<span></span>',i.d+'<small>'+GS[i.w]+'</small>',
@@ -1243,7 +1255,7 @@ function renderList(){
     if(!monthList.length) ol.innerHTML='<li class="empty">ဥပုသ်နေ့ မရှိပါ</li>';
   } else if(tab==='fullmoon'){
     const fm=yearDays(Y,i=>i.r.mp===1);
-    $('listTitle').textContent=mn(Y)+' ခုနှစ် လပြည့်နေ့ '+mn(fm.length)+' ရက်';
+    $('listTitle').innerHTML=mmWrap(mn(Y)+' ခုနှစ် လပြည့်နေ့ '+mn(fm.length)+' ရက်');
     fm.forEach(i=>{
       const hol=holidays(i.m,i.d,i.j,i.r), fest=festival(i.r);
       ol.appendChild(row(i,tinyMoon(i.r,'lm'),i.d+'<small>'+GMS[i.m-1]+' · '+GS[i.w]+'</small>',
@@ -1252,7 +1264,7 @@ function renderList(){
     });
   } else if(tab==='special'){
     const sd=yearDays(Y,i=>observances(i.y,i.m,i.d,i.j).length>0);
-    $('listTitle').textContent=mn(Y)+' ခုနှစ် ပွဲနေ့နှင့် ကမ္ဘာ့နေ့များ';
+    $('listTitle').innerHTML=mmWrap(mn(Y)+' ခုနှစ် ပွဲနေ့နှင့် ကမ္ဘာ့နေ့များ');
     let lm=0;
     sd.forEach(i=>{
       if(i.m!==lm){lm=i.m;const h=document.createElement('li');h.className='mh';h.textContent=GM[i.m-1];ol.appendChild(h);}
@@ -1262,7 +1274,7 @@ function renderList(){
     });
   } else {
     const hd=yearDays(Y,i=>holidays(i.m,i.d,i.j,i.r).length>0);
-    $('listTitle').textContent=mn(Y)+' ခုနှစ် ရုံးပိတ်ရက် '+mn(hd.length)+' ရက်';
+    $('listTitle').innerHTML=mmWrap(mn(Y)+' ခုနှစ် ရုံးပိတ်ရက် '+mn(hd.length)+' ရက်');
     let lastM=0;
     hd.forEach(i=>{
       if(i.m!==lastM){lastM=i.m;const h=document.createElement('li');h.className='mh';h.textContent=GM[i.m-1];ol.appendChild(h);}
@@ -1534,7 +1546,7 @@ function openDrawer(mode){
   setTimeout(fitPanel,30);
 }
 function closeDrawer(now){
-  const d=$('drawer'); d.classList.remove('drag'); d.style.transform='';
+  const d=$('drawer'); if(d.classList.contains('open')&&d.dataset.mode==='card') setTimeout(renderPanel,250); d.classList.remove('drag'); d.style.transform='';
   d.classList.remove('open'); $('drHandle').setAttribute('aria-expanded','false'); $('menuBtn').setAttribute('aria-expanded','false');
   $('drBack').classList.remove('on'); if(now) $('drBack').hidden=true; else setTimeout(()=>{ if(!d.classList.contains('open')) $('drBack').hidden=true; },220);
 }
@@ -1575,8 +1587,15 @@ function setSkin(n,save){
 }
 document.querySelectorAll('.skins [data-skin]').forEach(b=>b.addEventListener('click',()=>setSkin(b.dataset.skin,true)));
 try{setSkin(localStorage.getItem('mmcal-skin')||'1');}catch(_){setSkin('1');}
+
+/* the ☰ card always shows today's date; the header goes back to the selected day afterwards */
+function showTodayCard(){
+  const keep=sel; sel={y:T.y,m:T.m,d:T.d}; renderPanel(); sel=keep;
+  const i=dinfo(sel.y,sel.m,sel.d); let k2=0; for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){k2=k;break;} }
+  updateHeaderInfo(i,i.r,k2,new Date(sel.y,sel.m-1,sel.d+k2));
+}
 /* side menu */
-$('menuBtn').onclick=()=>{ const d=$('drawer'); if(d.classList.contains('open')&&d.dataset.mode!=='list') closeDrawer(); else openDrawer('card'); };
+$('menuBtn').onclick=()=>{ const d=$('drawer'); if(d.classList.contains('open')&&d.dataset.mode!=='list') closeDrawer(); else { showTodayCard(); openDrawer('card'); } };
 $('drClose').onclick=()=>closeDrawer();
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('drawer').classList.contains('open')) closeDrawer(); });
 (function(){ // swipe right to close
