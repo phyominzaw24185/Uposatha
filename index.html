@@ -565,6 +565,12 @@ body.m-full .nav .today{flex:1.4;max-width:80px}
 :root[data-skin="8"]{--lacquer:#9c2a55;--lacquer-2:#5a1030;--on-lacquer:#fde8f0;--gold:#c98a3a;--gold-hi:#f0c77a}
 :root[data-skin="9"]{--lacquer:#4a6b1f;--lacquer-2:#243a0b;--on-lacquer:#eff5e0;--gold:#b98a32;--gold-hi:#e7c77a}
 :root[data-skin="10"]{--lacquer:#6b4a2b;--lacquer-2:#3a2512;--on-lacquer:#f6ecdf;--gold:#c79a4a;--gold-hi:#efd08a}
+:root[data-skin="11"]{--lacquer:#ff2d95;--lacquer-2:#6a00f4;--on-lacquer:#fff0fa;--gold:#ffd60a;--gold-hi:#fff27a}
+:root[data-skin="12"]{--lacquer:#00c2ff;--lacquer-2:#7b2ff7;--on-lacquer:#eefaff;--gold:#ff9f1c;--gold-hi:#ffd166}
+:root[data-skin="13"]{--lacquer:#ff6b00;--lacquer-2:#d6006b;--on-lacquer:#fff4e8;--gold:#ffe14d;--gold-hi:#fff3a3}
+:root[data-skin="14"]{--lacquer:#00b36b;--lacquer-2:#005f73;--on-lacquer:#e9fff4;--gold:#c6ff00;--gold-hi:#eeff8a}
+:root[data-skin="15"]{--lacquer:#9b00ff;--lacquer-2:#ff007a;--on-lacquer:#f7eaff;--gold:#00f0ff;--gold-hi:#9ffcff}
+:root[data-skin="11"] .cal-head,:root[data-skin="12"] .cal-head,:root[data-skin="13"] .cal-head,:root[data-skin="14"] .cal-head,:root[data-skin="15"] .cal-head{background:linear-gradient(115deg,var(--lacquer),var(--lacquer-2))!important}
 :root[data-skin="4"]{--lacquer:#b4561a;--lacquer-2:#76300c;--on-lacquer:#fff1de;--gold:#c08a2a;--gold-hi:#f0c56a}
 .skins{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%;padding-top:6px;border-top:1px dashed var(--line);margin-top:4px}
 .skins-l{font:700 13px var(--mm);color:var(--ink);width:100%}
@@ -772,6 +778,11 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
           <button type="button" role="radio" data-skin="8" aria-checked="false"><i style="--a:#9c2a55;--b:#c98a3a"></i>Theme ၈<small>ပန်းနုရောင်</small></button>
           <button type="button" role="radio" data-skin="9" aria-checked="false"><i style="--a:#4a6b1f;--b:#b98a32"></i>Theme ၉<small>စပါးခင်း</small></button>
           <button type="button" role="radio" data-skin="10" aria-checked="false"><i style="--a:#6b4a2b;--b:#c79a4a"></i>Theme ၁၀<small>ကျွန်းသစ်</small></button>
+          <button type="button" role="radio" data-skin="11" aria-checked="false"><i style="--a:#ff2d95;--b:#6a00f4"></i>Theme ၁၁<small>နီယွန်ပန်း</small></button>
+          <button type="button" role="radio" data-skin="12" aria-checked="false"><i style="--a:#00c2ff;--b:#7b2ff7"></i>Theme ၁၂<small>လျှပ်စစ်ပြာ</small></button>
+          <button type="button" role="radio" data-skin="13" aria-checked="false"><i style="--a:#ff6b00;--b:#d6006b"></i>Theme ၁၃<small>နေဝင်ချိန်</small></button>
+          <button type="button" role="radio" data-skin="14" aria-checked="false"><i style="--a:#00b36b;--b:#005f73"></i>Theme ၁၄<small>ထုံးရောင်စိမ်း</small></button>
+          <button type="button" role="radio" data-skin="15" aria-checked="false"><i style="--a:#9b00ff;--b:#ff007a"></i>Theme ၁၅<small>ကြယ်စင်ညှို့</small></button>
         </div>
       </div>
       </details>
@@ -1617,7 +1628,7 @@ function applyMode(){
   sizeGrid(); fitPanel();
 }
 function openDrawer(mode){
-  const d=$('drawer'); d.dataset.mode=mode||'card'; document.querySelector('.dr-title').textContent=(mode==='list')?'ဥပုသ်၊ လပြည့်၊ ရုံးပိတ်၊ ပွဲနေ့ စာရင်းများ':'ယနေ့ အသေးစိတ်'; $('drBody').scrollTop=0; setTimeout(()=>fitText(document.querySelector('.dr-title'),11),30); d.classList.remove('drag'); d.style.transform='';
+  const d=$('drawer'); d.dataset.mode=mode||'card'; document.querySelector('.dr-title').textContent=(mode==='list')?'ဥပုသ်၊ လပြည့်၊ ရုံးပိတ်၊ ပွဲနေ့ စာရင်းများ':((sel.y===T.y&&sel.m===T.m&&sel.d===T.d)?'ယနေ့ အသေးစိတ်':'ရွေးထားသောရက် အသေးစိတ်'); $('drBody').scrollTop=0; setTimeout(()=>fitText(document.querySelector('.dr-title'),11),30); d.classList.remove('drag'); d.style.transform='';
   d.classList.add('open'); $('drHandle').setAttribute('aria-expanded','true'); $('menuBtn').setAttribute('aria-expanded','true'); d.scrollTop=0;
   $('drBack').hidden=false; requestAnimationFrame(()=>$('drBack').classList.add('on'));
   setTimeout(fitPanel,30);
@@ -1654,7 +1665,7 @@ $('listBtn').onclick=()=>{
 };
 
 /* ---------- colour theme picker ---------- */
-const SKIN_META={1:'#8a1c12',2:'#1f5c49',3:'#27336b',4:'#b4561a',5:'#6b2d5c',6:'#0f6b73',7:'#3a3a3a',8:'#9c2a55',9:'#4a6b1f',10:'#6b4a2b'};
+const SKIN_META={1:'#8a1c12',2:'#1f5c49',3:'#27336b',4:'#b4561a',5:'#6b2d5c',6:'#0f6b73',7:'#3a3a3a',8:'#9c2a55',9:'#4a6b1f',10:'#6b4a2b',11:'#ff2d95',12:'#00c2ff',13:'#ff6b00',14:'#00b36b',15:'#9b00ff'};
 function setSkin(n,save){
   n=String(n); if(!SKIN_META[n]) n='1';
   if(n==='1') document.documentElement.removeAttribute('data-skin'); else document.documentElement.setAttribute('data-skin',n);
@@ -1672,7 +1683,7 @@ function showTodayCard(){
   updateHeaderInfo(i,i.r,k2,new Date(sel.y,sel.m-1,sel.d+k2));
 }
 /* side menu */
-$('menuBtn').onclick=()=>{ const d=$('drawer'); if(d.classList.contains('open')&&d.dataset.mode!=='list') closeDrawer(); else { showTodayCard(); openDrawer('card'); } };
+$('menuBtn').onclick=()=>{ const d=$('drawer'); if(d.classList.contains('open')&&d.dataset.mode!=='list') closeDrawer(); else { renderPanel(); openDrawer('card'); } };
 $('drClose').onclick=()=>closeDrawer();
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('drawer').classList.contains('open')) closeDrawer(); });
 (function(){ // swipe right to close
