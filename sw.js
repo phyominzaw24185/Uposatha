@@ -1,5 +1,5 @@
 // Offline cache for the Uposatha calendar
-const CACHE = 'uposatha-cal-v7';
+const CACHE = 'uposatha-cal-v8';
 const CORE = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './maskable-512.png', './apple-touch-icon.png'];
 
@@ -25,7 +25,7 @@ self.addEventListener('fetch', e => {
   }
   if (url.origin !== location.origin) return;
   // App files: network first (so updates arrive), cache when offline
-  e.respondWith(fetch(req).then(r => {
+  e.respondWith(fetch(req, {cache: 'no-cache'}).then(r => {
     const copy = r.clone(); caches.open(CACHE).then(c => c.put(req, copy)); return r;
   }).catch(() => caches.match(req).then(r => r || caches.match('./index.html'))));
 });
