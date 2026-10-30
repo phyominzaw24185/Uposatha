@@ -717,10 +717,10 @@ body.m-full .cal .cell.v2 .g,.cal .cell.v2.hasevn .g{font-size:clamp(20px,6.6vw,
 html{background:#e6ece8}
 @media (prefers-color-scheme: dark){html{background:#101311}}
 body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.install{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;gap:10px;align-items:center;padding:10px 12px 10px 16px;border-radius:14px;background:var(--lacquer);color:var(--on-lacquer);box-shadow:0 10px 30px -10px rgba(0,0,0,.5);font:14px var(--mm);max-width:calc(100% - 32px)}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;gap:10px;align-items:center;padding:10px 12px 10px 16px;border-radius:14px;background:var(--lacquer);color:var(--on-lacquer);box-shadow:0 10px 30px -10px rgba(0,0,0,.5);font:14px var(--mm);max-width:calc(100% - 32px)}
+.install span{flex:1;min-width:0}
 .install button{white-space:nowrap;flex:none;border:0;border-radius:10px;padding:8px 14px;font:700 14px var(--mm);background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--gold-ink);cursor:pointer}
 .install .x{background:transparent;color:var(--on-lacquer);padding:8px 10px;font-size:18px}
-.install span{flex:1;min-width:0}
 </style>
 </head>
 <body>
@@ -866,7 +866,6 @@ body{margin:0;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bott
   </div>
 </div>
 
-<div class="install" id="install" hidden><span>ဖုန်းထဲ app အဖြစ် ထည့်မလား</span><button id="doInstall" type="button">ထည့်မည်</button><button class="x" id="noInstall" type="button" aria-label="ပိတ်">✕</button></div>
 <script>
 /* ---------- Myanmar calendar core (Yan Naing Aung algorithm) ---------- */
 const SY=1577917828/4320000, LM=1577917828/53433336, MO=1954168.050623;
@@ -954,8 +953,28 @@ function thingyan(my){
   t.set(da,'သင်္ကြန်အတက်နေ့'); t.set(da+1,'မြန်မာနှစ်ဆန်း ၁ ရက်နေ့');
   tyCache.set(my,t); return t;
 }
+
+/* ---------- official public-holiday lists (from the government gazette) ----------
+   For a year listed here, these dates replace the calculated holidays. */
+const OFFICIAL_HOL={
+ 2027:{
+  '1-1':'နိုင်ငံတကာနှစ်သစ်ကူးနေ့','1-4':'လွတ်လပ်ရေးနေ့','1-8':'ကရင်နှစ်သစ်ကူးနေ့','2-7':'တရုတ်နှစ်သစ်ကူးနေ့',
+  '2-12':'ပြည်ထောင်စုနေ့','3-1':'တောင်သူလယ်သမားနေ့ ရုံးပိတ်ရက်','3-2':'တောင်သူလယ်သမားနေ့',
+  '3-22':'တပေါင်းလပြည့်နေ့','3-27':'တပ်မတော်နေ့',
+  '4-10':'မြန်မာနှစ်သစ်ကူး ရုံးပိတ်ရက်','4-11':'မြန်မာနှစ်သစ်ကူး ရုံးပိတ်ရက်','4-12':'မြန်မာနှစ်သစ်ကူး ရုံးပိတ်ရက်',
+  '4-13':'သင်္ကြန်အကြိုနေ့','4-14':'သင်္ကြန်အကျနေ့','4-15':'သင်္ကြန်အကြတ်နေ့','4-16':'သင်္ကြန်အတက်နေ့',
+  '4-17':'မြန်မာနှစ်ဆန်း ၁ ရက်နေ့','4-18':'မြန်မာနှစ်သစ်ကူး ရုံးပိတ်ရက်',
+  '5-1':'ကမ္ဘာ့အလုပ်သမားနေ့','5-20':'ကဆုန်လပြည့်နေ့','5-21':'ကဆုန်လပြည့် ရုံးပိတ်ရက်',
+  '7-18':'ဝါဆိုလပြည့်နေ့','7-19':'အာဇာနည်နေ့',
+  '10-14':'သီတင်းကျွတ် အဖိတ်နေ့','10-15':'သီတင်းကျွတ်လပြည့်နေ့','10-16':'သီတင်းကျွတ် လပြည့်ကျော် ၁ ရက်',
+  '11-13':'တန်ဆောင်မုန်းလပြည့်နေ့','11-22':'အမျိုးသားနေ့ ရုံးပိတ်ရက်','11-23':'အမျိုးသားအောင်ပွဲနေ့',
+  '12-25':'ခရစ္စမတ်နေ့','12-27':'ကရင်နှစ်သစ်ကူး ရုံးပိတ်ရက်','12-28':'ကရင်နှစ်သစ်ကူးနေ့'
+ }
+};
+function yearOfJ(j){return new Date(Date.UTC(2000,0,1)+(j-2451545)*864e5).getUTCFullYear();}
 function holidays(m,d,j,r){
   const h=[];
+  const oy=OFFICIAL_HOL[yearOfJ(j)]; if(oy){ const o=oy[m+'-'+d]; return o?[o]:[]; }
   const f=FIXED_HOL[m+'-'+d]; if(f) h.push(f);
   const t=thingyan(r.my).get(j)||thingyan(r.my+1).get(j); if(t) h.push(t);
   const n=mmN(r), md=r.md;
@@ -1067,7 +1086,9 @@ function observances(y,m,d,j){
   const w=WORLD[m+'-'+d]; if(w) o.push(w);
   if(m===5&&d===nthSunday(y,5,2)) o.push('အမေများနေ့ · Mother\'s Day');
   if(m===6&&d===nthSunday(y,6,3)) o.push('အဖေများနေ့ · Father\'s Day');
-  if(y>=1901&&y<=2100&&j===chineseNewYear(y)) o.push('တရုတ်နှစ်သစ်ကူးနေ့ · Chinese New Year');
+  const cnyOff=OFFICIAL_HOL[y]&&Object.entries(OFFICIAL_HOL[y]).find(([k,v])=>v==='တရုတ်နှစ်သစ်ကူးနေ့');
+  if(cnyOff){ if(cnyOff[0]===m+'-'+d) o.push('တရုတ်နှစ်သစ်ကူးနေ့ · Chinese New Year'); }
+  else if(y>=1901&&y<=2100&&j===chineseNewYear(y)) o.push('တရုတ်နှစ်သစ်ကူးနေ့ · Chinese New Year');
   return o;
 }
 /* ---------- ရက်ရာဇာ / ပြဿဒါး / နဂါးခေါင်း ---------- */
@@ -1098,6 +1119,43 @@ function astroDays(r,w){
   if(md===[26,21,2,10,18,2,21][wd]||md===[17,19,1,0,9,0,0][wd]||(md===2&&wd===1)||(md===12&&wd===0)||(md===18&&wd===2)) out.push('နဂါးပေါ်');
   return out;
 }
+/* ---------- UI ---------- */
+
+/* ---------- moon drawing ---------- */
+function phaseFrac(r){
+  if(r.mp===1) return .5;
+  if(r.mp===3) return 1;
+  if(r.mp===0) return Math.min(r.fd/30,.49);
+  return Math.min(.5+r.fd/(2*(r.len-15)),.99);
+}
+function litPath(p,R){
+  if(p<=.005||p>=.995) return '';
+  if(Math.abs(p-.5)<.005) return `M0,${-R}A${R},${R} 0 1 1 0,${R}A${R},${R} 0 1 1 0,${-R}Z`;
+  const rx=(R*Math.abs(Math.cos(2*Math.PI*p))).toFixed(2);
+  return p<.5
+    ? `M0,${-R}A${R},${R} 0 0 1 0,${R}A${rx},${R} 0 0 ${p<.25?0:1} 0,${-R}Z`
+    : `M0,${-R}A${R},${R} 0 0 0 0,${R}A${rx},${R} 0 0 ${p<.75?0:1} 0,${-R}Z`;
+}
+let uid=0;
+function bigMoon(r){
+  const p=phaseFrac(r), id='m'+(++uid), R=52;
+  return `<svg class="bigmoon" viewBox="-60 -60 120 120" aria-hidden="true">
+    <defs>
+      <radialGradient id="${id}g" cx="-.25" cy="-.3" r="1.1" gradientUnits="objectBoundingBox" fx="35%" fy="30%"><stop offset="0" stop-color="#fffaf0"/><stop offset=".6" stop-color="#f3e3b8"/><stop offset="1" stop-color="#d8bf82"/></radialGradient>
+      <clipPath id="${id}c"><path d="${litPath(p,R)}"/></clipPath>
+    </defs>
+    <circle r="${R}" fill="rgba(0,0,0,.28)" stroke="rgba(246,231,200,.35)" stroke-width="1"/>
+    <path d="${litPath(p,R)}" fill="url(#${id}g)"/>
+    <g clip-path="url(#${id}c)" fill="rgba(120,90,40,.13)">
+      <circle cx="-18" cy="-14" r="11"/><circle cx="14" cy="10" r="15"/><circle cx="-10" cy="24" r="7"/><circle cx="22" cy="-22" r="6"/><circle cx="-30" cy="8" r="5"/>
+    </g>
+  </svg>`;
+}
+function tinyMoon(r,cls){
+  const p=phaseFrac(r), R=10;
+  return `<svg class="${cls}" viewBox="-12 -12 24 24" aria-hidden="true"><circle r="${R}" fill="rgba(0,0,0,.22)" stroke="currentColor" stroke-opacity=".35" stroke-width="1"/><path d="${litPath(p,R)}" fill="#fbf3dc" stroke="rgba(90,60,20,.35)" stroke-width=".6"/></svg>`;
+}
+
 
 /* large moon drawn behind the label on full-moon and new-moon days */
 function cellMoon(r){
@@ -1162,43 +1220,6 @@ function delNote(n){
   arr.splice(n.ix,1); if(!arr.length) delete bag[n.key]; saveNotes();
 }
 function escH(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-/* ---------- UI ---------- */
-
-/* ---------- moon drawing ---------- */
-function phaseFrac(r){
-  if(r.mp===1) return .5;
-  if(r.mp===3) return 1;
-  if(r.mp===0) return Math.min(r.fd/30,.49);
-  return Math.min(.5+r.fd/(2*(r.len-15)),.99);
-}
-function litPath(p,R){
-  if(p<=.005||p>=.995) return '';
-  if(Math.abs(p-.5)<.005) return `M0,${-R}A${R},${R} 0 1 1 0,${R}A${R},${R} 0 1 1 0,${-R}Z`;
-  const rx=(R*Math.abs(Math.cos(2*Math.PI*p))).toFixed(2);
-  return p<.5
-    ? `M0,${-R}A${R},${R} 0 0 1 0,${R}A${rx},${R} 0 0 ${p<.25?0:1} 0,${-R}Z`
-    : `M0,${-R}A${R},${R} 0 0 0 0,${R}A${rx},${R} 0 0 ${p<.75?0:1} 0,${-R}Z`;
-}
-let uid=0;
-function bigMoon(r){
-  const p=phaseFrac(r), id='m'+(++uid), R=52;
-  return `<svg class="bigmoon" viewBox="-60 -60 120 120" aria-hidden="true">
-    <defs>
-      <radialGradient id="${id}g" cx="-.25" cy="-.3" r="1.1" gradientUnits="objectBoundingBox" fx="35%" fy="30%"><stop offset="0" stop-color="#fffaf0"/><stop offset=".6" stop-color="#f3e3b8"/><stop offset="1" stop-color="#d8bf82"/></radialGradient>
-      <clipPath id="${id}c"><path d="${litPath(p,R)}"/></clipPath>
-    </defs>
-    <circle r="${R}" fill="rgba(0,0,0,.28)" stroke="rgba(246,231,200,.35)" stroke-width="1"/>
-    <path d="${litPath(p,R)}" fill="url(#${id}g)"/>
-    <g clip-path="url(#${id}c)" fill="rgba(120,90,40,.13)">
-      <circle cx="-18" cy="-14" r="11"/><circle cx="14" cy="10" r="15"/><circle cx="-10" cy="24" r="7"/><circle cx="22" cy="-22" r="6"/><circle cx="-30" cy="8" r="5"/>
-    </g>
-  </svg>`;
-}
-function tinyMoon(r,cls){
-  const p=phaseFrac(r), R=10;
-  return `<svg class="${cls}" viewBox="-12 -12 24 24" aria-hidden="true"><circle r="${R}" fill="rgba(0,0,0,.22)" stroke="currentColor" stroke-opacity=".35" stroke-width="1"/><path d="${litPath(p,R)}" fill="#fbf3dc" stroke="rgba(90,60,20,.35)" stroke-width=".6"/></svg>`;
-}
-
 /* ---------- UI ---------- */
 const $=id=>document.getElementById(id);
 const now=new Date();
@@ -1768,6 +1789,8 @@ $('grid').addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changed
 render();
 applyMode();
 </script>
+
+<div class="install" id="install" hidden><span>ဖုန်းထဲ app အဖြစ် ထည့်မလား</span><button id="doInstall" type="button">ထည့်မည်</button><button class="x" id="noInstall" type="button" aria-label="ပိတ်">✕</button></div>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 let deferred=null;
