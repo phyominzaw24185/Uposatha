@@ -746,6 +746,13 @@ body.m-full .cal .cell.v2 .g{font-size:clamp(26px,8.2vw,38px)}
 .cell.v2 .astw{justify-items:center!important}
 body.m-full .cal .cell.v2 .g,.cal .cell.v2 .g,.cal .cell.v2.hasevn .g{font-size:clamp(26px,9vw,40px)!important}
 @media (max-width:380px){ body.m-full .cal .cell.v2 .g,.cal .cell.v2 .g{font-size:28px!important} }
+/* ===== Uposatha moon as the whole-cell background ===== */
+.cal .cell.v2.mbg{position:relative;overflow:hidden}
+html .cal .cell.v2 .bgmoon.fullbg{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:96%!important;height:auto!important;max-width:none!important;aspect-ratio:1;z-index:0!important;opacity:.6;filter:none!important;pointer-events:none}
+html .cal .cell.v2 .bgmoon.fullbg.new{opacity:.45}
+.cal .cell.v2.mbg>*:not(.bgmoon){position:relative;z-index:1}
+.cal .cell.v2.mbg .g{text-shadow:0 0 6px rgba(255,255,255,.85),0 0 2px rgba(255,255,255,.9)}
+.cal .cell.v2.mbg.today .g,.cal .cell.v2.mbg.sel .g{text-shadow:0 1px 4px rgba(0,0,0,.45)}
 </style>
 
 <style>
@@ -1338,9 +1345,10 @@ function render(anim){
     else if(fst){top=fst;tc='f';}
     top=top.replace(/ \(.*\)$/,'');
     // Myanmar day: a moon on Uposatha days, otherwise the Myanmar number
-    const mrow=moonDay?'<span class="mrow">'+cellMoon(i.r)+'</span>':'<span class="mrow"><span class="md">'+mn(i.r.fd)+'</span>'+eveMark+'</span>';
+    const mrow='<span class="mrow"><span class="md">'+mn(i.r.fd)+'</span>'+eveMark+'</span>';
     if(top) b.classList.add('hasevn');
-    b.innerHTML='<span class="evn '+tc+'">'+(tc==='n'?noteHTML(top):mmWords(top))+'</span><div class="g">'+i.d+'</div>'+mrow+(ast||'<span class="astw"></span>');
+    if(moonDay) b.classList.add('mbg');
+    b.innerHTML=(moonDay?cellMoon(i.r).replace('class="bgmoon ','class="bgmoon fullbg '):'')+'<span class="evn '+tc+'">'+(tc==='n'?noteHTML(top):mmWords(top))+'</span><div class="g">'+i.d+'</div>'+mrow+(ast||'<span class="astw"></span>');
     b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':'')+(hol.length?', ရုံးပိတ်ရက် '+hol.join('၊ '):'')+(obs.length?', '+obs.join('၊ '):''));
     b.onclick=()=>{const again=sel.y===i.y&&sel.m===i.m&&sel.d===i.d; pick(i.y,i.m,i.d,true); if(showPop||again) openSheet();};
     g.appendChild(b);
