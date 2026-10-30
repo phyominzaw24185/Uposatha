@@ -699,8 +699,10 @@ body.m-full .cal .cell.v2 .g,.cal .cell.v2.hasevn .g{font-size:clamp(20px,6.6vw,
 .nt-del{flex:none;border:0;background:transparent;color:var(--muted);font-size:16px;cursor:pointer;padding:4px 8px;border-radius:8px}
 .nt-del:hover{background:var(--line);color:var(--lacquer)}
 .nt-add{display:flex;gap:6px}
-.nt-add input{flex:1;min-width:0;font:15px var(--mm);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 10px}
-.nt-add input:focus-visible{outline:2px solid #8d63c4;outline-offset:1px}
+.nt-add textarea{resize:none;line-height:1.5}
+.nt-add{align-items:stretch}
+.nt-add input,.nt-add textarea{flex:1;min-width:0;font:15px var(--mm);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 10px}
+.nt-add textarea:focus-visible{outline:2px solid #8d63c4;outline-offset:1px}
 .nt-add button{flex:none;border:0;border-radius:10px;padding:0 14px;font:700 14px var(--mm);background:#6a3fa0;color:#fff;cursor:pointer}
 .nt-yr{display:flex;align-items:center;gap:8px;font:13.5px var(--mm);color:var(--muted)}
 .list .hmark.nmark{background:#8d63c4!important}
@@ -1208,6 +1210,11 @@ function cellMoon(r){
 }
 
 /* allow line breaks between Burmese syllables (a consonant not followed by ် or ္ starts a new syllable) */
+/* a note as the user typed it: each line on its own line, words kept whole */
+function noteHTML(t){
+  return t.split(/\n+/).map(l=>l.trim()).filter(Boolean)
+    .map(l=>l.split(/\s+/).map(w=>'<span class="sg">'+mmBreaks(escH(w))+'</span>').join(' ')).join('<br>');
+}
 function mmBreaks(t){
   return t.replace(/(?<![္])([က-အဣ-ဧဩဪဿ၌-၏])(?![ါ-ှ]*[်္])/g,'​$1').replace(/^​/,'');
 }
@@ -1249,7 +1256,7 @@ function notesOf(y,m,d){
   return b.concat(a);
 }
 function addNote(y,m,d,t,yearly){
-  t=t.trim(); if(!t) return;
+  t=t.split('\n').map(l=>l.trim()).filter(Boolean).join('\n'); if(!t) return;
   const bag=yearly?NOTES.yearly:NOTES.once, k=yearly?(m+'-'+d):(y+'-'+m+'-'+d);
   (bag[k]=bag[k]||[]).push(t); saveNotes();
 }
@@ -1333,7 +1340,7 @@ function render(anim){
     // Myanmar day: a moon on Uposatha days, otherwise the Myanmar number
     const mrow=moonDay?'<span class="mrow">'+cellMoon(i.r)+'</span>':'<span class="mrow"><span class="md">'+mn(i.r.fd)+'</span>'+eveMark+'</span>';
     if(top) b.classList.add('hasevn');
-    b.innerHTML='<span class="evn '+tc+'">'+(tc==='n'?mmBreaks(escH(top)):mmWords(top))+'</span><div class="g">'+i.d+'</div>'+mrow+(ast||'<span class="astw"></span>');
+    b.innerHTML='<span class="evn '+tc+'">'+(tc==='n'?noteHTML(top):mmWords(top))+'</span><div class="g">'+i.d+'</div>'+mrow+(ast||'<span class="astw"></span>');
     b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':'')+(hol.length?', ရုံးပိတ်ရက် '+hol.join('၊ '):'')+(obs.length?', '+obs.join('၊ '):''));
     b.onclick=()=>{const again=sel.y===i.y&&sel.m===i.m&&sel.d===i.d; pick(i.y,i.m,i.d,true); if(showPop||again) openSheet();};
     g.appendChild(b);
@@ -1401,7 +1408,7 @@ function renderList(){
     if(!nd.length) ol.innerHTML='<li class="empty">မှတ်စု မရှိသေးပါ။ ရက်ကို နှစ်ချက်နှိပ်ပြီး မှတ်စု ထည့်ပါ။</li>';
     nd.forEach(i=>{
       if(i.m!==lm){lm=i.m;const h=document.createElement('li');h.className='mh';h.textContent=GM[i.m-1];ol.appendChild(h);}
-      notesOf(i.y,i.m,i.d).forEach(n=>ol.appendChild(row(i,'<span class="hmark nmark" aria-hidden="true"></span>',i.d+'<small>'+GS[i.w]+'</small>',escH(n.t),WD[i.w]+'နေ့ · '+monthName(i.r,false)+' '+phaseText(i.r)+(n.yearly?' · နှစ်တိုင်း':''),'မှတ်စု','note')));
+      notesOf(i.y,i.m,i.d).forEach(n=>ol.appendChild(row(i,'<span class="hmark nmark" aria-hidden="true"></span>',i.d+'<small>'+GS[i.w]+'</small>',escH(n.t).replace(/\n+/g,'<br>'),WD[i.w]+'နေ့ · '+monthName(i.r,false)+' '+phaseText(i.r)+(n.yearly?' · နှစ်တိုင်း':''),'မှတ်စု','note')));
     });
   } else if(tab==='special'){
     const sd=yearDays(Y,i=>observances(i.y,i.m,i.d,i.j).length>0);
@@ -1465,8 +1472,8 @@ function sheetHTML(){
   astroDays(r,i.w).forEach(n=>items.push(['',n]));
   h+='<ul class="sh-list">'+items.map(([k,t])=>'<li class="'+k+'">'+t+'</li>').join('')+'</ul>';
   const nts=notesOf(sel.y,sel.m,sel.d);
-  h+='<div class="sh-notes"><div class="nt-h">📝 မှတ်စု</div>'+(nts.length?'<ul class="nt-list">'+nts.map((n,k)=>'<li><span>'+escH(n.t)+(n.yearly?' <em>· နှစ်တိုင်း</em>':'')+'</span><button type="button" class="nt-del" data-k="'+k+'" aria-label="ဖျက်မည်">✕</button></li>').join('')+'</ul>':'')+
-     '<div class="nt-add"><input id="noteIn" type="text" maxlength="80" placeholder="ဥပမာ – ဆရာဖြိုး မွေးနေ့" autocomplete="off"><button type="button" id="noteAdd">ထည့်မည်</button></div>'+
+  h+='<div class="sh-notes"><div class="nt-h">📝 မှတ်စု</div>'+(nts.length?'<ul class="nt-list">'+nts.map((n,k)=>'<li><span>'+escH(n.t).replace(/\n+/g,'<br>')+(n.yearly?' <em>· နှစ်တိုင်း</em>':'')+'</span><button type="button" class="nt-del" data-k="'+k+'" aria-label="ဖျက်မည်">✕</button></li>').join('')+'</ul>':'')+
+     '<div class="nt-add"><textarea id="noteIn" rows="2" maxlength="120" placeholder="ဥပမာ –\nဆု\nအင်္ဂလိပ်စာ" autocomplete="off"></textarea><button type="button" id="noteAdd">ထည့်မည်</button></div>'+
      '<label class="nt-yr"><input type="checkbox" id="noteYr"> နှစ်တိုင်း ပြမည် (မွေးနေ့ စသည်)</label></div>';
   for(let k=1;k<=16;k++){ if(j2m(i.j+k).sab===1){const dt=new Date(sel.y,sel.m-1,sel.d+k); h+='<p class="sh-next">နောက်ဥပုသ်နေ့ — '+dt.getDate()+' '+GM[dt.getMonth()]+' ('+WD[dt.getDay()]+')၊ '+mn(k)+' ရက်အကြာ</p>'; break;} }
   return h;
@@ -1476,7 +1483,7 @@ function fillSheet(){
   $('sheetBody').innerHTML=sheetHTML();
   const inp=$('noteIn'), add=()=>{ if(!inp.value.trim()) {inp.focus();return;} addNote(sel.y,sel.m,sel.d,inp.value,$('noteYr').checked); render(); fillSheet(); if(tab==='notes') renderList(); };
   $('noteAdd').onclick=add;
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();add();} e.stopPropagation(); });
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();add();} e.stopPropagation(); });
   const nts=notesOf(sel.y,sel.m,sel.d);
   $('sheetBody').querySelectorAll('.nt-del').forEach(b=>b.onclick=()=>{ delNote(nts[+b.dataset.k]); render(); fillSheet(); });
 }
@@ -1645,8 +1652,23 @@ function fitAstro(){
     const lh=()=>parseFloat(getComputedStyle(e).lineHeight)||fs*1.45;
     const cw=e.clientWidth||e.closest('.cell').clientWidth-6;
     const tooWide=()=>[...e.querySelectorAll('.sg')].some(g=>g.getBoundingClientRect().width>cw-4);
-    while((tooWide()||e.scrollHeight>lh()*3+1)&&fs>6.5&&n--){fs-=0.5;e.style.setProperty('font-size',fs+'px','important');}
+    while((tooWide()||e.scrollHeight>lh()*3+1)&&fs>7.5&&n--){fs-=0.5;e.style.setProperty('font-size',fs+'px','important');}
+    if(e.classList.contains('n')) while(tooWide()&&fs>6.5&&n--){fs-=0.5;e.style.setProperty('font-size',fs+'px','important');}
+    if(e.classList.contains('n')&&tooWide()) e.querySelectorAll('.sg').forEach(g=>{ if(g.getBoundingClientRect().width>cw-4) g.style.whiteSpace='normal'; });
+    // never let the label run into the big date below it
+    const g=e.closest('.cell').querySelector('.g');
+    if(g){ const rg=document.createRange(); rg.selectNodeContents(g);
+      const over=()=>e.getBoundingClientRect().bottom-rg.getBoundingClientRect().top-0.22*parseFloat(getComputedStyle(g).fontSize);
+      let k=30; while(over()>0&&fs>7.5&&k--){fs-=0.5;e.style.setProperty('font-size',fs+'px','important');}
+    }
   });
+  // still touching? make every date in the month a little smaller (same size for all)
+  { const cs=[...document.querySelectorAll('#grid .cell.v2')].filter(c=>{const e=c.querySelector('.evn');return e&&e.textContent.trim();});
+    const gs=[...document.querySelectorAll('#grid .cell.v2 .g')];
+    const over=c=>{const e=c.querySelector('.evn'),g=c.querySelector('.g');if(!g)return 0;const rg=document.createRange();rg.selectNodeContents(g);return e.getBoundingClientRect().bottom-rg.getBoundingClientRect().top-0.22*parseFloat(getComputedStyle(g).fontSize);};
+    let s=gs.length?parseFloat(getComputedStyle(gs[0]).fontSize):0, j=20;
+    while(s>24&&j--&&cs.some(c=>over(c)>0)){ s-=1; gs.forEach(g=>g.style.setProperty('font-size',s+'px','important')); }
+  }
   document.querySelectorAll('#grid .m.two span').forEach(b=>{
     b.style.fontSize=''; const cw=b.closest('.cell').clientWidth-4;
     let fs=parseFloat(getComputedStyle(b).fontSize), n=30;
