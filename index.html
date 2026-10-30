@@ -710,6 +710,13 @@ body.m-full .cal .cell.v2 .g,.cal .cell.v2.hasevn .g{font-size:clamp(20px,6.6vw,
 .list .tabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;min-width:0}
 .list .tabs button{min-width:0;padding:8px 2px 7px!important;font-size:clamp(11px,3.1vw,13.5px)!important;white-space:nowrap;overflow:hidden}
 .list{min-width:0}
+/* make-up working Saturday */
+.cell.v2 .evn.w{color:#1f5fa8!important;font-weight:700}
+.cell.v2.work{box-shadow:inset 0 0 0 1.5px #5b8fd0}
+.cell.v2.today .evn.w,.cell.v2.sel .evn.w{color:#fff!important}
+.list .hmark.wmark{background:#1f5fa8!important}
+.list .ty.work{background:transparent;color:#1f5fa8;box-shadow:inset 0 0 0 1.5px #5b8fd0}
+.sp-work .sp-k{background:#dbe8f8;color:#1f4f8a}
 </style>
 
 <style>
@@ -971,6 +978,10 @@ const OFFICIAL_HOL={
   '12-25':'ခရစ္စမတ်နေ့','12-27':'ကရင်နှစ်သစ်ကူး ရုံးပိတ်ရက်','12-28':'ကရင်နှစ်သစ်ကူးနေ့'
  }
 };
+/* Saturdays that become working days in exchange for bridge holidays (gazette 101/2026) */
+const OFFICIAL_WORK={'2027-3-6':'1 Mar','2027-5-29':'21 May','2027-11-27':'22 Nov','2028-1-8':'27 Dec'};
+const WORK_FOR={'2027-3-6':'မတ် ၁ ရက်','2027-5-29':'မေ ၂၁ ရက်','2027-11-27':'နိုဝင်ဘာ ၂၂ ရက်','2028-1-8':'ဒီဇင်ဘာ ၂၇ ရက် (၂၀၂၇)'};
+function workDay(y,m,d){const k=y+'-'+m+'-'+d; return OFFICIAL_WORK[k]?('အစားထိုး ရုံးတက်ရက် · '+WORK_FOR[k]+' ပိတ်ရက်အစား'):'';}
 function yearOfJ(j){return new Date(Date.UTC(2000,0,1)+(j-2451545)*864e5).getUTCFullYear();}
 function holidays(m,d,j,r){
   const h=[];
@@ -1266,7 +1277,9 @@ function render(anim){
     const b=document.createElement('button');
     b.type='button';b.className='cell';b.setAttribute('role','gridcell');b.dataset.key=i.y+'-'+i.m+'-'+i.d;
     if(!inMonth) b.classList.add('out');
-    if(i.w===0||i.w===6) b.classList.add('we');
+    const wk=workDay(i.y,i.m,i.d);
+    if((i.w===0||i.w===6)&&!wk) b.classList.add('we');
+    if(wk) b.classList.add('work');
     if(i.r.sab===1) b.classList.add('sab');
     if(hol.length) b.classList.add('hol'); else if(obs.length) b.classList.add('obs');
     if(i.r.sab===2&&showEve) b.classList.add('eve');
@@ -1284,6 +1297,7 @@ function render(anim){
     let top='',tc='';
     const nts=notesOf(i.y,i.m,i.d);
     if(nts.length){top=nts[0].t;tc='n';b.classList.add('hasnote');}
+    else if(wk){top='အစားထိုး ရုံးတက်ရက်';tc='w';}
     else if(hol.length){top=hol[0];tc='h';}
     else if(obs.length){top=obs[0].split(' · ')[0];tc='o';}
     else if(phase){top=mName+phase;tc='p';}
@@ -1373,12 +1387,14 @@ function renderList(){
         ol.appendChild(row(i,obsIcon,i.d+'<small>'+GS[i.w]+'</small>',p[0],(p[1]?p[1]+' · ':'')+WD[i.w]+'နေ့','ပွဲနေ့','obs'));});
     });
   } else {
-    const hd=yearDays(Y,i=>holidays(i.m,i.d,i.j,i.r).length>0);
-    $('listTitle').innerHTML=mmWrap(mn(Y)+' ခုနှစ် ရုံးပိတ်ရက် '+mn(hd.length)+' ရက်');
+    const hd=yearDays(Y,i=>holidays(i.m,i.d,i.j,i.r).length>0||!!workDay(i.y,i.m,i.d));
+    const nh=hd.filter(i=>holidays(i.m,i.d,i.j,i.r).length).length;
+    $('listTitle').innerHTML=mmWrap(mn(Y)+' ခုနှစ် ရုံးပိတ်ရက် '+mn(nh)+' ရက်');
     let lastM=0;
     hd.forEach(i=>{
       if(i.m!==lastM){lastM=i.m;const h=document.createElement('li');h.className='mh';h.textContent=GM[i.m-1];ol.appendChild(h);}
-      const hol=holidays(i.m,i.d,i.j,i.r);
+      const hol=holidays(i.m,i.d,i.j,i.r), wk=workDay(i.y,i.m,i.d);
+      if(wk&&!hol.length){ const p=wk.split(' · '); ol.appendChild(row(i,'<span class="hmark wmark" aria-hidden="true"></span>',i.d+'<small>'+GS[i.w]+'</small>',p[0],p[1]+' · '+WD[i.w]+'နေ့','ရုံးတက်','work')); return; }
       ol.appendChild(row(i,i.r.sab===1?tinyMoon(i.r,'lm'):holIcon,i.d+'<small>'+GS[i.w]+'</small>',
         hol.join('၊ '),WD[i.w]+'နေ့'+(i.w===0||i.w===6?' (ပုံမှန်ပိတ်ရက်နှင့် တိုက်ဆိုင်)':'')+' · '+monthName(i.r,false)+' '+phaseText(i.r),
         'ရုံးပိတ်','hol'));
@@ -1390,13 +1406,14 @@ $('yPrev').onclick=()=>{if(view.y>1900){view={y:view.y-1,m:view.m};render(true);
 $('yNext').onclick=()=>{if(view.y<2100){view={y:view.y+1,m:view.m};render(true);}};
 function specialsOf(i){
   const out=[], hol=holidays(i.m,i.d,i.j,i.r), obs=observances(i.y,i.m,i.d,i.j), fest=festival(i.r);
+  const wk=workDay(i.y,i.m,i.d); if(wk) out.push({k:'work',n:wk});
   hol.forEach(n=>out.push({k:'hol',n}));
   obs.forEach(n=>out.push({k:'obs',n}));
   if(fest&&!hol.length) out.push({k:'fest',n:fest});
   return out;
 }
 function specialHTML(s){
-  const p=s.n.split(' · '), tag=s.k==='hol'?'ရုံးပိတ်ရက်':s.k==='obs'?'ပွဲနေ့':'ဘာသာရေးနေ့';
+  const p=s.n.split(' · '), tag=s.k==='hol'?'ရုံးပိတ်ရက်':s.k==='obs'?'ပွဲနေ့':s.k==='work'?'ရုံးတက်ရက်':'ဘာသာရေးနေ့';
   return '<div class="sp sp-'+s.k+'"><span class="sp-k">'+tag+'</span><b>'+p[0]+'</b>'+(p[1]?'<small>'+p[1]+'</small>':'')+'</div>';
 }
 
