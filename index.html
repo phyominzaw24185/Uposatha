@@ -717,6 +717,8 @@ body.m-full .cal .cell.v2 .g,.cal .cell.v2.hasevn .g{font-size:clamp(20px,6.6vw,
 .list .hmark.wmark{background:#1f5fa8!important}
 .list .ty.work{background:transparent;color:#1f5fa8;box-shadow:inset 0 0 0 1.5px #5b8fd0}
 .sp-work .sp-k{background:#dbe8f8;color:#1f4f8a}
+/* personal notes wrap inside the cell (break between syllables, never spill out) */
+.cell.v2 .evn.n{white-space:normal!important;overflow:hidden!important;overflow-wrap:anywhere!important;word-break:break-word!important;max-width:100%;display:-webkit-box!important;-webkit-box-orient:vertical;-webkit-line-clamp:3!important;line-height:1.5!important}
 </style>
 
 <style>
@@ -1306,7 +1308,7 @@ function render(anim){
     // Myanmar day: a moon on Uposatha days, otherwise the Myanmar number
     const mrow=moonDay?'<span class="mrow">'+cellMoon(i.r)+'</span>':'<span class="mrow"><span class="md">'+mn(i.r.fd)+'</span>'+eveMark+'</span>';
     if(top) b.classList.add('hasevn');
-    b.innerHTML='<span class="evn '+tc+'">'+(tc==='n'?escH(top):mmWords(top))+'</span><div class="g">'+i.d+'</div>'+mrow+(ast||'<span class="astw"></span>');
+    b.innerHTML='<span class="evn '+tc+'">'+(tc==='n'?mmBreaks(escH(top)):mmWords(top))+'</span><div class="g">'+i.d+'</div>'+mrow+(ast||'<span class="astw"></span>');
     b.setAttribute('aria-label',i.d+' '+GM[i.m-1]+', '+monthName(i.r,false)+' '+phaseText(i.r)+(i.r.sab===1?', ဥပုသ်နေ့':i.r.sab===2?', အဖိတ်နေ့':'')+(hol.length?', ရုံးပိတ်ရက် '+hol.join('၊ '):'')+(obs.length?', '+obs.join('၊ '):''));
     b.onclick=()=>{const again=sel.y===i.y&&sel.m===i.m&&sel.d===i.d; pick(i.y,i.m,i.d,true); if(showPop||again) openSheet();};
     g.appendChild(b);
